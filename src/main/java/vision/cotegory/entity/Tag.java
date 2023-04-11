@@ -16,7 +16,7 @@ public enum Tag {
     DIJKSTRA("데이크스트라", 22),
     FLOYD_WARSHALL("플로이드-워셜", 31),
     UNION_FIND("분리 집합", 81),
-    OTHERS("기타등등", -100);
+    OTHERS("기타등등", -42);
 
 
     private final String korean;
