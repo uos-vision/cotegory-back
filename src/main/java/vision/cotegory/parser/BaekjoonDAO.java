@@ -23,11 +23,6 @@ public class BaekjoonDAO {
                 .orElseGet(() -> crawlByProblemNumber(problemNumber));
     }
 
-    public ProblemDTO updateByProblemNumber(Integer problemNumber) {
-        problemDTORepository.findByProblemNumber(problemNumber).ifPresent(problemDTORepository::delete);
-        return crawlByProblemNumber(problemNumber);
-    }
-
     public void crawlAllByTag(Tag tag) {
         problemDTORepository.deleteAll();
 
@@ -41,6 +36,8 @@ public class BaekjoonDAO {
     }
 
     private ProblemDTO crawlByProblemNumber(Integer problemNumber) {
+        problemDTORepository.findByProblemNumber(problemNumber).ifPresent(problemDTORepository::delete);
+
         final BaekjoonParser.OnLoginProblem onLogin = baekjoonParser
                 .onLogin()
                 .problem(problemNumber);
