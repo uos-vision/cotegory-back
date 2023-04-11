@@ -1,6 +1,6 @@
 
 
-# Cotegory 서비스
+# Cotegory 서비스 (Team.VISION)
 ![cotegory_logo](https://user-images.githubusercontent.com/72899681/231219882-961b781e-7697-43ca-817f-e53875f008a6.png)
 
 ## 📮 요구사항
