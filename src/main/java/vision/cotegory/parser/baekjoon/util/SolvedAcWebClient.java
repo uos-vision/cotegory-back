@@ -30,7 +30,7 @@ public class SolvedAcWebClient {
                         .queryParam("problemIds", problemIds)
                         .build())
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, response -> {
+                .onStatus(HttpStatus::isError, response -> {
                     if (response.statusCode().equals(HttpStatus.TOO_MANY_REQUESTS))
                         return Mono.error(new SolvedAPiException("SolvedAc Api 서버에 너무 많은 요청을 보냈습니다. 잠시후에 시도하세요"));
                     return Mono.error(new SolvedAPiException());
