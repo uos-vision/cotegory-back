@@ -10,14 +10,13 @@ import vision.cotegory.parser.baekjoon.util.BaekjoonProblemParser;
 
 @SpringBootTest
 @Slf4j
-@Commit
 class BaekjoonServiceTest {
 
     @Autowired
     BaekjoonService baekjoonService;
 
     @Test
-    void crawlTagParallelByTagTest(){
+    void crawlTagParallelByTagTest() {
         baekjoonService.updateAll();
     }
 }

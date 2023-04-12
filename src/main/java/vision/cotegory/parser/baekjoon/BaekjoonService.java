@@ -3,6 +3,7 @@ package vision.cotegory.parser.baekjoon;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Tag;
 import vision.cotegory.parser.baekjoon.dto.solvedac.SolvedAcTagDto;
 import vision.cotegory.parser.baekjoon.dto.solvedac.SolvedAcTitleDto;
@@ -31,7 +32,7 @@ public class BaekjoonService {
     public void updateAll() {
         baekjoonProblemRepository.deleteAll();
 
-        Stream.of(Tag.values()).parallel().forEach(tag -> {
+        Stream.of(Tag.values()).forEach(tag -> {
             if (tag.equals(Tag.OTHERS))
                 return;
             crawlAllTagParallelByTag(tag);
@@ -42,8 +43,8 @@ public class BaekjoonService {
     private void crawlAllTagParallelByTag(Tag tag) {
         getPages(tag).parallelStream()
                 .map(page -> getNumbers(tag, page))
-                .flatMap(numbers -> solvedacWebClient.getSolvedAcProblemDtosByProblemNumbers(numbers).stream().parallel())
-                .parallel().forEach(problemDto -> {
+                .flatMap(numbers -> solvedacWebClient.getSolvedAcProblemDtosByProblemNumbers(numbers).stream())
+                .forEach(problemDto -> {
                     if (baekjoonTagRepository.existsByProblemNumber(problemDto.getProblemId()))
                         return;
                     if (problemDto.getTitles().stream().map(SolvedAcTitleDto::getLanguage).noneMatch(e -> e.equals("ko")))
@@ -67,8 +68,7 @@ public class BaekjoonService {
     }
 
     private void crawlAllProblemBySavedTag() {
-        baekjoonTagRepository.getAllProblemNumbers().stream()
-                .parallel()
+        baekjoonTagRepository.getAllProblemNumbers().stream().parallel()
                 .forEach(this::createBaekjoonProblemDto);
     }
 
@@ -82,6 +82,8 @@ public class BaekjoonService {
 
     private BaekjoonProblem createBaekjoonProblemDto(Integer problemNumber) {
         BaekjoonProblemParser baekjoonProblemParser = new BaekjoonProblemParser(problemNumber);
+        if(baekjoonProblemParser.getTimeLimit() == 0)
+            return null;
 
         BaekjoonProblem baekjoonProblem = BaekjoonProblem.builder()
                 .problemNumber(baekjoonProblemParser.getProblemNumber())
