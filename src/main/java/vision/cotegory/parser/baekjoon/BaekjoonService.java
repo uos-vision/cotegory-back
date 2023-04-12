@@ -73,13 +73,11 @@ public class BaekjoonService {
     }
 
     private List<Integer> getPages(Tag tag) {
-        BaekjoonProblemListParser baekjoonProblemListParser = new BaekjoonProblemListParser(tag.toBaekjoonCode());
-        return baekjoonProblemListParser.getProblemPages();
+        return new BaekjoonProblemListParser(tag.toBaekjoonCode()).getProblemPages();
     }
 
     private List<Integer> getNumbers(Tag tag, Integer page) {
-        BaekjoonProblemListParser baekjoonProblemListParser = new BaekjoonProblemListParser(tag.toBaekjoonCode(), page);
-        return baekjoonProblemListParser.getProblemNumbers();
+        return new BaekjoonProblemListParser(tag.toBaekjoonCode(), page).getProblemNumbers();
     }
 
     private BaekjoonProblem createBaekjoonProblemDto(Integer problemNumber) {
