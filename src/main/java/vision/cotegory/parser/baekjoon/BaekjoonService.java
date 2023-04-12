@@ -41,7 +41,7 @@ public class BaekjoonService {
     }
 
     private void crawlAllTagParallelByTag(Tag tag) {
-        getPages(tag).parallelStream()
+        getPages(tag).stream()
                 .map(page -> getNumbers(tag, page))
                 .flatMap(numbers -> solvedacWebClient.getSolvedAcProblemDtosByProblemNumbers(numbers).stream())
                 .forEach(problemDto -> {
