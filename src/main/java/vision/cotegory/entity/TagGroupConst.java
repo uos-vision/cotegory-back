@@ -1,43 +1,56 @@
 package vision.cotegory.entity;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import vision.cotegory.repository.TagGroupRepository;
 
 import java.util.*;
 
 import static vision.cotegory.entity.Tag.*;
 import static vision.cotegory.entity.Tag.UNION_FIND;
 
+@Component
+@Transactional
 public class TagGroupConst {
 
-    @Getter
-    private static final List<TagGroup> tagGroups = new ArrayList<>();
+    private final TagGroupRepository tagGroupRepository;
+    private final List<TagGroup> tagGroups = new ArrayList<>();
 
-    private static final TagGroup GROUP_A = TagGroup.builder().tags(Set.of(
-            GREEDY,
-            DP,
-            BRUTE_FORCE,
-            BINARY_SEARCH
-    )).build();
-    private static final TagGroup GROUP_B = TagGroup.builder().tags(Set.of(
-            DFS,
-            BFS,
-            BRUTE_FORCE,
-            DP
-    )).build();
-    private static final TagGroup GROUP_C = TagGroup.builder().tags(Set.of(
-            DIJKSTRA,
-            FLOYD_WARSHALL,
-            BIT_MASKING,
-            UNION_FIND
-    )).build();
-
-    static {
-        tagGroups.add(GROUP_A);
-        tagGroups.add(GROUP_B);
-        tagGroups.add(GROUP_C);
+    @Autowired
+    public TagGroupConst(TagGroupRepository tagGroupRepository) {
+        this.tagGroupRepository = tagGroupRepository;
+        saveConst();
     }
 
-    static public Map<TagGroup, Tag> assignableGroups(Set<Tag> tags) {
+    private void saveConst(){
+        final TagGroup groupA = TagGroup.builder().name("groupA").tags(Set.of(
+                GREEDY,
+                DP,
+                BRUTE_FORCE,
+                BINARY_SEARCH
+        )).build();
+        tagGroups.add(groupA);
+        final TagGroup groupB = TagGroup.builder().name("groupB").tags(Set.of(
+                DFS,
+                BFS,
+                BRUTE_FORCE,
+                DP
+        )).build();
+        tagGroups.add(groupB);
+        final TagGroup groupC = TagGroup.builder().name("groupC").tags(Set.of(
+                DIJKSTRA,
+                FLOYD_WARSHALL,
+                BIT_MASKING,
+                UNION_FIND
+        )).build();
+        tagGroups.add(groupC);
+        tagGroupRepository.saveAll(tagGroups);
+    }
+
+    public Map<TagGroup, Tag> assignableGroups(Set<Tag> tags) {
         var ret = new HashMap<TagGroup, Tag>();
         tagGroups.forEach(group -> {
             Set<Tag> intersectSet = intersect(group.getTags(), tags);
@@ -47,7 +60,7 @@ public class TagGroupConst {
         return ret;
     }
 
-    static private Set<Tag> intersect(Set<Tag> a, Set<Tag> b) {
+    private Set<Tag> intersect(Set<Tag> a, Set<Tag> b) {
         final HashSet<Tag> tmp = new HashSet<>(a);
         tmp.retainAll(b);
         return tmp;

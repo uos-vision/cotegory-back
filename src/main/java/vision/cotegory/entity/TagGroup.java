@@ -21,6 +21,8 @@ public class TagGroup {
     @GeneratedValue
     private Long id;
 
+    private String name;
+
     @ElementCollection
     private Set<Tag> tags;
 }
