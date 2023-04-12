@@ -1,10 +1,9 @@
-package vision.cotegory.parser;
+package vision.cotegory.parser.baekjoon.dto;
 
 import lombok.*;
 import vision.cotegory.entity.Tag;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 @Getter
-public class ProblemDTO {
+public class BaekjoonProblemDto {
     @Id
     @GeneratedValue
     private Long id;

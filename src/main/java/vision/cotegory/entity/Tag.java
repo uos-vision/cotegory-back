@@ -2,8 +2,11 @@ package vision.cotegory.entity;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import java.util.stream.Stream;
 
+@Embeddable
 @Slf4j
 public enum Tag {
     DP("다이나믹 프로그래밍", 25),
@@ -35,9 +38,9 @@ public enum Tag {
         return this.baekjoonCode;
     }
 
-    public static Tag of(String korean) {
+    public static Tag of(Integer baekjoonCode) {
         return Stream.of(values())
-                .filter(e -> e.toKorean().equals(korean))
+                .filter(e -> e.toBaekjoonCode().equals(baekjoonCode))
                 .findAny()
                 .orElse(OTHERS);
     }
