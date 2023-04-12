@@ -1,7 +1,9 @@
-package vision.cotegory.parser.baekjoon;
+package vision.cotegory.parser.baekjoon.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 public class BaekjoonProblemListParser {
     private final Document doc;
 
@@ -47,8 +50,8 @@ public class BaekjoonProblemListParser {
 
     public List<Integer> getProblemNumbers() {
         return doc.select("#problemset > tbody")
+                .select("tr")
                 .stream()
-                .map(e -> e.getElementsByTag("tr"))
                 .flatMap(e -> Stream.of(e.text().split(" ")).limit(1))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());

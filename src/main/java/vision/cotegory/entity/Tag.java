@@ -2,11 +2,8 @@ package vision.cotegory.entity;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import java.util.stream.Stream;
 
-@Embeddable
 @Slf4j
 public enum Tag {
     DP("다이나믹 프로그래밍", 25),
@@ -21,14 +18,13 @@ public enum Tag {
     UNION_FIND("분리 집합", 81),
     OTHERS("기타등등", -42);
 
-
-    private final String korean;
-    private final Integer baekjoonCode;
-
     Tag(String korean, Integer baekjoonCode) {
         this.korean = korean;
         this.baekjoonCode = baekjoonCode;
     }
+
+    private final String korean;
+    private final Integer baekjoonCode;
 
     public String toKorean() {
         return this.korean;
@@ -41,6 +37,13 @@ public enum Tag {
     public static Tag of(Integer baekjoonCode) {
         return Stream.of(values())
                 .filter(e -> e.toBaekjoonCode().equals(baekjoonCode))
+                .findAny()
+                .orElse(OTHERS);
+    }
+
+    public static Tag of(String korean){
+        return Stream.of(values())
+                .filter(e -> e.toKorean().equals(korean))
                 .findAny()
                 .orElse(OTHERS);
     }

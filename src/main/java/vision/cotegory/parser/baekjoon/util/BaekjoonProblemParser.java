@@ -1,18 +1,19 @@
-package vision.cotegory.parser.baekjoon;
+package vision.cotegory.parser.baekjoon.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import vision.cotegory.exception.exception.ConvertException;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class BaekjoonProblemParser {
 
     private final Document doc;
 
-    public BaekjoonProblemParser(Integer problemNumber){
+    public BaekjoonProblemParser(Integer problemNumber) {
         String url = String.format("https://www.acmicpc.net/problem/%d", problemNumber);
         try {
             this.doc = Jsoup.connect(url).get();
@@ -21,7 +22,7 @@ public class BaekjoonProblemParser {
         }
     }
 
-    public String getContent(String cssSelector){
+    public String getContent(String cssSelector) {
         return doc.select(cssSelector).text();
     }
 
@@ -84,7 +85,7 @@ public class BaekjoonProblemParser {
         Matcher matcher = pattern.matcher(content);
         if (matcher.find())
             return Double.parseDouble(matcher.group());
-        throw new ConvertException();
+        return 0.0;
     }
 
     private int contentParseInt(String content) {
@@ -92,6 +93,6 @@ public class BaekjoonProblemParser {
         Matcher matcher = pattern.matcher(content);
         if (matcher.find())
             return Integer.parseInt(matcher.group());
-        throw new ConvertException();
+        return 0;
     }
 }

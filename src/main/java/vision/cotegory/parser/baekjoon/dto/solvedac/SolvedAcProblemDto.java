@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SolvedacProblemDto {
+public class SolvedAcProblemDto {
     private Integer problemId;
     private String titleKo;
-    private List<SolvedacTag> tags;
-
+    private List<SolvedAcTagDto> tags;
+    private List<SolvedAcTitleDto> titles;
 }

@@ -1,6 +1,9 @@
-package vision.cotegory.parser.baekjoon.dto;
+package vision.cotegory.parser.baekjoon.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import vision.cotegory.entity.Tag;
 
 import javax.persistence.*;
@@ -10,9 +13,8 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Getter
-public class BaekjoonProblemDto {
+public class BaekjoonProblem {
     @Id
     @GeneratedValue
     private Long id;
@@ -27,12 +29,17 @@ public class BaekjoonProblemDto {
     private Integer correctAnswerCount;
     private Integer correctUserCount;
     private Double correctRate;
-    private String problemInput;
-    private String problemOutput;
-    private String sampleInput;
-    private String sampleOutput;
+
     @Lob
     private String problemBody;
-    @ElementCollection
-    private Set<Tag> tags;
+
+    @Lob
+    private String problemInput;
+    @Lob
+    private String problemOutput;
+
+    @Lob
+    private String sampleInput;
+    @Lob
+    private String sampleOutput;
 }
