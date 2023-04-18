@@ -16,7 +16,7 @@ public class Quiz {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private BaekjoonProblemInfo problemInfo;
+    private BaekjoonProblemInfo baekjoonProblemInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private TagGroup tagGroup;
@@ -29,13 +29,13 @@ public class Quiz {
     private Boolean isActivated;
 
     @Builder
-    public Quiz(BaekjoonProblemInfo problemInfo, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean isActivated) {
-        this.problemInfo = problemInfo;
+    public Quiz(BaekjoonProblemInfo baekjoonProblemInfo, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean isActivated) {
+        this.baekjoonProblemInfo = baekjoonProblemInfo;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;
         this.mmr = mmr;
         this.isActivated = isActivated;
-        problemInfo.getQuizzes().add(this);
+        baekjoonProblemInfo.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
     }
 }

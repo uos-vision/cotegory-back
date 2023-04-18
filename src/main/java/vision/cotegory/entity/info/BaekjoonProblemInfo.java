@@ -26,7 +26,7 @@ public class BaekjoonProblemInfo{
     @Enumerated(EnumType.STRING)
     private Set<Tag> tags;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "problemInfo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "baekjoonProblemInfo")
     @Builder.Default
     private List<Quiz> quizzes = new ArrayList<>();
 
