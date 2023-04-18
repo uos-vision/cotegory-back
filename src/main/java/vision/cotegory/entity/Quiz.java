@@ -29,7 +29,7 @@ public class Quiz {
     private Boolean isActivated;
 
     @Builder
-    public Quiz( BaekjoonProblemInfo problemInfo, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean isActivated) {
+    public Quiz(BaekjoonProblemInfo problemInfo, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean isActivated) {
         this.problemInfo = problemInfo;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;

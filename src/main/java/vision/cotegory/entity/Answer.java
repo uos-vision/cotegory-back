@@ -18,10 +18,10 @@ public class Answer {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Quiz quiz;
 
     @Enumerated(EnumType.STRING)
