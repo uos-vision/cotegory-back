@@ -1,10 +1,8 @@
-package vision.cotegory.parser.baekjoon.util;
+package vision.cotegory.util.baekjoon;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,10 +10,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
-public class BaekjoonProblemListParser {
+public class BaekjoonPageListCrawler {
     private final Document doc;
 
-    public BaekjoonProblemListParser(Integer algoCode, Integer page){
+    public BaekjoonPageListCrawler(Integer algoCode, Integer page){
         String url = String.format(
                 "https://www.acmicpc.net/problemset?sort=ac_desc&algo=%d&algo_if=and&page=%d",
                 algoCode,
@@ -23,7 +21,7 @@ public class BaekjoonProblemListParser {
         this.doc = getDocument(url);
     }
 
-    public BaekjoonProblemListParser(Integer algoCode){
+    public BaekjoonPageListCrawler(Integer algoCode){
         String url = String.format(
                 "https://www.acmicpc.net/problemset?sort=ac_desc&algo=%d&algo_if=and&page=%d",
                 algoCode,

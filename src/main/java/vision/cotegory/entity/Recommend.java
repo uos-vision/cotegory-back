@@ -1,28 +1,24 @@
-package vision.cotegory.parser.baekjoon.entity;
-
+package vision.cotegory.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import vision.cotegory.entity.Tag;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class BaekjoonTag {
+public class Recommend {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
     private Integer problemNumber;
 
-    @ElementCollection
-    private Set<Tag> tags;
+    @Enumerated(EnumType.STRING)
+    private Origin origin;
 }

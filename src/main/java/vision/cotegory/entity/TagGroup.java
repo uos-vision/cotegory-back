@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,5 +23,15 @@ public class TagGroup {
     private String name;
 
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     private Set<Tag> tags;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tagGroup")
+    @Builder.Default
+    private List<Quiz> quizzes = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

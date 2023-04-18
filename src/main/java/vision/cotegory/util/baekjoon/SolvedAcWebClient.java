@@ -1,4 +1,4 @@
-package vision.cotegory.parser.baekjoon.util;
+package vision.cotegory.util.baekjoon;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,21 +6,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import vision.cotegory.entity.Tag;
 import vision.cotegory.exception.exception.SolvedAPiException;
-import vision.cotegory.parser.baekjoon.dto.solvedac.SolvedAcProblemDto;
-import vision.cotegory.parser.baekjoon.dto.solvedac.SolvedAcTagDto;
+import vision.cotegory.util.baekjoon.dto.SolvedAcProblemDto;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class SolvedAcWebClient {
 
     private final WebClient webClient;
+
+    public SolvedAcWebClient(WebClient webClient) {
+        this.webClient = webClient
+                .mutate()
+                .baseUrl("https://solved.ac/api/v3")
+                .build();
+    }
 
     public List<SolvedAcProblemDto> getSolvedAcProblemDtosByProblemNumbers(List<Integer> problemNumbers) {
         String problemIds = problemNumbers.stream().map(String::valueOf).collect(Collectors.joining(","));

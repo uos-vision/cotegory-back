@@ -1,4 +1,4 @@
-package vision.cotegory.parser.baekjoon.dto.solvedac;
+package vision.cotegory.util.baekjoon.dto;
 
 import lombok.Data;
 

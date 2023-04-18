@@ -1,4 +1,4 @@
-package vision.cotegory.parser.baekjoon.dto.solvedac;
+package vision.cotegory.util.baekjoon.dto;
 
 import lombok.Data;
 
@@ -8,6 +8,7 @@ import java.util.List;
 public class SolvedAcProblemDto {
     private Integer problemId;
     private String titleKo;
+    private Integer level;
     private List<SolvedAcTagDto> tags;
     private List<SolvedAcTitleDto> titles;
 }

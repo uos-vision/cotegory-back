@@ -1,4 +1,4 @@
-package vision.cotegory.parser.baekjoon.util;
+package vision.cotegory.util.baekjoon;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -9,11 +9,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class BaekjoonProblemParser {
+public class BaekjoonPageCrawler {
 
     private final Document doc;
 
-    public BaekjoonProblemParser(Integer problemNumber) {
+    public BaekjoonPageCrawler(Integer problemNumber) {
         String url = String.format("https://www.acmicpc.net/problem/%d", problemNumber);
         try {
             this.doc = Jsoup.connect(url).get();

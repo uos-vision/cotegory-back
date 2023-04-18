@@ -1,7 +1,5 @@
 package vision.cotegory.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +8,6 @@ import vision.cotegory.repository.TagGroupRepository;
 import java.util.*;
 
 import static vision.cotegory.entity.Tag.*;
-import static vision.cotegory.entity.Tag.UNION_FIND;
 
 @Component
 @Transactional
@@ -33,6 +30,7 @@ public class TagGroupConst {
                 BINARY_SEARCH
         )).build();
         tagGroups.add(groupA);
+
         final TagGroup groupB = TagGroup.builder().name("groupB").tags(Set.of(
                 DFS,
                 BFS,
@@ -40,6 +38,7 @@ public class TagGroupConst {
                 DP
         )).build();
         tagGroups.add(groupB);
+
         final TagGroup groupC = TagGroup.builder().name("groupC").tags(Set.of(
                 DIJKSTRA,
                 FLOYD_WARSHALL,
@@ -47,6 +46,7 @@ public class TagGroupConst {
                 UNION_FIND
         )).build();
         tagGroups.add(groupC);
+
         tagGroupRepository.saveAll(tagGroups);
     }
 
