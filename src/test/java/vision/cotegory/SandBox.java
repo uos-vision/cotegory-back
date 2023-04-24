@@ -12,5 +12,18 @@ public class SandBox {
 
     @Test
     void integerTest() {
+        final Abc bcd = new Bcd();
+        System.out.println(bcd.getData());
+    }
+
+    static abstract class Abc{
+        abstract Integer getData();
+    }
+
+    static class Bcd extends Abc{
+        @Override
+        Integer getData() {
+            return 10;
+        }
     }
 }

@@ -3,7 +3,8 @@ package vision.cotegory.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import vision.cotegory.entity.info.BaekjoonProblemInfo;
+import vision.cotegory.entity.problem.BaekjoonProblem;
+import vision.cotegory.entity.problem.Problem;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ public class Quiz {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private BaekjoonProblemInfo baekjoonProblemInfo;
+    private Problem problem;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private TagGroup tagGroup;
@@ -29,13 +30,13 @@ public class Quiz {
     private Boolean isActivated;
 
     @Builder
-    public Quiz(BaekjoonProblemInfo baekjoonProblemInfo, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean isActivated) {
-        this.baekjoonProblemInfo = baekjoonProblemInfo;
+    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean isActivated) {
+        this.problem = problem;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;
         this.mmr = mmr;
         this.isActivated = isActivated;
-        baekjoonProblemInfo.getQuizzes().add(this);
+        problem.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
     }
 }

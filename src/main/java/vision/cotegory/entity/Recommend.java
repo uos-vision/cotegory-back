@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -17,8 +18,18 @@ public class Recommend {
     @GeneratedValue
     private Long id;
 
-    private Integer problemNumber;
+    private Integer recommendProblemNumber;
 
     @Enumerated(EnumType.STRING)
     private Origin origin;
+
+    private LocalDateTime createTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
+    @PrePersist
+    void prePersist(){
+        this.createTime = LocalDateTime.now();
+    }
 }

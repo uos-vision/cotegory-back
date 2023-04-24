@@ -60,6 +60,10 @@ public class TagGroupConst {
         return ret;
     }
 
+    public List<TagGroup> getTagGroupConsts(){
+        return this.tagGroups;
+    }
+
     private Set<Tag> intersect(Set<Tag> a, Set<Tag> b) {
         final HashSet<Tag> tmp = new HashSet<>(a);
         tmp.retainAll(b);
