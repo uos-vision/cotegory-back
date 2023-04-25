@@ -1,4 +1,4 @@
-package vision.cotegory.util.baekjoon;
+package vision.cotegory.crawler.baekjoon;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import vision.cotegory.entity.TagGroupConst;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
-import vision.cotegory.service.BaekjoonProblemService;
 
 @SpringBootTest
 @Slf4j

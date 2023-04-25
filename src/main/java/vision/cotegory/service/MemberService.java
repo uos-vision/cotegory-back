@@ -22,7 +22,7 @@ public class MemberService {
         Optional<Member> memberOptional = memberRepository
                 .findByLoginIdAndActivated(registerRequest.getLoginId(), true);
 
-        if(memberOptional.isPresent())
+        if (memberOptional.isPresent())
             throw new DuplicatedEntityException("로그인아이디가 중복됩니다");
 
         Member member = Member.builder()
@@ -34,5 +34,11 @@ public class MemberService {
                 .build();
 
         return memberRepository.save(member);
+    }
+
+    public Boolean isDuplicatedLoginId(String loginId) {
+        Optional<Member> memberOptional = memberRepository
+                .findByLoginIdAndActivated(loginId, true);
+        return memberOptional.isPresent();
     }
 }

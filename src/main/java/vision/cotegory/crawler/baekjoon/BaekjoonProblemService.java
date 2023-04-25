@@ -1,4 +1,4 @@
-package vision.cotegory.service;
+package vision.cotegory.crawler.baekjoon;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,14 +6,11 @@ import org.springframework.stereotype.Service;
 import vision.cotegory.entity.*;
 import vision.cotegory.entity.problem.BaekjoonProblem;
 import vision.cotegory.entity.problem.BaekjoonProblemPage;
-import vision.cotegory.util.baekjoon.dto.SolvedAcProblemDto;
-import vision.cotegory.util.baekjoon.dto.SolvedAcTagDto;
-import vision.cotegory.util.baekjoon.dto.SolvedAcTitleDto;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcTagDto;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcTitleDto;
 import vision.cotegory.repository.BaekjoonPageRepository;
 import vision.cotegory.repository.BaekjoonProblemRepository;
-import vision.cotegory.util.baekjoon.BaekjoonPageListCrawler;
-import vision.cotegory.util.baekjoon.BaekjoonPageCrawler;
-import vision.cotegory.util.baekjoon.SolvedAcWebClient;
 import vision.cotegory.repository.QuizRepository;
 
 import java.util.List;

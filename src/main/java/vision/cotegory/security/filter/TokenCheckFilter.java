@@ -49,12 +49,12 @@ public class TokenCheckFilter extends OncePerRequestFilter {
 
             Map<String, Object> payload = validateAccessToken(request);
 
-            //mid
-            String mid = (String)payload.get("mid");
+            //loginId
+            String loginId = (String)payload.get("loginId");
 
-            log.info("mid: " + mid);
+            log.info("loginId: " + loginId);
 
-            UserDetails userDetails = apiUserDetailsService.loadUserByUsername(mid);
+            UserDetails userDetails = apiUserDetailsService.loadUserByUsername(loginId);
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(

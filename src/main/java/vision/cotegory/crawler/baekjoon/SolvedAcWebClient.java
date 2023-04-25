@@ -1,13 +1,12 @@
-package vision.cotegory.util.baekjoon;
+package vision.cotegory.crawler.baekjoon;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import vision.cotegory.exception.exception.SolvedAPiException;
-import vision.cotegory.util.baekjoon.dto.SolvedAcProblemDto;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package vision.cotegory.util.baekjoon.dto;
+package vision.cotegory.crawler.baekjoon.dto;
 
 import lombok.Data;
 

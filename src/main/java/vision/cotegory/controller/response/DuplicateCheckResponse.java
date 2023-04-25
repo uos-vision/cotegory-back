@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CurrentIdResponse {
-    private String currentId;
+public class DuplicateCheckResponse {
+    private Boolean duplicated;
 }

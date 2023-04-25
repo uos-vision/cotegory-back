@@ -23,7 +23,7 @@ public class APIUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Member member = memberRepository.findByLoginIdAndActivated(username, true)
-                .orElseThrow(() -> new UsernameNotFoundException("Cannot find mid"));
+                .orElseThrow(() -> new UsernameNotFoundException("Cannot find loginId"));
 
 
         APIUserDTO dto = new APIUserDTO(

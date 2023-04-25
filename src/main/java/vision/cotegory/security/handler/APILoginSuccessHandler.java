@@ -38,7 +38,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info(authentication.getName()); //username
 
         Map<String, Object> claim = Map.of(
-                "mid", authentication.getName(),
+                "loginId", authentication.getName(),
                 "memberId", memberId
         );
         //Access Token 유효기간 1일

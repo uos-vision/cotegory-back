@@ -24,16 +24,13 @@ public class Quiz {
     @Enumerated(EnumType.STRING)
     private Tag answerTag;
 
-    private Integer mmr;
-
     private Boolean activated;
 
     @Builder
-    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean activated) {
+    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Boolean activated) {
         this.problem = problem;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;
-        this.mmr = mmr;
         this.activated = activated;
         problem.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
