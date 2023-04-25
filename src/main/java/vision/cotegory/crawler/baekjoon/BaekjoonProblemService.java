@@ -1,19 +1,16 @@
-package vision.cotegory.service;
+package vision.cotegory.crawler.baekjoon;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import vision.cotegory.entity.*;
-import vision.cotegory.entity.info.BaekjoonProblemInfo;
-import vision.cotegory.entity.info.BaekjoonProblemPage;
-import vision.cotegory.util.baekjoon.dto.SolvedAcProblemDto;
-import vision.cotegory.util.baekjoon.dto.SolvedAcTagDto;
-import vision.cotegory.util.baekjoon.dto.SolvedAcTitleDto;
+import vision.cotegory.entity.problem.BaekjoonProblem;
+import vision.cotegory.entity.problem.BaekjoonProblemPage;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcTagDto;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcTitleDto;
 import vision.cotegory.repository.BaekjoonPageRepository;
-import vision.cotegory.repository.BaekjoonTagRepository;
-import vision.cotegory.util.baekjoon.BaekjoonPageListCrawler;
-import vision.cotegory.util.baekjoon.BaekjoonPageCrawler;
-import vision.cotegory.util.baekjoon.SolvedAcWebClient;
+import vision.cotegory.repository.BaekjoonProblemRepository;
 import vision.cotegory.repository.QuizRepository;
 
 import java.util.List;
@@ -25,17 +22,17 @@ import java.util.stream.Stream;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class BaekjoonService {
+public class BaekjoonProblemService {
 
     private final SolvedAcWebClient solvedacWebClient;
     private final BaekjoonPageRepository baekjoonPageRepository;
-    private final BaekjoonTagRepository baekjoonTagRepository;
+    private final BaekjoonProblemRepository baekjoonProblemRepository;
     private final TagGroupConst tagGroupConst;
     private final QuizRepository quizRepository;
 
     public void updateAll() {
         baekjoonPageRepository.deleteAll();
-        baekjoonTagRepository.deleteAll();
+        baekjoonProblemRepository.deleteAll();
 
         Stream.of(Tag.values()).forEach(tag -> {
             if (tag.equals(Tag.OTHERS))
@@ -53,7 +50,7 @@ public class BaekjoonService {
     }
 
     private void extractTagFromDto(SolvedAcProblemDto problemDto) {
-        if (baekjoonTagRepository.existsByProblemNumber(problemDto.getProblemId()))
+        if (baekjoonProblemRepository.existsByProblemNumber(problemDto.getProblemId()))
             return;
         if (problemDto.getTitles().stream().map(SolvedAcTitleDto::getLanguage).noneMatch(e -> e.equals("ko")))
             return;
@@ -69,27 +66,28 @@ public class BaekjoonService {
         if (assignableGroups.isEmpty())
             return;
 
-        final BaekjoonProblemInfo baekjoonInfo = BaekjoonProblemInfo.builder()
+        BaekjoonProblem baekjoonInfo = BaekjoonProblem.builder()
                 .tags(tags)
                 .level(problemDto.getLevel())
                 .problemNumber(problemDto.getProblemId())
                 .build();
-        BaekjoonProblemInfo savedBaekjoonInfo = baekjoonTagRepository.save(baekjoonInfo);
+        BaekjoonProblem savedBaekjoonProblem = baekjoonProblemRepository.save(baekjoonInfo);
 
         assignableGroups.forEach((tagGroup, tag) -> {
             Quiz quiz = Quiz.builder()
-                    .problemInfo(savedBaekjoonInfo)
+                    .problem(savedBaekjoonProblem)
                     .tagGroup(tagGroup)
                     .answerTag(tag)
+                    .activated(true)
                     .build();
             quizRepository.save(quiz);
         });
 
-        log.info("[saveTag]{}번({}):{} | {}", savedBaekjoonInfo.getProblemNumber(), problemDto.getTitleKo(), savedBaekjoonInfo.getTags(), assignableGroups);
+        log.info("[saveTag]{}번({}):{} | {}", savedBaekjoonProblem.getProblemNumber(), problemDto.getTitleKo(), savedBaekjoonProblem.getTags(), assignableGroups);
     }
 
     private void crawlAllProblemBySavedTag() {
-        baekjoonTagRepository.getAllProblemNumbers().stream().parallel()
+        baekjoonProblemRepository.getAllProblemNumbers().stream().parallel()
                 .forEach(this::createBaekjoonProblemDto);
     }
 

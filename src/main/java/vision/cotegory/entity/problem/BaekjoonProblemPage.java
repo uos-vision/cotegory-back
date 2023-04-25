@@ -1,4 +1,4 @@
-package vision.cotegory.entity.info;
+package vision.cotegory.entity.problem;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class BaekjoonProblemPage{
+public class BaekjoonProblemPage {
     @Id
     @GeneratedValue
     private Long id;

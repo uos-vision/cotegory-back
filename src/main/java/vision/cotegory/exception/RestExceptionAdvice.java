@@ -1,6 +1,8 @@
 package vision.cotegory.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import vision.cotegory.exception.exception.BusinessException;
 import vision.cotegory.exception.response.BusinessExceptionResponse;
@@ -13,6 +15,7 @@ import javax.transaction.SystemException;
 public class RestExceptionAdvice {
 
     @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BusinessExceptionResponse businessExceptionResponse(BusinessException ex){
         return BusinessExceptionResponse.builder()
                 .exceptionType("Business")
@@ -22,6 +25,7 @@ public class RestExceptionAdvice {
     }
 
     @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public RuntimeExceptionResponse businessExceptionResponse(RuntimeException ex){
         return RuntimeExceptionResponse.builder()
                 .exceptionType("Runtime")
@@ -31,6 +35,7 @@ public class RestExceptionAdvice {
     }
 
     @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public SystemExceptionResponse systemExceptionResponse(SystemException ex){
         return SystemExceptionResponse.builder()
                 .exceptionType("System")

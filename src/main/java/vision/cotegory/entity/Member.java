@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -23,6 +24,10 @@ public class Member {
     @MapKeyJoinColumn(name = "tag_group_id")
     private Map<TagGroup, Integer> mmr;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
+
     private String loginId;
 
     private String pw;
@@ -33,5 +38,5 @@ public class Member {
 
     private String nickName;
 
-    private Boolean isActivated;
+    private Boolean activated;
 }

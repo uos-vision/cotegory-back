@@ -1,4 +1,4 @@
-package vision.cotegory.util.baekjoon;
+package vision.cotegory.crawler.baekjoon;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;

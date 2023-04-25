@@ -1,5 +1,7 @@
 package vision.cotegory.entity;
 
 public enum Origin {
-    BAEKJOON, PROGRAMMERS
+    BAEKJOON,
+    PROGRAMMERS,
+    HANDWRITE
 }

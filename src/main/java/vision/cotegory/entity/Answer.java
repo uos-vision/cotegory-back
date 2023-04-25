@@ -25,7 +25,7 @@ public class Answer {
     private Quiz quiz;
 
     @Enumerated(EnumType.STRING)
-    private Tag answerTag;
+    private Tag selectTag;
 
     private LocalDateTime submitTime;
 
