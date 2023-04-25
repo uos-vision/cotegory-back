@@ -1,4 +1,4 @@
-package vision.cotegory.exception;
+package vision.cotegory.exception.exception;
 
 import vision.cotegory.exception.exception.BusinessException;
 

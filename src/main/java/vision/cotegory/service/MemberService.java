@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import vision.cotegory.controller.request.RegisterRequest;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
-import vision.cotegory.exception.DuplicatedEntityException;
+import vision.cotegory.exception.exception.DuplicatedEntityException;
 import vision.cotegory.repository.MemberRepository;
 
 import java.util.Optional;
