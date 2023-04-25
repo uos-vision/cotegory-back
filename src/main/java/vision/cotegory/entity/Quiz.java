@@ -3,7 +3,6 @@ package vision.cotegory.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import vision.cotegory.entity.problem.BaekjoonProblem;
 import vision.cotegory.entity.problem.Problem;
 
 import javax.persistence.*;
@@ -27,15 +26,15 @@ public class Quiz {
 
     private Integer mmr;
 
-    private Boolean isActivated;
+    private Boolean activated;
 
     @Builder
-    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean isActivated) {
+    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Integer mmr, Boolean activated) {
         this.problem = problem;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;
         this.mmr = mmr;
-        this.isActivated = isActivated;
+        this.activated = activated;
         problem.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
     }

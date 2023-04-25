@@ -81,6 +81,7 @@ public class BaekjoonProblemService {
                     .problem(savedBaekjoonProblem)
                     .tagGroup(tagGroup)
                     .answerTag(tag)
+                    .activated(true)
                     .build();
             quizRepository.save(quiz);
         });
