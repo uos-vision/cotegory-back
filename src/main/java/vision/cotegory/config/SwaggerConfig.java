@@ -8,8 +8,8 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.HttpAuthenticationScheme;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SwaggerConfig {
 
     @Bean
-    public Docket api(){
+    public Docket api() {
         return new Docket(DocumentationType.OAS_30)
                 .ignoredParameterTypes(RequestHeader.class)
                 .useDefaultResponseMessages(false)
@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(List.of(apiKey()))
+                .securitySchemes(List.of(bearerAuthSecurityScheme()))
                 .securityContexts(List.of(securityContext()))
                 .apiInfo(apiInfo());
     }
@@ -46,8 +46,8 @@ public class SwaggerConfig {
         return List.of(new SecurityReference("Authorization", new AuthorizationScope[]{authorizationScope}));
     }
 
-    private ApiKey apiKey() {
-        return new ApiKey("Authorization", "Bearer Token", "header");
+    private HttpAuthenticationScheme bearerAuthSecurityScheme() {
+        return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build();
     }
 
     private ApiInfo apiInfo() {

@@ -34,14 +34,16 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
 
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
-	implementation 'org.modelmapper:modelmapper:3.1.0'
 
 	implementation 'org.jsoup:jsoup:1.15.3'
+	implementation 'org.modelmapper:modelmapper:3.1.0'
+
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'com.google.code.gson:gson:2.9.0'
 }
 

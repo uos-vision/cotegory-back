@@ -1,6 +1,7 @@
 package vision.cotegory.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vision.cotegory.controller.request.RegisterRequest;
 import vision.cotegory.entity.Member;
@@ -16,6 +17,7 @@ import java.util.Set;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Member register(RegisterRequest registerRequest) {
 
@@ -28,7 +30,7 @@ public class MemberService {
         Member member = Member.builder()
                 .loginId(registerRequest.getLoginId())
                 .baekjoonHandle(registerRequest.getBaekjoonHandle())
-                .pw(registerRequest.getPw())
+                .pw(passwordEncoder.encode(registerRequest.getPw()))
                 .roles(Set.of(Role.ROLE_USER))
                 .activated(true)
                 .build();

@@ -7,8 +7,6 @@ import vision.cotegory.exception.response.BusinessExceptionResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
 
 public class RefreshTokenException extends RuntimeException{
 

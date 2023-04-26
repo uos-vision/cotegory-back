@@ -83,7 +83,6 @@ public class WebSecurityConfig {
         http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
-
     }
 
     @Bean
