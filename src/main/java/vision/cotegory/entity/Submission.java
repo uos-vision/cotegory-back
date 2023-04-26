@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Answer {
+public class Submission {
     @Id
     @GeneratedValue
     private Long id;
