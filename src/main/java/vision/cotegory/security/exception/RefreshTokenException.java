@@ -1,4 +1,4 @@
-package vision.cotegory.security.exceptoin;
+package vision.cotegory.security.exception;
 
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;

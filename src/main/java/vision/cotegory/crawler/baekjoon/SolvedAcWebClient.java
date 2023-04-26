@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import vision.cotegory.exception.exception.SolvedAPiException;
+import vision.cotegory.exception.exception.SolvedApiException;
 import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
 
 import java.util.List;
@@ -34,8 +34,8 @@ public class SolvedAcWebClient {
                 .retrieve()
                 .onStatus(HttpStatus::isError, response -> {
                     if (response.statusCode().equals(HttpStatus.TOO_MANY_REQUESTS))
-                        return Mono.error(new SolvedAPiException("SolvedAc Api 서버에 너무 많은 요청을 보냈습니다. 잠시후에 시도하세요"));
-                    return Mono.error(new SolvedAPiException());
+                        return Mono.error(new SolvedApiException("SolvedAc Api 서버에 너무 많은 요청을 보냈습니다. 잠시후에 시도하세요"));
+                    return Mono.error(new SolvedApiException());
                 })
                 .bodyToFlux(SolvedAcProblemDto.class)
                 .collectList()
