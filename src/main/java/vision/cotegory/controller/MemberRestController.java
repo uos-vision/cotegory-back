@@ -33,7 +33,7 @@ public class MemberRestController {
     }
 
     @GetMapping("/information")
-    public ResponseEntity<MemberInformationResponse> currentRoles(@RequestHeader(value = "Authorization") String jwtKey) {
+    public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") String jwtKey) {
         Long memberId = jwtUtil.getMemberId(jwtKey);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(NotExistEntityException::new);
