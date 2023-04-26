@@ -17,12 +17,12 @@ import vision.cotegory.security.JWTUtil;
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
 @Transactional
+@PreAuthorize(value = "hasRole('ROLE_ADMIN')")
 public class AdminRestController {
 
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
 
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     @Operation(description = "테스트용도로만 사용하세요")
     @GetMapping("/current-id")
     public ResponseEntity<CurrentIdResponse> currentId(@RequestHeader(value = "Authorization") String jwtKey) {
