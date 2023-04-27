@@ -34,12 +34,12 @@ public class AdminRestController {
     }
 
     @PostMapping("/abnormal/update")
-    public void updateAbnormal(@RequestHeader(value = "Authorization") String jwtKey){
+    public void updateAbnormal(){
         abnormalQuizService.updateAbnormalQuizzes();
     }
 
     @PostMapping("/abnormal/list")
-    public Page<AbnormalQuizResponse> listAbnormal(@RequestHeader(value = "Authorization") String jwtKey, Pageable pageable){
+    public Page<AbnormalQuizResponse> listAbnormal(Pageable pageable){
         return abnormalQuizRepository.findAll(pageable).map(AbnormalQuizResponse::new);
     }
 }
