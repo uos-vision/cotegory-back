@@ -28,7 +28,7 @@ public class MemberRestController {
     @GetMapping("/current-id")
     public ResponseEntity<CurrentIdResponse> currentId(@RequestHeader(value = "Authorization") String jwtKey) {
         return ResponseEntity.ok(CurrentIdResponse.builder()
-                .currentId(String.valueOf(jwtUtil.getMemberId(jwtKey)))
+                .currentId(jwtUtil.getMemberId(jwtKey))
                 .build());
     }
 

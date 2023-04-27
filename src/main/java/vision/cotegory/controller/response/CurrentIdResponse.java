@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class CurrentIdResponse {
-    private String currentId;
+    private Long currentId;
 }
