@@ -31,9 +31,9 @@ public class AbnormalQuizService {
             quizStream.forEach(quiz -> {
                 Long submitCount = submissionRepository.count();
                 Long correctCount;
-                try (Stream<Submission> submissionStream = submissionRepository.streamFetchQuiz()) {
+                try (Stream<Submission> submissionStream = submissionRepository.streamByQuiz(quiz)) {
                     correctCount = submissionStream
-                            .filter(submission -> submission.getSelectTag().equals(submission.getQuiz().getAnswerTag()))
+                            .filter(submission -> submission.getSelectTag().equals(quiz.getAnswerTag()))
                             .count();
                 }
 
