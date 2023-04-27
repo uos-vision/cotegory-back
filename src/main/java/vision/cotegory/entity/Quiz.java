@@ -3,6 +3,7 @@ package vision.cotegory.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import vision.cotegory.entity.problem.Problem;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Quiz {
     @Enumerated(EnumType.STRING)
     private Tag answerTag;
 
+    @Setter
     private Boolean activated;
 
     @Builder
