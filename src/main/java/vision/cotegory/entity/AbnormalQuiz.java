@@ -25,7 +25,7 @@ public class AbnormalQuiz {
 
     private Long submitCount;
 
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.LAZY)
+    @MapKeyEnumerated(EnumType.STRING)
     private Map<Tag, Long> selectedTagCount;
 }
