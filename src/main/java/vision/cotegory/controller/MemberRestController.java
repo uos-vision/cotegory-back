@@ -39,6 +39,7 @@ public class MemberRestController {
                 .orElseThrow(NotExistEntityException::new);
 
         return ResponseEntity.ok(MemberInformationResponse.builder()
+                .id(member.getId())
                 .roles(member.getRoles())
                 .baekjoonHandle(member.getBaekjoonHandle())
                 .nickName(member.getNickName())

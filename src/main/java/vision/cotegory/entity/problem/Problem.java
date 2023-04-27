@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Tag;
 
@@ -19,7 +18,7 @@ import java.util.Set;
 @DiscriminatorColumn
 @SuperBuilder
 @NoArgsConstructor
-public abstract class Problem {
+public abstract class Problem implements ProblemSearchable {
     @Id
     @GeneratedValue
     @Getter
@@ -38,17 +37,4 @@ public abstract class Problem {
     @Getter
     @Setter
     private Integer mmr;
-
-    abstract String getTitle();
-    abstract Integer getProblemNumber();
-    abstract Integer getTimeLimit();
-    abstract Integer getMemoryLimit();
-
-    abstract String getProblemBody();
-    abstract String getProblemInput();
-    abstract String getProblemOutput();
-
-    abstract String getSampleInput();
-    abstract String getSampleOutput();
-    abstract Origin getProblemOrigin();
 }

@@ -37,7 +37,7 @@ public class AuthenticationRestController {
         memberService.register(registerRequest);
     }
 
-    @GetMapping("/duplicate-check")
+    @PostMapping("/duplicate-check")
     public ResponseEntity<DuplicateCheckResponse> duplicatedCheck(
             @RequestBody @Valid DuplicateCheckRequest duplicateCheckRequest) {
         Boolean duplicated = memberService.isDuplicatedLoginId(duplicateCheckRequest.getLoginId());

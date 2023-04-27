@@ -9,6 +9,7 @@ import java.util.Set;
 @Data
 @Builder
 public class MemberInformationResponse {
+    private Long id;
     private String baekjoonHandle;
     private String imgUrl;
     private String nickName;

@@ -33,4 +33,12 @@ public class SandBox {
             memberRepository.save(member);
         });
     }
+
+    @Test
+    public void sandBox() {
+        Integer a = 1;
+        Integer b = 2;
+        System.out.println(a.compareTo(b) < 0);
+
+    }
 }
