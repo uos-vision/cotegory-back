@@ -24,47 +24,47 @@ public class BaekjoonProblem extends Problem{
     private Integer level;
 
     @Override
-    String getTitle() {
+    public String getTitle() {
         return problemPage.getTitle();
     }
 
     @Override
-    Integer getTimeLimit() {
+    public Integer getTimeLimit() {
         return problemPage.getTimeLimit();
     }
 
     @Override
-    Integer getMemoryLimit() {
+    public Integer getMemoryLimit() {
         return problemPage.getMemoryLimit();
     }
 
     @Override
-    String getProblemBody() {
+    public String getProblemBody() {
         return problemPage.getProblemBody();
     }
 
     @Override
-    String getProblemInput() {
+    public String getProblemInput() {
         return problemPage.getProblemInput();
     }
 
     @Override
-    String getProblemOutput() {
+    public String getProblemOutput() {
         return problemPage.getProblemOutput();
     }
 
     @Override
-    String getSampleInput() {
+    public String getSampleInput() {
         return problemPage.getSampleInput();
     }
 
     @Override
-    String getSampleOutput() {
+    public String getSampleOutput() {
         return problemPage.getSampleOutput();
     }
 
     @Override
-    Origin getProblemOrigin() {
+    public Origin getProblemOrigin() {
         return Origin.BAEKJOON;
     }
 }

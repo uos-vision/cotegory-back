@@ -26,52 +26,52 @@ public class ProgrammersProblem extends Problem{
     private String sampleOutput;
 
     @Override
-    String getTitle() {
+    public String getTitle() {
         return this.title;
     }
 
     @Override
-    Integer getProblemNumber() {
+    public Integer getProblemNumber() {
         return this.problemNumber;
     }
 
     @Override
-    Integer getTimeLimit() {
+    public Integer getTimeLimit() {
         return this.timeLimit;
     }
 
     @Override
-    Integer getMemoryLimit() {
+    public Integer getMemoryLimit() {
         return this.memoryLimit;
     }
 
     @Override
-    String getProblemBody() {
+    public String getProblemBody() {
         return this.problemBody;
     }
 
     @Override
-    String getProblemInput() {
+    public String getProblemInput() {
         return this.problemInput;
     }
 
     @Override
-    String getProblemOutput() {
+    public String getProblemOutput() {
         return this.problemOutput;
     }
 
     @Override
-    String getSampleInput() {
+    public String getSampleInput() {
         return this.sampleInput;
     }
 
     @Override
-    String getSampleOutput() {
+    public String getSampleOutput() {
         return this.sampleOutput;
     }
 
     @Override
-    Origin getProblemOrigin() {
+    public Origin getProblemOrigin() {
         return Origin.PROGRAMMERS;
     }
 }
