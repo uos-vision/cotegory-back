@@ -7,9 +7,10 @@ import vision.cotegory.entity.TagGroup;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
-    List<Quiz> findAllByTagGroup(TagGroup tagGroup);
-    Long countAllByTagGroup(TagGroup tagGroup);
     Long countAllByTagGroupAndAnswerTag(TagGroup tagGroup, Tag answerTag);
+
+    Stream<Quiz> findAllBy();
 }
