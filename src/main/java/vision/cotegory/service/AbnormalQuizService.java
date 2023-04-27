@@ -38,22 +38,22 @@ public class AbnormalQuizService {
                 }
 
                 Double correctRate = Double.valueOf(correctCount) / Double.valueOf(submitCount);
-                if (isAbnormalQuiz(submitCount, correctRate)) {
+                if (!isAbnormalQuiz(submitCount, correctRate))
+                    return;
 
-                    Map<Tag, Long> selectedTagCount = quiz.getTagGroup()
-                            .getTags()
-                            .stream()
-                            .collect(Collectors.toMap(tag -> tag, submissionRepository::countAllBySelectTag));
+                Map<Tag, Long> selectedTagCount = quiz.getTagGroup()
+                        .getTags()
+                        .stream()
+                        .collect(Collectors.toMap(tag -> tag, submissionRepository::countAllBySelectTag));
 
-                    AbnormalQuiz abnormalQuiz = AbnormalQuiz.builder()
-                            .selectedTagCount(selectedTagCount)
-                            .quiz(quiz)
-                            .submitCount(submitCount)
-                            .correctRate(correctRate)
-                            .build();
+                AbnormalQuiz abnormalQuiz = AbnormalQuiz.builder()
+                        .selectedTagCount(selectedTagCount)
+                        .quiz(quiz)
+                        .submitCount(submitCount)
+                        .correctRate(correctRate)
+                        .build();
 
-                    abnormalQuizRepository.save(abnormalQuiz);
-                }
+                abnormalQuizRepository.save(abnormalQuiz);
             });
         }
     }
