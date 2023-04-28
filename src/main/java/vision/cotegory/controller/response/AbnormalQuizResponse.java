@@ -10,7 +10,9 @@ import java.util.Map;
 
 @Data
 public class AbnormalQuizResponse {
-    private Long id;
+    private Long abnormalQuizId;
+    private Long quizId;
+
     private Long submitCount;
     private Double correctRate;
     private Tag answerTag;
@@ -21,7 +23,8 @@ public class AbnormalQuizResponse {
     private Integer problemNumber;
 
     public AbnormalQuizResponse(AbnormalQuiz abnormalQuiz){
-        this.id = abnormalQuiz.getId();
+        this.abnormalQuizId = abnormalQuiz.getId();
+        this.quizId = abnormalQuiz.getQuiz().getId();
         this.submitCount = abnormalQuiz.getSubmitCount();
         this.correctRate = abnormalQuiz.getCorrectRate();
         this.answerTag = abnormalQuiz.getQuiz().getAnswerTag();
