@@ -40,14 +40,6 @@ public class AdminRestController {
     private final AbnormalQuizRepository abnormalQuizRepository;
     private final TagGroupRepository tagGroupRepository;
 
-    @Operation(description = "테스트용도로만 사용하세요")
-    @GetMapping("/current-id")
-    public ResponseEntity<CurrentIdResponse> currentId(@RequestHeader(value = "Authorization") String jwtKey) {
-        return ResponseEntity.ok(CurrentIdResponse.builder()
-                .currentId(jwtUtil.getMemberId(jwtKey))
-                .build());
-    }
-
     @Operation(description = "모든문제(n)에 대한 모든제출(m)을 검사하므로 O(nm)입니다. 자주 호출하지 마세요.")
     @PostMapping("/abnormal/update")
     public void updateAbnormal() {

@@ -24,14 +24,6 @@ public class MemberRestController {
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
 
-    @Operation(description = "테스트용도로만 사용하세요")
-    @GetMapping("/current-id")
-    public ResponseEntity<CurrentIdResponse> currentId(@RequestHeader(value = "Authorization") String jwtKey) {
-        return ResponseEntity.ok(CurrentIdResponse.builder()
-                .currentId(jwtUtil.getMemberId(jwtKey))
-                .build());
-    }
-
     @GetMapping("/information")
     public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") String jwtKey) {
         Long memberId = jwtUtil.getMemberId(jwtKey);
