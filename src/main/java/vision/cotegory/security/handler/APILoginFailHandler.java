@@ -1,37 +1,28 @@
-package vision.cotegory.security.exception;
+package vision.cotegory.security.handler;
 
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import vision.cotegory.exception.response.BusinessExceptionResponse;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RefreshTokenException extends RuntimeException{
-
-    private ErrorCase errorCase;
-
-    public enum ErrorCase {
-        NO_ACCESS, NO_REFRESH, OLD_REFRESH
-    }
-
-    public RefreshTokenException(ErrorCase errorCase){
-        super(errorCase.name());
-        this.errorCase = errorCase;
-    }
-
-    public void sendResponseError(HttpServletResponse response){
-
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+public class APILoginFailHandler implements AuthenticationFailureHandler {
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
+        response.setCharacterEncoding("utf-8");
         Gson gson = new Gson();
 
         final BusinessExceptionResponse refreshTokenExceptionResponse = BusinessExceptionResponse.builder()
                 .exceptionType("Business")
-                .exceptionClassName(this.getClass().getSimpleName())
-                .exceptionMessage(errorCase.name())
+                .exceptionClassName(exception.getClass().getSimpleName())
+                .exceptionMessage(exception.getMessage())
                 .build();
 
         String responseStr = gson.toJson(refreshTokenExceptionResponse);
