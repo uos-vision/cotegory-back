@@ -48,11 +48,13 @@ public class AdminRestController {
                 .build());
     }
 
+    @Operation(description = "모든문제(n)에 대한 모든제출(m)을 검사하므로 O(nm)입니다. 자주 호출하지 마세요.")
     @PostMapping("/abnormal/update")
     public void updateAbnormal() {
         abnormalQuizService.updateAbnormalQuizzes();
     }
 
+    @Operation(description = "update api호출로 생성된 데이터들을 봅니다. 자주 호출해도 됩니다.")
     @PostMapping("/abnormal/list")
     public Page<AbnormalQuizResponse> listAbnormal(@ParameterObject Pageable pageable) {
         return abnormalQuizRepository.findAll(pageable).map(AbnormalQuizResponse::new);
