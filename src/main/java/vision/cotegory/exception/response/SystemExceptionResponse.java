@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class SystemExceptionResponse extends Exception{
+public class SystemExceptionResponse{
     private String exceptionType;
     private String exceptionClassName;
     private String exceptionMessage;
