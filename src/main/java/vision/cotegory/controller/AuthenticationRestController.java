@@ -1,19 +1,15 @@
 package vision.cotegory.controller;
 
-import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import vision.cotegory.controller.request.DuplicateCheckRequest;
-import vision.cotegory.controller.response.DuplicateCheckResponse;
 import vision.cotegory.controller.request.GenerateTokenRequest;
 import vision.cotegory.controller.request.RefreshTokenRequest;
 import vision.cotegory.controller.request.RegisterRequest;
+import vision.cotegory.controller.response.DuplicateCheckResponse;
 import vision.cotegory.service.MemberService;
 
 import javax.validation.Valid;

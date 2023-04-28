@@ -2,6 +2,7 @@ package vision.cotegory.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class AdminRestController {
     }
 
     @PostMapping("/abnormal/list")
-    public Page<AbnormalQuizResponse> listAbnormal(Pageable pageable) {
+    public Page<AbnormalQuizResponse> listAbnormal(@ParameterObject Pageable pageable) {
         return abnormalQuizRepository.findAll(pageable).map(AbnormalQuizResponse::new);
     }
 
