@@ -3,14 +3,17 @@ package vision.cotegory.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vision.cotegory.entity.Quiz;
+import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.TagGroupConst;
 import vision.cotegory.entity.problem.HandWriteProblem;
 import vision.cotegory.entity.problem.ProgrammersProblem;
-import vision.cotegory.exception.exception.BusinessException;
 import vision.cotegory.exception.exception.NotProperTagGroupAssignException;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
+import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateQuizDto;
+
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +22,11 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final ProblemRepository problemRepository;
     private final TagGroupConst tagGroupConst;
+    private final SubmissionRepository submissionRepository;
 
     public Quiz createProgrammersQuiz(CreateQuizDto createQuizDto) {
 
-        if(!isAssignableTagGroup(createQuizDto))
+        if (!isAssignableTagGroup(createQuizDto))
             throw new NotProperTagGroupAssignException();
 
         ProgrammersProblem programmersProblem = ProgrammersProblem.builder()
@@ -75,5 +79,16 @@ public class QuizService {
                 .activated(true)
                 .build();
         return quizRepository.save(quiz);
+    }
+
+    public Double correctRate(Quiz quiz) {
+        Long submitCount = submissionRepository.countAllByQuiz(quiz);
+        Long correctCount;
+        try (Stream<Submission> submissionStream = submissionRepository.streamByQuiz(quiz)) {
+            correctCount = submissionStream
+                    .filter(submission -> submission.getSelectTag().equals(quiz.getAnswerTag()))
+                    .count();
+        }
+        return Double.valueOf(correctCount) / Double.valueOf(submitCount);
     }
 }
