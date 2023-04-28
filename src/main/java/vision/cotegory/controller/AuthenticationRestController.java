@@ -1,5 +1,6 @@
 package vision.cotegory.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ public class AuthenticationRestController {
 
     private final MemberService memberService;
 
+    @Operation(description = "[Member] loginId:member pw:1111\\\n[Admin] loginId:admin pw:1111")
     @PostMapping("/generateToken")
     public void generateToken(@RequestBody @Valid GenerateTokenRequest generateTokenRequest) {
     }
