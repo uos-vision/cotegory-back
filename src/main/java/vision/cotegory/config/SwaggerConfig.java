@@ -1,58 +1,42 @@
 package vision.cotegory.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.HttpAuthenticationScheme;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.Docket;
-
-import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
 
+    static {
+        SpringDocUtils.getConfig().addAnnotationsToIgnore(RequestHeader.class);
+    }
+
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.OAS_30)
-                .ignoredParameterTypes(RequestHeader.class)
-                .useDefaultResponseMessages(false)
-                .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-                .paths(PathSelectors.any())
-                .build()
-                .securitySchemes(List.of(bearerAuthSecurityScheme()))
-                .securityContexts(List.of(securityContext()))
-                .apiInfo(apiInfo());
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(apiInfo())
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth", bearerAuthSecurityScheme()))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .operationSelector(selector -> selector.requestMappingPattern().startsWith("/api/"))
-                .build();
+    private SecurityScheme bearerAuthSecurityScheme() {
+        return new SecurityScheme()
+                .name("Authorization")
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT");
     }
 
-    private List<SecurityReference> defaultAuth() {
-        final AuthorizationScope authorizationScope = new AuthorizationScope("global", "global access");
-        return List.of(new SecurityReference("Authorization", new AuthorizationScope[]{authorizationScope}));
-    }
-
-    private HttpAuthenticationScheme bearerAuthSecurityScheme() {
-        return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build();
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Cotegory")
-                .build();
+    private Info apiInfo() {
+        Info info = new Info();
+        info.setTitle("Cotegory");
+        return info;
     }
 }
