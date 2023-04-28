@@ -16,9 +16,10 @@ public class APILoginFailHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setCharacterEncoding("utf-8");
-        Gson gson = new Gson();
 
+        Gson gson = new Gson();
         final BusinessExceptionResponse refreshTokenExceptionResponse = BusinessExceptionResponse.builder()
                 .exceptionType("Business")
                 .exceptionClassName(exception.getClass().getSimpleName())
@@ -26,7 +27,6 @@ public class APILoginFailHandler implements AuthenticationFailureHandler {
                 .build();
 
         String responseStr = gson.toJson(refreshTokenExceptionResponse);
-
         try {
             response.getWriter().println(responseStr);
         } catch (IOException e) {
