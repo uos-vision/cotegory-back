@@ -48,7 +48,7 @@ public class AccessTokenException extends RuntimeException {
         Gson gson = new Gson();
 
         final BusinessExceptionResponse accessTokenExceptionResponse = BusinessExceptionResponse.builder()
-                .exceptionType("AccessToken")
+                .exceptionType("Business")
                 .exceptionClassName(this.getClass().getSimpleName())
                 .exceptionMessage(token_error.getMsg())
                 .build();

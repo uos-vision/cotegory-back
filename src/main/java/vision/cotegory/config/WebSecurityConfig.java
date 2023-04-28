@@ -25,6 +25,7 @@ import vision.cotegory.security.JWTUtil;
 import vision.cotegory.security.filter.APILoginFilter;
 import vision.cotegory.security.filter.RefreshTokenFilter;
 import vision.cotegory.security.filter.TokenCheckFilter;
+import vision.cotegory.security.handler.APILoginFailHandler;
 import vision.cotegory.security.handler.APILoginSuccessHandler;
 
 import java.util.Arrays;
@@ -65,7 +66,9 @@ public class WebSecurityConfig {
 
         //APILoginSuccessHandler
         APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtil, memberRepository);
+        APILoginFailHandler failHandler = new APILoginFailHandler();
         apiLoginFilter.setAuthenticationSuccessHandler(successHandler);
+        apiLoginFilter.setAuthenticationFailureHandler(failHandler);
         http.addFilterBefore(apiLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
         //api로 시작하는 모든 경로는 TokenCheckFilter 동작

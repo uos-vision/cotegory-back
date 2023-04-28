@@ -54,9 +54,9 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                 "expTimeAccessToken", jwtUtil.getExp(accessToken).toString(),
                 "expTImeRefreshToken", jwtUtil.getExp(refreshToken).toString()
         );
-
         String jsonStr = gson.toJson(keyMap);
 
+        response.setCharacterEncoding("utf-8");
         response.getWriter().println(jsonStr);
     }
 }
