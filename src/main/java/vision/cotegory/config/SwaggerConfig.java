@@ -36,8 +36,13 @@ public class SwaggerConfig {
     }
 
     private Info apiInfo() {
-        Info info = new Info();
-        info.setTitle("Cotegory");
-        return info;
+        return new Info()
+                .title("Cotegory")
+                .description(new StringBuilder()
+                        .append("/generateToken메서드로 토큰을 생성하고 Authorize라 쓰인 초록색 버튼에 accessToken을 입력해 인증.\\\n")
+                        .append("accessToken의 지속시간은 30초. refreshToken의 지속시간은 60초.\\\n")
+                        .append("(토큰 지속시간은 차후에 1일 30일로 변경할 예정)")
+                        .toString()
+                );
     }
 }
