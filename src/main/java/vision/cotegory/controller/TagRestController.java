@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @RequestMapping("/api/tag")
 @Transactional
-public class TagController {
+public class TagRestController {
 
     private final TagGroupRepository tagGroupRepository;
 
