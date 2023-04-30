@@ -52,7 +52,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                 "accessToken", accessToken,
                 "refreshToken", refreshToken,
                 "expTimeAccessToken", jwtUtil.getExp(accessToken).toString(),
-                "expTImeRefreshToken", jwtUtil.getExp(refreshToken).toString()
+                "expTimeRefreshToken", jwtUtil.getExp(refreshToken).toString()
         );
         String jsonStr = gson.toJson(keyMap);
 
