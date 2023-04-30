@@ -18,14 +18,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Log4j2
-@RequiredArgsConstructor
 public class TokenCheckFilter extends OncePerRequestFilter {
 
     private final APIUserDetailsService apiUserDetailsService;
     private final JWTUtil jwtUtil;
+    private final List<String> whiteList = List.of(
+            "/api/tag/"
+    );
+
+    public TokenCheckFilter(APIUserDetailsService apiUserDetailsService, JWTUtil jwtUtil) {
+        this.apiUserDetailsService = apiUserDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -40,17 +48,21 @@ public class TokenCheckFilter extends OncePerRequestFilter {
             return;
         }
 
+        if (whiteList.stream().anyMatch(path::startsWith)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         log.info("Token Check Filter..........................");
         log.info("JWTUtil: " + jwtUtil);
 
 
-
-        try{
+        try {
 
             Map<String, Object> payload = validateAccessToken(request);
 
             //loginId
-            String loginId = (String)payload.get("loginId");
+            String loginId = (String) payload.get("loginId");
 
             log.info("loginId: " + loginId);
 
@@ -63,8 +75,8 @@ public class TokenCheckFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            filterChain.doFilter(request,response);
-        }catch(AccessTokenException accessTokenException){
+            filterChain.doFilter(request, response);
+        } catch (AccessTokenException accessTokenException) {
             accessTokenException.sendResponseError(response);
         }
     }
@@ -73,29 +85,29 @@ public class TokenCheckFilter extends OncePerRequestFilter {
 
         String headerStr = request.getHeader("Authorization");
 
-        if(headerStr == null  || headerStr.length() < 8){
+        if (headerStr == null || headerStr.length() < 8) {
             throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.UNACCEPT);
         }
 
         //Bearer 생략
-        String tokenType = headerStr.substring(0,6);
-        String tokenStr =  headerStr.substring(7);
+        String tokenType = headerStr.substring(0, 6);
+        String tokenStr = headerStr.substring(7);
 
-        if(!tokenType.equalsIgnoreCase("Bearer")){
+        if (!tokenType.equalsIgnoreCase("Bearer")) {
             throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.BADTYPE);
         }
 
-        try{
+        try {
             Map<String, Object> values = jwtUtil.validateToken(tokenStr);
 
             return values;
-        }catch(MalformedJwtException malformedJwtException){
+        } catch (MalformedJwtException malformedJwtException) {
             log.error("MalformedJwtException----------------------");
             throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.MALFORM);
-        }catch(SignatureException signatureException){
+        } catch (SignatureException signatureException) {
             log.error("SignatureException----------------------");
             throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.BADSIGN);
-        }catch(ExpiredJwtException expiredJwtException){
+        } catch (ExpiredJwtException expiredJwtException) {
             log.error("ExpiredJwtException----------------------");
             throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.EXPIRED);
         }
