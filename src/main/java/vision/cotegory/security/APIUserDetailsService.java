@@ -26,8 +26,6 @@ public class APIUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Cannot find loginId"));
 
         APIUserDTO dto = new APIUserDTO(member);
-
-        log.info(dto);
         return dto;
     }
 }
