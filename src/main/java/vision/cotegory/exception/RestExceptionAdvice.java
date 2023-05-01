@@ -26,7 +26,7 @@ public class RestExceptionAdvice {
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public RuntimeExceptionResponse businessExceptionResponse(RuntimeException ex){
+    public RuntimeExceptionResponse runtimeExceptionResponse(RuntimeException ex){
         return RuntimeExceptionResponse.builder()
                 .exceptionType("Runtime")
                 .exceptionClassName(ex.getClass().getSimpleName())
