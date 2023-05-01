@@ -15,10 +15,6 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 public class APIUserDTO extends User {
-
-    private String loginId;
-    private String pw;
-
     public APIUserDTO(Member member) {
         super(
                 member.getLoginId(),
@@ -29,7 +25,5 @@ public class APIUserDTO extends User {
                 true,
                 member.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList())
         );
-        this.loginId = member.getLoginId();
-        this.pw = member.getPw();
     }
 }
