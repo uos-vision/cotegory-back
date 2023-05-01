@@ -25,15 +25,7 @@ public class APIUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByLoginIdAndActivated(username, true)
                 .orElseThrow(() -> new UsernameNotFoundException("Cannot find loginId"));
 
-
-        APIUserDTO dto = new APIUserDTO(
-                member.getLoginId(),
-                member.getPw(),
-                member.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList())
-        );
-
-        log.info(dto);
+        APIUserDTO dto = new APIUserDTO(member);
         return dto;
     }
 }

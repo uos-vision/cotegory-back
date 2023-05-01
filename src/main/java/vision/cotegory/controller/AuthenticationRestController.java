@@ -12,6 +12,7 @@ import vision.cotegory.controller.request.RefreshTokenRequest;
 import vision.cotegory.controller.request.RegisterRequest;
 import vision.cotegory.controller.response.DuplicateCheckResponse;
 import vision.cotegory.service.MemberService;
+import vision.cotegory.service.dto.RegisterDto;
 
 import javax.validation.Valid;
 
@@ -32,7 +33,15 @@ public class AuthenticationRestController {
 
     @PostMapping("/register")
     public void register(@RequestBody @Valid RegisterRequest registerRequest) {
-        memberService.register(registerRequest);
+
+        RegisterDto registerDto = RegisterDto.builder()
+                .baekjoonHandle(registerRequest.getBaekjoonHandle())
+                .loginId(registerRequest.getLoginId())
+                .pw(registerRequest.getPw())
+                .nickName(registerRequest.getNickName())
+                .build();
+
+        memberService.register(registerDto);
     }
 
     @PostMapping("/duplicate-check")
