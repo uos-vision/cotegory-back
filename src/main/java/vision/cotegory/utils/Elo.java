@@ -1,25 +1,33 @@
 package vision.cotegory.utils;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Component;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.problem.Problem;
 
-@RequiredArgsConstructor
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
+
+@Component
+@Getter
 public class Elo {
 
-    private static double correctRate;
+    @NotNull
+    private double correctRate = 0.5;
 
     public void updateCorrectRate(double correctRate) {
-        this.correctRate = 0.0;
+        this.correctRate = correctRate;
     }
 
     //반환값의 첫인자는 member의 elo, 두번째 인자는 quiz의 elo이다.
     public Pair<Integer, Integer> updateElo(Member member, Quiz quiz, boolean correct){
 
-        Integer problemMmr = quiz.getProblem().getMmr();
-        Integer memberMmr = member.getMmr().get(quiz.getTagGroup());
+        Integer problemMmr = Optional.ofNullable(quiz.getProblem().getMmr()).orElse(0);
+        Integer memberMmr = Optional.ofNullable(member.getMmr().get(quiz.getTagGroup())).orElse(0);
         double predictedValue;
         double actualValue;
         int weight = 20;
