@@ -44,7 +44,10 @@ public class AbnormalQuizService {
                 Map<Tag, Long> selectedTagCount = quiz.getTagGroup()
                         .getTags()
                         .stream()
-                        .collect(Collectors.toMap(tag -> tag, submissionRepository::countAllBySelectTag));
+                        .collect(Collectors.toMap(
+                                tag -> tag,
+                                tag -> submissionRepository.countAllByQuizAndSelectTag(quiz, tag)
+                        ));
 
                 AbnormalQuiz abnormalQuiz = AbnormalQuiz.builder()
                         .selectedTagCount(selectedTagCount)
