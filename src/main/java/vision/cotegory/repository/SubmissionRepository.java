@@ -16,6 +16,9 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     @Query(value = "select s from Submission s where s.quiz = :quiz")
     Stream<Submission> streamByQuiz(@Param("quiz") Quiz quiz);
 
+    @Query("select s from Submission s")
+    Stream<Submission> stream();
+
     Long countAllByQuizAndSelectTag(Quiz quiz, Tag tag);
 
     Long countAllByQuiz(Quiz quiz);

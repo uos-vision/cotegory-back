@@ -81,6 +81,22 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
+    public Double correctRate() {
+        double correctRate = 0.0;
+        try (Stream<Quiz> quizStream = quizRepository.stream()) {
+            Long submitCount = submissionRepository.count();
+            Long correctCount = 0L;
+            try (Stream<Submission> submissionStream = submissionRepository.stream()) {
+                correctCount += submissionStream.filter(submission -> submission.getSelectTag().equals(
+                        submission
+                                .getQuiz()
+                                .getAnswerTag()
+                    )).count();
+            }
+            return Double.valueOf(correctCount) / Double.valueOf(submitCount);
+        }
+    }
+
     public Double correctRate(Quiz quiz) {
         Long submitCount = submissionRepository.countAllByQuiz(quiz);
         Long correctCount;
