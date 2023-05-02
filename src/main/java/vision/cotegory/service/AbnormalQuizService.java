@@ -59,10 +59,10 @@ public class AbnormalQuizService {
     }
 
     private boolean isAbnormalQuiz(Long submitCount, Double correctRate) {
-        final Double correctRateThreshold = 30.0;
+        final Double correctRateThreshold = 0.3;
         final Long minimumSubmitCountThreshold = 5L;
 
-        return submitCount.compareTo(minimumSubmitCountThreshold) < 0
+        return submitCount.compareTo(minimumSubmitCountThreshold) > 0
                 && correctRate.compareTo(correctRateThreshold) < 0;
     }
 }
