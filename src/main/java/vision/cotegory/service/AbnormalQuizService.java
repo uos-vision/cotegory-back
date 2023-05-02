@@ -11,8 +11,8 @@ import vision.cotegory.repository.AbnormalQuizRepository;
 import vision.cotegory.repository.QuizRepository;
 import vision.cotegory.repository.SubmissionRepository;
 
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 @Service
@@ -29,28 +29,24 @@ public class AbnormalQuizService {
 
         try (Stream<Quiz> quizStream = quizRepository.stream()) {
             quizStream.forEach(quiz -> {
-                Long submitCount = submissionRepository.count();
-                Long correctCount;
+                ConcurrentHashMap<Tag, Long> tagCount = new ConcurrentHashMap<>();
+
                 try (Stream<Submission> submissionStream = submissionRepository.streamByQuiz(quiz)) {
-                    correctCount = submissionStream
-                            .filter(submission -> submission.getSelectTag().equals(quiz.getAnswerTag()))
-                            .count();
+                    submissionStream.parallel().forEach(submission -> tagCount
+                            .merge(submission.getSelectTag(), 1L, Long::sum));
                 }
 
-                Double correctRate = Double.valueOf(correctCount) / Double.valueOf(submitCount);
+                Long submitCount = tagCount.values().stream().reduce(0L, Long::sum);
+                Long correctCount = tagCount.get(quiz.getAnswerTag());
+                if (submitCount.equals(0L))
+                    return;
+
+                Double correctRate = (double) correctCount / (double) submitCount;
                 if (!isAbnormalQuiz(submitCount, correctRate))
                     return;
 
-                Map<Tag, Long> selectedTagCount = quiz.getTagGroup()
-                        .getTags()
-                        .stream()
-                        .collect(Collectors.toMap(
-                                tag -> tag,
-                                tag -> submissionRepository.countAllByQuizAndSelectTag(quiz, tag)
-                        ));
-
                 AbnormalQuiz abnormalQuiz = AbnormalQuiz.builder()
-                        .selectedTagCount(selectedTagCount)
+                        .selectedTagCount(new HashMap<>(tagCount))
                         .quiz(quiz)
                         .submitCount(submitCount)
                         .correctRate(correctRate)

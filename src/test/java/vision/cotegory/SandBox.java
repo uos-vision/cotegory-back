@@ -8,6 +8,8 @@ import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
 import vision.cotegory.repository.MemberRepository;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -36,9 +38,10 @@ public class SandBox {
 
     @Test
     public void sandBox() {
-        Integer a = 1;
-        Integer b = 2;
-        System.out.println(a.compareTo(b) < 0);
+        Map<Integer, Integer> map = new HashMap<>();
+        map.merge(1, 2, Integer::sum);
+        map.merge(1, 4, Integer::sum);
+        System.out.println(map.get(1));
 
     }
 }
