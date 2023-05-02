@@ -83,6 +83,9 @@ public class QuizService {
 
     public Double correctRate(Quiz quiz) {
         Long submitCount = submissionRepository.countAllByQuiz(quiz);
+        if (submitCount.equals(0L))
+            return 0.0;
+
         Long correctCount;
         try (Stream<Submission> submissionStream = submissionRepository.streamByQuiz(quiz)) {
             correctCount = submissionStream
