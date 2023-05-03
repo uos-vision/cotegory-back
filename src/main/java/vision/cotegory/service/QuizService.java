@@ -2,6 +2,7 @@ package vision.cotegory.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.TagGroupConst;
@@ -13,6 +14,7 @@ import vision.cotegory.repository.QuizRepository;
 import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateQuizDto;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -81,30 +83,39 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
-    public Double correctRate() {
-        double correctRate = 0.0;
-        try (Stream<Quiz> quizStream = quizRepository.stream()) {
-            Long submitCount = submissionRepository.count();
-            Long correctCount = 0L;
-            try (Stream<Submission> submissionStream = submissionRepository.stream()) {
-                correctCount += submissionStream.filter(submission -> submission.getSelectTag().equals(
-                        submission
-                                .getQuiz()
-                                .getAnswerTag()
-                    )).count();
+    public Quiz recommendQuiz(Member member) {
+        int minDiff = 2000;
+        Quiz target = null;
+        List<Quiz> list = quizRepository.findAll();
+
+        for(Quiz q : list)
+        {
+            int diff = Math.abs(q.getMmr()- member.getMmr().get(q.getTagGroup()));
+            if (diff < minDiff)
+            {
+                minDiff = diff;
+                target = q;
             }
-            return Double.valueOf(correctCount) / Double.valueOf(submitCount);
         }
+        return target;
     }
 
-    public Double correctRate(Quiz quiz) {
-        Long submitCount = submissionRepository.countAllByQuiz(quiz);
-        Long correctCount;
-        try (Stream<Submission> submissionStream = submissionRepository.streamByQuiz(quiz)) {
-            correctCount = submissionStream
-                    .filter(submission -> submission.getSelectTag().equals(quiz.getAnswerTag()))
-                    .count();
+    public Double correctRate() {
+        double correctRate = 0.0;
+        List<Submission> list = submissionRepository.findAll();
+        int submitCount = list.size();
+        int correctCount = 0;
+
+        if (submitCount == 0)
+            return 0.0;
+
+        for (Submission s : list)
+        {
+            if (s.getSelectTag() == s.getQuiz().getAnswerTag())
+                correctCount++;
         }
-        return Double.valueOf(correctCount) / Double.valueOf(submitCount);
+
+
+        return (double) correctCount / submitCount;
     }
 }
