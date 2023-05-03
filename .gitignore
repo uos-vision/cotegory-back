@@ -1,6 +1,6 @@
 
 
-application-prod.properties
+**/application-prod.properties
 
 .gradle
 build/
