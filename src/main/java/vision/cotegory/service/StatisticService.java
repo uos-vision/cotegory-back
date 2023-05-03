@@ -26,7 +26,7 @@ public class StatisticService {
     private final SubmissionRepository submissionRepository;
     private final ElOUtils elOUtils;
 
-    public void updateAbnormalQuizzes() {
+    public void updateStatisticData() {
         abnormalQuizRepository.deleteAll();
 
         List<Quiz> quizzes = quizRepository.findAll();
