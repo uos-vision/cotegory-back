@@ -101,7 +101,6 @@ public class QuizService {
     }
 
     public Double correctRate() {
-        double correctRate = 0.0;
         List<Submission> list = submissionRepository.findAll();
         int submitCount = list.size();
         int correctCount = 0;
