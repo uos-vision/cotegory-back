@@ -74,4 +74,9 @@ public class ProgrammersProblem extends Problem{
     public Origin getProblemOrigin() {
         return Origin.PROGRAMMERS;
     }
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
 }

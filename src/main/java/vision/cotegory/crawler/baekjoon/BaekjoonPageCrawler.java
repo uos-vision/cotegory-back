@@ -12,14 +12,19 @@ import java.util.regex.Pattern;
 public class BaekjoonPageCrawler {
 
     private final Document doc;
+    private String url;
 
     public BaekjoonPageCrawler(Integer problemNumber) {
-        String url = String.format("https://www.acmicpc.net/problem/%d", problemNumber);
+        url = String.format("https://www.acmicpc.net/problem/%d", problemNumber);
         try {
             this.doc = Jsoup.connect(url).get();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getUrl(){
+        return this.url;
     }
 
     public String getContent(String cssSelector) {

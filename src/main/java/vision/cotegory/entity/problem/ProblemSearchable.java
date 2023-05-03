@@ -15,4 +15,6 @@ public interface ProblemSearchable {
     String getSampleInput();
     String getSampleOutput();
     Origin getProblemOrigin();
+
+    String getUrl();
 }

@@ -20,6 +20,8 @@ public class BaekjoonProblemPage {
     @Column(unique = true)
     private Integer problemNumber;
 
+    private String url;
+
     @Lob
     private String problemBody;
 

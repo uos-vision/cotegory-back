@@ -74,4 +74,9 @@ public class HandWriteProblem extends Problem{
     public Origin getProblemOrigin() {
         return Origin.HANDWRITE;
     }
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
 }

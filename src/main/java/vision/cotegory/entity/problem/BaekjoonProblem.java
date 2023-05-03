@@ -23,6 +23,8 @@ public class BaekjoonProblem extends Problem{
 
     private Integer level;
 
+    private String url;
+
     @Override
     public String getTitle() {
         return problemPage.getTitle();
@@ -66,5 +68,10 @@ public class BaekjoonProblem extends Problem{
     @Override
     public Origin getProblemOrigin() {
         return Origin.BAEKJOON;
+    }
+
+    @Override
+    public String getUrl() {
+        return this.url;
     }
 }
