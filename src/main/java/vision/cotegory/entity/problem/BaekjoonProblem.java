@@ -72,6 +72,6 @@ public class BaekjoonProblem extends Problem{
 
     @Override
     public String getUrl() {
-        return this.url;
+        return problemPage.getUrl();
     }
 }
