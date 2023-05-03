@@ -4,11 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import vision.cotegory.entity.TagGroupConst;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
 
 @SpringBootTest
+@ActiveProfiles("prod")
 @Slf4j
 class CrawlerTest {
 
