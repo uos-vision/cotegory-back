@@ -22,25 +22,25 @@ public class Elo {
     }
 
     //반환값의 첫인자는 member의 elo, 두번째 인자는 quiz의 elo이다.
-    public Pair<Integer, Integer> updateElo(Member member, Submission submission){
+    public Pair<Integer, Integer> updateElo(Member member, Submission submission) {
 
         Quiz quiz = submission.getQuiz();
-        boolean correct = submission.getSelectTag() == quiz.getAnswerTag();
-        Integer problemMmr = Optional.ofNullable(quiz.getProblem().getMmr()).orElse(0);
+        boolean correct = submission.getSelectTag().equals(quiz.getAnswerTag());
+        Integer problemMmr = Optional.ofNullable(quiz.getMmr()).orElse(0);
         Integer memberMmr = Optional.ofNullable(member.getMmr().get(quiz.getTagGroup())).orElse(0);
         double predictedValue;
         double actualValue;
-        int weight = 20;
-        int diffMmr = 600;
+        int weight = 40;
+        int diffMmr = 400;
         double kFactor;
 
-        actualValue = correct? 1 : 0;
+        actualValue = correct ? 1 : 0;
 
-        kFactor = correct? weight * (1 - correctRate) : weight * correctRate;
-        predictedValue = 1 / (Math.pow(10, (memberMmr - problemMmr)/diffMmr) + 1);
+        kFactor = correct ? weight * (1 - correctRate) : weight * correctRate;
+        predictedValue = 1 / (Math.pow(10, (memberMmr - problemMmr) / (double) diffMmr) + 1);
 
-        memberMmr = (int)(memberMmr + kFactor * (actualValue - predictedValue));
-        problemMmr = (int)(problemMmr + kFactor * (Math.abs(actualValue - 1) - Math.abs(predictedValue - 1)));
+        memberMmr = (int) Math.round((memberMmr + kFactor * (actualValue - predictedValue)));
+        problemMmr = (int) Math.round((problemMmr + kFactor * (Math.abs(actualValue - 1) - Math.abs(predictedValue - 1))));
 
         return Pair.of(memberMmr, problemMmr);
     }

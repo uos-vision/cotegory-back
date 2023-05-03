@@ -30,7 +30,7 @@ public class Quiz {
 
     @Getter
     @Setter
-    private Integer mmr;
+    private Integer mmr = 1200;
 
     @Builder
     public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Boolean activated) {
