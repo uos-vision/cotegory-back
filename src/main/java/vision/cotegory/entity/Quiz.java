@@ -28,6 +28,10 @@ public class Quiz {
     @Setter
     private Boolean activated;
 
+    @Getter
+    @Setter
+    private Integer mmr;
+
     @Builder
     public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Boolean activated) {
         this.problem = problem;

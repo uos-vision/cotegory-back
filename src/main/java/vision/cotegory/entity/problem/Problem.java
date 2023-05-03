@@ -33,8 +33,4 @@ public abstract class Problem implements ProblemSearchable {
     @Builder.Default
     @Getter
     private List<Quiz> quizzes = new ArrayList<>();
-
-    @Getter
-    @Setter
-    private Integer mmr;
 }
