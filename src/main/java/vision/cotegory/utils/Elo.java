@@ -32,16 +32,15 @@ public class Elo {
         double actualValue;
         int weight = 20;
         int diffMmr = 600;
-        double kFactorMem;
-        double kFactorPro;
+        double kFactor;
 
         actualValue = correct? 1 : 0;
-        kFactorMem = correct? weight * (1 - correctRate) : weight * correctRate;
-        kFactorPro = correct? weight * correctRate : weight * (1 - correctRate);
+
+        kFactor = correct? weight * (1 - correctRate) : weight * correctRate;
         predictedValue = 1 / (Math.pow(10, (memberMmr - problemMmr)/diffMmr) + 1);
 
-        memberMmr = (int)(memberMmr + kFactorMem * (actualValue - predictedValue));
-        problemMmr = (int)(problemMmr + kFactorPro * (Math.abs(actualValue - 1) - Math.abs(predictedValue - 1)));
+        memberMmr = (int)(memberMmr + kFactor * (actualValue - predictedValue));
+        problemMmr = (int)(problemMmr + kFactor * (Math.abs(actualValue - 1) - Math.abs(predictedValue - 1)));
 
         return Pair.of(memberMmr, problemMmr);
     }
