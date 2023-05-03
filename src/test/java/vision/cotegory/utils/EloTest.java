@@ -40,7 +40,6 @@ class EloTest {
     @Test
     void updateElo() {
 
-        elo.updateCorrectRate(0.2);
         TagGroup tagGroup = TagGroup.builder()
                 .name("testTag")
                 .build();
@@ -61,8 +60,12 @@ class EloTest {
                 .problem(problem)
                 .build();
 
+        elo.updateCorrectRate(0.2);
         log.info("init : {}, {}", member.getMmr().get(tagGroup), quiz.getProblem().getMmr());
-        Pair<Integer, Integer> pair = elo.updateElo(member, quiz, false);
-        log.info("return : {}, {}", pair.getFirst(), pair.getSecond());
+        Pair<Integer, Integer> pair1 = elo.updateElo(member, quiz, false);
+        log.info("return : {}, {}", pair1.getFirst(), pair1.getSecond());
+        elo.updateCorrectRate(0.2);
+        Pair<Integer, Integer> pair2 = elo.updateElo(member, quiz, true);
+        log.info("return : {}, {}", pair2.getFirst(), pair2.getSecond());
     }
 }

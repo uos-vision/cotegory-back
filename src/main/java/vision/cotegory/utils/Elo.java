@@ -1,13 +1,11 @@
 package vision.cotegory.utils;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.problem.Problem;
+import vision.cotegory.entity.Submission;
 
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
@@ -24,8 +22,10 @@ public class Elo {
     }
 
     //반환값의 첫인자는 member의 elo, 두번째 인자는 quiz의 elo이다.
-    public Pair<Integer, Integer> updateElo(Member member, Quiz quiz, boolean correct){
+    public Pair<Integer, Integer> updateElo(Member member, Submission submission){
 
+        Quiz quiz = submission.getQuiz();
+        boolean correct = submission.getSelectTag() == quiz.getAnswerTag();
         Integer problemMmr = Optional.ofNullable(quiz.getProblem().getMmr()).orElse(0);
         Integer memberMmr = Optional.ofNullable(member.getMmr().get(quiz.getTagGroup())).orElse(0);
         double predictedValue;
