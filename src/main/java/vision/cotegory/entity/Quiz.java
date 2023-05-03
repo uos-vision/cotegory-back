@@ -33,11 +33,12 @@ public class Quiz {
     private Integer mmr = 1200;
 
     @Builder
-    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Boolean activated) {
+    public Quiz(Problem problem, Integer mmr, TagGroup tagGroup, Tag answerTag, Boolean activated) {
         this.problem = problem;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;
         this.activated = activated;
+        this.mmr = mmr;
         problem.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
     }

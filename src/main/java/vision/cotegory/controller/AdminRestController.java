@@ -20,8 +20,7 @@ import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.exception.exception.NotSupportedOriginException;
 import vision.cotegory.repository.AbnormalQuizRepository;
 import vision.cotegory.repository.TagGroupRepository;
-import vision.cotegory.security.JWTUtil;
-import vision.cotegory.service.AbnormalQuizService;
+import vision.cotegory.service.StatisticService;
 import vision.cotegory.service.QuizService;
 import vision.cotegory.service.dto.CreateQuizDto;
 
@@ -34,7 +33,7 @@ import javax.validation.Valid;
 @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
 public class AdminRestController {
 
-    private final AbnormalQuizService abnormalQuizService;
+    private final StatisticService statisticService;
     private final QuizService quizService;
     private final AbnormalQuizRepository abnormalQuizRepository;
     private final TagGroupRepository tagGroupRepository;
@@ -42,7 +41,7 @@ public class AdminRestController {
     @Operation(description = "모든문제(n)에 대한 모든제출(m)을 검사하므로 O(nm)입니다. 자주 호출하지 마세요.")
     @PostMapping("/abnormal/update")
     public void updateAbnormal() {
-        abnormalQuizService.updateAbnormalQuizzes();
+        statisticService.updateAbnormalQuizzes();
     }
 
     @Operation(description = "update api호출로 생성된 데이터들을 봅니다. 자주 호출해도 됩니다.")

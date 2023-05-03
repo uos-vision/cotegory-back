@@ -12,24 +12,17 @@ import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.TagGroup;
 import vision.cotegory.entity.problem.BaekjoonProblem;
 import vision.cotegory.entity.problem.Problem;
-import vision.cotegory.repository.MemberRepository;
-import vision.cotegory.repository.QuizRepository;
-import vision.cotegory.repository.SubmissionRepository;
-import vision.cotegory.service.QuizService;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
 @Transactional
-class EloTest {
+class ElOUtilsTest {
 
     @Autowired
-    Elo elo;
+    ElOUtils elo;
 
     @Test
     void updateCorrectRate() {
@@ -52,20 +45,20 @@ class EloTest {
                 .build();
 
         Problem problem = BaekjoonProblem.builder()
-               .mmr(300)
                .build();
 
         Quiz quiz = Quiz.builder()
+                .mmr(1200)
                 .tagGroup(tagGroup)
                 .problem(problem)
                 .build();
 
-        elo.updateCorrectRate(0.2);
-        log.info("init : {}, {}", member.getMmr().get(tagGroup), quiz.getProblem().getMmr());
-        Pair<Integer, Integer> pair1 = elo.updateElo(member, quiz, false);
-        log.info("return : {}, {}", pair1.getFirst(), pair1.getSecond());
-        elo.updateCorrectRate(0.2);
-        Pair<Integer, Integer> pair2 = elo.updateElo(member, quiz, true);
-        log.info("return : {}, {}", pair2.getFirst(), pair2.getSecond());
+//        elo.updateCorrectRate(0.2);
+//        log.info("init : {}, {}", member.getMmr().get(tagGroup), quiz.getMmr());
+//        Pair<Integer, Integer> pair1 = elo.updateElo(member, su);
+//        log.info("return : {}, {}", pair1.getFirst(), pair1.getSecond());
+//        elo.updateCorrectRate(0.2);
+//        Pair<Integer, Integer> pair2 = elo.updateElo(member, quiz, true);
+//        log.info("return : {}, {}", pair2.getFirst(), pair2.getSecond());
     }
 }

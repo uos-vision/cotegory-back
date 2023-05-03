@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @Getter
-public class Elo {
+public class ElOUtils {
 
     @NotNull
     private double correctRate = 0.5;

@@ -8,6 +8,7 @@ import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.Tag;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
@@ -18,6 +19,8 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     @Query("select s from Submission s")
     Stream<Submission> stream();
+
+    List<Submission> findAllByQuiz(Quiz quiz);
 
     Long countAllByQuizAndSelectTag(Quiz quiz, Tag tag);
 
