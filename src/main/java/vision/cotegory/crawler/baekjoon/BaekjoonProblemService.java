@@ -68,12 +68,12 @@ public class BaekjoonProblemService {
         if (assignableGroups.isEmpty())
             return;
 
-        BaekjoonProblem baekjoonInfo = BaekjoonProblem.builder()
+        BaekjoonProblem baekjoonProblem = BaekjoonProblem.builder()
                 .tags(tags)
                 .level(problemDto.getLevel())
                 .problemNumber(problemDto.getProblemId())
                 .build();
-        BaekjoonProblem savedBaekjoonProblem = baekjoonProblemRepository.save(baekjoonInfo);
+        BaekjoonProblem savedBaekjoonProblem = baekjoonProblemRepository.save(baekjoonProblem);
 
         assignableGroups.forEach((tagGroup, tag) -> {
             Quiz quiz = Quiz.builder()
@@ -107,6 +107,7 @@ public class BaekjoonProblemService {
             return null;
 
         BaekjoonProblemPage baekjoonPage = BaekjoonProblemPage.builder()
+                .url(baekjoonPageCrawler.getUrl())
                 .problemNumber(baekjoonPageCrawler.getProblemNumber())
                 .title(baekjoonPageCrawler.getTitle())
                 .timeLimit(baekjoonPageCrawler.getTimeLimit())

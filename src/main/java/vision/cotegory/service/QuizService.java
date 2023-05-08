@@ -2,6 +2,7 @@ package vision.cotegory.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.TagGroupConst;
@@ -13,6 +14,7 @@ import vision.cotegory.repository.QuizRepository;
 import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateQuizDto;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -81,17 +83,38 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
-    public Double correctRate(Quiz quiz) {
-        Long submitCount = submissionRepository.countAllByQuiz(quiz);
-        if (submitCount.equals(0L))
+    public Quiz recommendQuiz(Member member) {
+        int minDiff = 2000;
+        Quiz target = null;
+        List<Quiz> list = quizRepository.findAll();
+
+        for(Quiz q : list)
+        {
+            int diff = Math.abs(q.getMmr()- member.getMmr().get(q.getTagGroup()));
+            if (diff < minDiff)
+            {
+                minDiff = diff;
+                target = q;
+            }
+        }
+        return target;
+    }
+
+    public Double correctRate() {
+        List<Submission> list = submissionRepository.findAll();
+        int submitCount = list.size();
+        int correctCount = 0;
+
+        if (submitCount == 0)
             return 0.0;
 
-        Long correctCount;
-        try (Stream<Submission> submissionStream = submissionRepository.streamByQuiz(quiz)) {
-            correctCount = submissionStream
-                    .filter(submission -> submission.getSelectTag().equals(quiz.getAnswerTag()))
-                    .count();
+        for (Submission s : list)
+        {
+            if (s.getSelectTag() == s.getQuiz().getAnswerTag())
+                correctCount++;
         }
-        return Double.valueOf(correctCount) / Double.valueOf(submitCount);
+
+
+        return (double) correctCount / submitCount;
     }
 }

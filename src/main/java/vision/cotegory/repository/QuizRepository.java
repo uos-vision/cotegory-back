@@ -17,4 +17,5 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     //try with resource 와 함께 사용해 반드시 stream close 해야함
     @Query("select q from Quiz q")
     Stream<Quiz> stream();
+    
 }
