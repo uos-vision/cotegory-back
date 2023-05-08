@@ -5,11 +5,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import vision.cotegory.exception.exception.BusinessException;
+import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.exception.response.BusinessExceptionResponse;
 import vision.cotegory.exception.response.RuntimeExceptionResponse;
 import vision.cotegory.exception.response.SystemExceptionResponse;
-
-import javax.transaction.SystemException;
 
 @RestControllerAdvice
 public class RestExceptionAdvice {
@@ -39,6 +38,16 @@ public class RestExceptionAdvice {
     public SystemExceptionResponse ExceptionResponse(Exception ex){
         return SystemExceptionResponse.builder()
                 .exceptionType("Error")
+                .exceptionClassName(ex.getClass().getSimpleName())
+                .exceptionMessage(ex.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public SystemExceptionResponse ExceptionResponse(NotExistBaekjoonHandleException ex){
+        return SystemExceptionResponse.builder()
+                .exceptionType("Business")
                 .exceptionClassName(ex.getClass().getSimpleName())
                 .exceptionMessage(ex.getMessage())
                 .build();
