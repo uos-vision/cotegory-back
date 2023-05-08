@@ -30,7 +30,7 @@ public class RefreshTokenException extends RuntimeException{
 
         final BusinessExceptionResponse refreshTokenExceptionResponse = BusinessExceptionResponse.builder()
                 .exceptionType("Business")
-                .exceptionClassName(this.getClass().getSimpleName())
+                .exceptionClassName(this.getClass().getSimpleName() + "." + errorCase.name())
                 .exceptionMessage(errorCase.name())
                 .build();
 

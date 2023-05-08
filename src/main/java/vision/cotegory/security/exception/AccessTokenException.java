@@ -49,7 +49,7 @@ public class AccessTokenException extends RuntimeException {
 
         final BusinessExceptionResponse accessTokenExceptionResponse = BusinessExceptionResponse.builder()
                 .exceptionType("Business")
-                .exceptionClassName(this.getClass().getSimpleName())
+                .exceptionClassName(this.getClass().getSimpleName() + "." + token_error.name())
                 .exceptionMessage(token_error.getMsg())
                 .build();
 
