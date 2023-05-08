@@ -11,7 +11,6 @@ import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
 
 @SpringBootTest
-@ActiveProfiles("prod")
 @Slf4j
 class CrawlerTest {
 
