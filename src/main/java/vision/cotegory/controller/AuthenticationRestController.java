@@ -6,11 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import vision.cotegory.controller.request.DuplicateCheckRequest;
-import vision.cotegory.controller.request.GenerateTokenRequest;
-import vision.cotegory.controller.request.RefreshTokenRequest;
-import vision.cotegory.controller.request.RegisterRequest;
+import vision.cotegory.controller.request.*;
 import vision.cotegory.controller.response.DuplicateCheckResponse;
+import vision.cotegory.controller.response.ExistBaekjoonHandleResponse;
 import vision.cotegory.service.MemberService;
 import vision.cotegory.service.dto.RegisterDto;
 
@@ -50,5 +48,13 @@ public class AuthenticationRestController {
         Boolean duplicated = memberService.isDuplicatedLoginId(duplicateCheckRequest.getLoginId());
 
         return ResponseEntity.ok(DuplicateCheckResponse.builder().duplicated(duplicated).build());
+    }
+
+    @PostMapping("/baekjoonhandle-check")
+    public ResponseEntity<ExistBaekjoonHandleResponse> duplicatedCheck(
+            @RequestBody @Valid ExistBaekjoonHandleRequest existBaekjoonHandleRequest) {
+        Boolean exist = memberService.isExistBaekjoonHandle(existBaekjoonHandleRequest.getBaekjoonHandle());
+
+        return ResponseEntity.ok(ExistBaekjoonHandleResponse.builder().exist(exist).build());
     }
 }

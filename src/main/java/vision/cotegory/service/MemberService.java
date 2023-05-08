@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
@@ -35,7 +34,8 @@ public class MemberService {
         if (memberOptional.isPresent())
             throw new DuplicatedEntityException("로그인아이디가 중복됩니다");
 
-        validateBaekjoonHandle(registerDto.getBaekjoonHandle());
+        if(!isExistBaekjoonHandle(registerDto.getBaekjoonHandle()))
+            throw new NotExistBaekjoonHandleException();
 
 
         Member member = Member.builder()
@@ -54,9 +54,9 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    private void validateBaekjoonHandle(String baekjoonHandle) {
+    public Boolean isExistBaekjoonHandle(String baekjoonHandle) {
         try{
-            HttpStatus statusCode = webClient.mutate()
+            webClient.mutate()
                     .baseUrl("https://www.acmicpc.net")
                     .build()
                     .get()
@@ -66,8 +66,9 @@ public class MemberService {
                     .block()
                     .getStatusCode();
         }catch(Exception ex) {
-            throw new NotExistBaekjoonHandleException();
+            return false;
         }
+        return true;
     }
 
     public Boolean isDuplicatedLoginId(String loginId) {
