@@ -1,5 +1,7 @@
 package vision.cotegory.crawler.ai;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -10,18 +12,20 @@ import vision.cotegory.exception.exception.SolvedApiException;
 import java.util.List;
 
 @Component
+@Slf4j
 public class AiWebClient {
 
     private final WebClient webClient;
 
-    public AiWebClient(WebClient webClient) {
+    public AiWebClient(WebClient webClient, @Value("${ai.server.url}") String aiServerUrl) {
+        log.info("[ai-server-url]url:{}", aiServerUrl);
         this.webClient = webClient
                 .mutate()
-                .baseUrl("https://ai-server")
+                .baseUrl(aiServerUrl)
                 .build();
     }
 
-    public List<Integer> getRecommendProblemNumbers(AiRecommendProblemRequest aiRecommendProblemRequest){
+    public List<Integer> getRecommendProblemNumbers(AiRecommendProblemRequest aiRecommendProblemRequest) {
         return webClient.post()
                 .uri("/recommend")
                 .bodyValue(aiRecommendProblemRequest)
