@@ -13,10 +13,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 public class BaekjoonProblemPage {
-    @Id
-    @GeneratedValue
-    private Long id;
+    @OneToOne(fetch = FetchType.LAZY)
+    private BaekjoonProblem baekjoonProblem;
 
+    @Id
     @Column(unique = true)
     private Integer problemNumber;
 

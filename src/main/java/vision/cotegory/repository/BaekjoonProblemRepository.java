@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.problem.BaekjoonProblem;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BaekjoonProblemRepository extends JpaRepository<BaekjoonProblem, Long> {
     @Transactional(readOnly = true)
@@ -14,4 +15,6 @@ public interface BaekjoonProblemRepository extends JpaRepository<BaekjoonProblem
     @Transactional(readOnly = true)
     @Query("select tag.problemNumber from BaekjoonProblem tag")
     List<Integer> getAllProblemNumbers();
+
+    Optional<BaekjoonProblem> findByProblemNumber(Integer problemNumber);
 }
