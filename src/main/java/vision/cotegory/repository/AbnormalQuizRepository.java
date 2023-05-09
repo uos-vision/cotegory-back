@@ -9,11 +9,6 @@ import vision.cotegory.entity.AbnormalQuiz;
 public interface AbnormalQuizRepository extends JpaRepository<AbnormalQuiz, Long> {
     Page<AbnormalQuiz> findAll(Pageable pageable);
 
-    @Query(
-            value = "select aq from AbnormalQuiz aq join fetch aq.quiz",
-            countQuery = "select count(aq) from AbnormalQuiz aq"
-    )
-    Page<AbnormalQuiz> findAllFetchQuiz(Pageable pageable);
-
-
+    @Query(value = "select aq from AbnormalQuiz aq where aq.quiz.activated = true")
+    Page<AbnormalQuiz> findAllActivateTrue(Pageable pageable);
 }
