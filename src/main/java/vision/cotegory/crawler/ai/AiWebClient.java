@@ -18,7 +18,7 @@ public class AiWebClient {
     private final WebClient webClient;
 
     public AiWebClient(WebClient webClient, @Value("${ai.server.url}") String aiServerUrl) {
-        log.info("[ai-server-url]url:{}", aiServerUrl);
+        log.info("[ai-server-url] {}", aiServerUrl);
         this.webClient = webClient
                 .mutate()
                 .baseUrl(aiServerUrl)
