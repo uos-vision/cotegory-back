@@ -1,4 +1,4 @@
-package vision.cotegory.security;
+package vision.cotegory.utils;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component
 @Log4j2
-public class JWTUtil {
+public class JWTUtils {
 
     @Value("${jwt.secret}")
     private String key;
