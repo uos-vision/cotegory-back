@@ -47,7 +47,7 @@ public class AdminRestController {
     @Operation(description = "update api호출로 생성된 데이터들을 봅니다. 자주 호출해도 됩니다.")
     @PostMapping("/abnormal/list")
     public Page<AbnormalQuizResponse> listAbnormal(Pageable pageable) {
-        return abnormalQuizRepository.findAllFetchQuiz(pageable).map(AbnormalQuizResponse::new);
+        return abnormalQuizRepository.findAllActivateTrue(pageable).map(AbnormalQuizResponse::new);
     }
 
     @PostMapping("/abnormal/deactivate")
