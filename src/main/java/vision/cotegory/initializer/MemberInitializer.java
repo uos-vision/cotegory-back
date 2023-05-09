@@ -43,7 +43,6 @@ public class MemberInitializer {
                         tagGroupConst.getTagGroupConsts().get(0), 200,
                         tagGroupConst.getTagGroupConsts().get(1), 300,
                         tagGroupConst.getTagGroupConsts().get(2), 400))
-                .imgUrl("http://asdfasdf")
                 .nickName("UOS닉네임")
                 .build();
 
