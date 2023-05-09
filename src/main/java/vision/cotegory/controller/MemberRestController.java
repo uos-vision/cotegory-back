@@ -25,11 +25,7 @@ public class MemberRestController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/information")
-    public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") String jwtKey) {
-        Long memberId = jwtUtils.getMemberId(jwtKey);
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(NotExistEntityException::new);
-
+    public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") Member member) {
         return ResponseEntity.ok(MemberInformationResponse.builder()
                 .id(member.getId())
                 .roles(member.getRoles())
@@ -41,12 +37,8 @@ public class MemberRestController {
 
     @Operation(summary = "profile='prod'에서만 정상적 호출이 가능합니다.")
     @PostMapping(value = "/img", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void currentMemberInformation(@RequestHeader(value = "Authorization") String jwtKey,
+    public void currentMemberInformation(@RequestHeader(value = "Authorization") Member member,
                                          @RequestPart MultipartFile multipartFile ) {
-        Long memberId = jwtUtils.getMemberId(jwtKey);
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(NotExistEntityException::new);
-
         memberService.uploadImage(member, multipartFile);
     }
 }
