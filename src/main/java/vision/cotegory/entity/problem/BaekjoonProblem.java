@@ -14,16 +14,20 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class BaekjoonProblem extends Problem{
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "problemNumber")
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "baekjoonProblem")
     private BaekjoonProblemPage problemPage;
+
 
     @Column(unique = true)
     private Integer problemNumber;
 
     private Integer level;
 
-    private String url;
+    @Override
+    public Integer getProblemNumber(){
+        return this.problemNumber;
+    }
 
     @Override
     public String getTitle() {

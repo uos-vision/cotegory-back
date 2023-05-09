@@ -11,6 +11,7 @@ import vision.cotegory.entity.TagGroup;
 import vision.cotegory.entity.TagGroupConst;
 import vision.cotegory.entity.problem.BaekjoonProblem;
 import vision.cotegory.entity.problem.BaekjoonProblemPage;
+import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.BaekjoonPageRepository;
 import vision.cotegory.repository.BaekjoonProblemRepository;
 import vision.cotegory.repository.QuizRepository;
@@ -101,12 +102,15 @@ public class BaekjoonProblemService {
         return new BaekjoonPageListCrawler(tag.toBaekjoonCode(), page).getProblemNumbers();
     }
 
-    private BaekjoonProblemPage createBaekjoonProblemDto(Integer problemNumber) {
+    public BaekjoonProblemPage createBaekjoonProblemDto(Integer problemNumber) {
         BaekjoonPageCrawler baekjoonPageCrawler = new BaekjoonPageCrawler(problemNumber);
         if (baekjoonPageCrawler.getTimeLimit() == 0)
             return null;
+        BaekjoonProblem baekjoonProblem = baekjoonProblemRepository.findByProblemNumber(problemNumber)
+                .orElseThrow(NotExistEntityException::new);
 
         BaekjoonProblemPage baekjoonPage = BaekjoonProblemPage.builder()
+                .baekjoonProblem(baekjoonProblem)
                 .url(baekjoonPageCrawler.getUrl())
                 .problemNumber(baekjoonPageCrawler.getProblemNumber())
                 .title(baekjoonPageCrawler.getTitle())
