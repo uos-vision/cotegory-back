@@ -1,5 +1,6 @@
 package vision.cotegory.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,7 @@ public class MemberRestController {
                 .build());
     }
 
+    @Operation(summary = "profile='prod'에서만 정상적 호출이 가능합니다.")
     @PostMapping(value = "/img", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void currentMemberInformation(@RequestHeader(value = "Authorization") String jwtKey,
                                          @RequestPart MultipartFile multipartFile ) {
