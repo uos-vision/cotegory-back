@@ -3,6 +3,7 @@ package vision.cotegory.initializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,8 @@ public class MemberInitializer {
     }
 
     private void makeUser() {
+        if(memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
+            return;
         Member member = Member.builder()
                 .loginId("member")
                 .pw(passwordEncoder.encode("1111"))
@@ -51,6 +54,8 @@ public class MemberInitializer {
     }
 
     private void makeAdmin() {
+        if(memberRepository.findByLoginIdAndActivatedIsTrue("admin").isPresent())
+            return;
         Member admin = Member.builder()
                 .loginId("admin")
                 .pw(passwordEncoder.encode("1111"))
