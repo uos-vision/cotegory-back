@@ -3,7 +3,6 @@ package vision.cotegory.security.filter;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import vision.cotegory.security.exception.AccessTokenException;
 import vision.cotegory.security.APIUserDetailsService;
-import vision.cotegory.security.JWTUtil;
+import vision.cotegory.utils.JWTUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,14 +24,14 @@ import java.util.Map;
 public class TokenCheckFilter extends OncePerRequestFilter {
 
     private final APIUserDetailsService apiUserDetailsService;
-    private final JWTUtil jwtUtil;
+    private final JWTUtils jwtUtils;
     private final List<String> whiteList = List.of(
             "/api/tag/"
     );
 
-    public TokenCheckFilter(APIUserDetailsService apiUserDetailsService, JWTUtil jwtUtil) {
+    public TokenCheckFilter(APIUserDetailsService apiUserDetailsService, JWTUtils jwtUtils) {
         this.apiUserDetailsService = apiUserDetailsService;
-        this.jwtUtil = jwtUtil;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -54,7 +53,7 @@ public class TokenCheckFilter extends OncePerRequestFilter {
         }
 
         log.info("Token Check Filter..........................");
-        log.info("JWTUtil: " + jwtUtil);
+        log.info("JWTUtil: " + jwtUtils);
 
 
         try {
@@ -98,7 +97,7 @@ public class TokenCheckFilter extends OncePerRequestFilter {
         }
 
         try {
-            Map<String, Object> values = jwtUtil.validateToken(tokenStr);
+            Map<String, Object> values = jwtUtils.validateToken(tokenStr);
 
             return values;
         } catch (MalformedJwtException malformedJwtException) {

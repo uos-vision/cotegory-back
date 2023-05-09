@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import vision.cotegory.repository.MemberRepository;
 import vision.cotegory.security.APIUserDetailsService;
-import vision.cotegory.security.JWTUtil;
+import vision.cotegory.utils.JWTUtils;
 import vision.cotegory.security.filter.APILoginFilter;
 import vision.cotegory.security.filter.RefreshTokenFilter;
 import vision.cotegory.security.filter.TokenCheckFilter;
@@ -38,7 +38,7 @@ import java.util.Arrays;
 public class WebSecurityConfig {
 
     private final APIUserDetailsService apiUserDetailsService;
-    private final JWTUtil jwtUtil;
+    private final JWTUtils jwtUtils;
     private final MemberRepository memberRepository;
 
     @Bean
@@ -65,7 +65,7 @@ public class WebSecurityConfig {
 
 
         //APILoginSuccessHandler
-        APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtil, memberRepository);
+        APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtils, memberRepository);
         APILoginFailHandler failHandler = new APILoginFailHandler();
         apiLoginFilter.setAuthenticationSuccessHandler(successHandler);
         apiLoginFilter.setAuthenticationFailureHandler(failHandler);
@@ -73,12 +73,12 @@ public class WebSecurityConfig {
 
         //api로 시작하는 모든 경로는 TokenCheckFilter 동작
         http.addFilterBefore(
-                tokenCheckFilter(jwtUtil, apiUserDetailsService),
+                tokenCheckFilter(jwtUtils, apiUserDetailsService),
                 UsernamePasswordAuthenticationFilter.class
         );
 
         //refreshToken 호출 처리
-        http.addFilterBefore(new RefreshTokenFilter("/refreshToken", jwtUtil),
+        http.addFilterBefore(new RefreshTokenFilter("/refreshToken", jwtUtils),
                 TokenCheckFilter.class);
 
 
@@ -100,7 +100,7 @@ public class WebSecurityConfig {
         return source;
     }
 
-    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil, APIUserDetailsService apiUserDetailsService){
-        return new TokenCheckFilter(apiUserDetailsService, jwtUtil);
+    private TokenCheckFilter tokenCheckFilter(JWTUtils jwtUtils, APIUserDetailsService apiUserDetailsService){
+        return new TokenCheckFilter(apiUserDetailsService, jwtUtils);
     }
 }

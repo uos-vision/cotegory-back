@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.MemberRepository;
-import vision.cotegory.security.JWTUtil;
+import vision.cotegory.utils.JWTUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final JWTUtil jwtUtil;
+    private final JWTUtils jwtUtils;
     private final MemberRepository memberRepository;
 
     @Override
@@ -42,17 +42,17 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                 "memberId", memberId
         );
         //Access Token 유효기간 1일
-        String accessToken = jwtUtil.generateToken(claim, 1);
+        String accessToken = jwtUtils.generateToken(claim, 1);
         //Refresh Token 유효기간 30일
-        String refreshToken = jwtUtil.generateToken(claim, 2);
+        String refreshToken = jwtUtils.generateToken(claim, 2);
 
         Gson gson = new Gson();
 
         Map<String, String> keyMap = Map.of(
                 "accessToken", accessToken,
                 "refreshToken", refreshToken,
-                "expTimeAccessToken", jwtUtil.getExp(accessToken).toString(),
-                "expTimeRefreshToken", jwtUtil.getExp(refreshToken).toString()
+                "expTimeAccessToken", jwtUtils.getExp(accessToken).toString(),
+                "expTimeRefreshToken", jwtUtils.getExp(refreshToken).toString()
         );
         String jsonStr = gson.toJson(keyMap);
 

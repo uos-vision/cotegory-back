@@ -7,7 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 import vision.cotegory.security.exception.RefreshTokenException;
-import vision.cotegory.security.JWTUtil;
+import vision.cotegory.utils.JWTUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class RefreshTokenFilter extends OncePerRequestFilter {
 
     private final String refreshPath;
-    private final JWTUtil jwtUtil;
+    private final JWTUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -88,7 +88,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
         Long memberId = ((Number) refreshClaims.get("memberId")).longValue();
 
         //이상태까지 오면 무조건 AccessToken은 새로 생성
-        String accessTokenValue = jwtUtil.generateToken(Map.of("loginId", loginId, "memberId", memberId), 1);
+        String accessTokenValue = jwtUtils.generateToken(Map.of("loginId", loginId, "memberId", memberId), 1);
 
         String refreshTokenValue = tokens.get("refreshToken");
 
@@ -96,7 +96,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
 //        if(gapTime < (1000 * 60  * 3  ) ){
         if (gapTime < (1000 * 60 * 60 * 24 * 3)) {
             log.info("new Refresh Token required...  ");
-            refreshTokenValue = jwtUtil.generateToken(Map.of("loginId", loginId, "memberId", memberId), 30);
+            refreshTokenValue = jwtUtils.generateToken(Map.of("loginId", loginId, "memberId", memberId), 30);
         }
 
         log.info("Refresh Token result....................");
@@ -126,7 +126,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
     private void checkAccessToken(String accessToken) throws RefreshTokenException {
 
         try {
-            jwtUtil.validateToken(accessToken);
+            jwtUtils.validateToken(accessToken);
         } catch (ExpiredJwtException expiredJwtException) {
             log.info("Access Token has expired");
         } catch (Exception exception) {
@@ -137,7 +137,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
     private Map<String, Object> checkRefreshToken(String refreshToken) throws RefreshTokenException {
 
         try {
-            Map<String, Object> values = jwtUtil.validateToken(refreshToken);
+            Map<String, Object> values = jwtUtils.validateToken(refreshToken);
 
             return values;
 
