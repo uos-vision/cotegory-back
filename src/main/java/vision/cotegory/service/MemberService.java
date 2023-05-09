@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
@@ -12,6 +14,7 @@ import vision.cotegory.exception.exception.DuplicatedEntityException;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.MemberRepository;
 import vision.cotegory.service.dto.RegisterDto;
+import vision.cotegory.utils.S3Utils;
 
 import java.util.Optional;
 import java.util.Set;
@@ -19,12 +22,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TagGroupConst tagGroupConst;
     private final WebClient webClient;
+    private final S3Utils s3Utils;
 
     public Member register(RegisterDto registerDto) {
 
@@ -75,5 +80,13 @@ public class MemberService {
         Optional<Member> memberOptional = memberRepository
                 .findByLoginIdAndActivatedIsTrue(loginId);
         return memberOptional.isPresent();
+    }
+
+    public String uploadImage(Member member, MultipartFile multipartFile){
+        s3Utils.delete(member.getImgUrl());
+        String uploadedUrl = s3Utils.upload(multipartFile);
+        member.setImgUrl(uploadedUrl);
+
+        return uploadedUrl;
     }
 }

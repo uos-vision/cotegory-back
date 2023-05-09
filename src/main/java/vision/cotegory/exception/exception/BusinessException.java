@@ -8,4 +8,12 @@ public class BusinessException extends RuntimeException{
     public BusinessException(){
         super("비즈니스 예외입니다");
     }
+
+    public BusinessException(Throwable cause) {
+        super("비즈니스 예외입니다", cause);
+    }
+
+    public BusinessException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
