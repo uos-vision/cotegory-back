@@ -19,6 +19,7 @@ import vision.cotegory.repository.QuizRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +35,7 @@ public class BaekjoonProblemService {
     private final QuizRepository quizRepository;
 
     public void updateAll() {
+        quizRepository.deleteAll();
         baekjoonPageRepository.deleteAll();
         baekjoonProblemRepository.deleteAll();
 
@@ -90,8 +92,26 @@ public class BaekjoonProblemService {
     }
 
     private void crawlAllProblemBySavedTag() {
+        List<Long> deleteTargetProblems = new Vector<>();
         baekjoonProblemRepository.getAllProblemNumbers().stream().parallel()
-                .forEach(this::createBaekjoonProblemDto);
+                .forEach(number -> createBaekjoonProblemDto(number, deleteTargetProblems));
+        log.info("[deleteProblems] {}개의 problem이 조건 불충족으로 삭제됩니다", deleteTargetProblems.size());
+        deleteProblems(deleteTargetProblems);
+        log.info("[deleteProblems] {}개 problem 삭제 완료", deleteTargetProblems.size());
+    }
+
+    private void deleteProblems(List<Long> deleteTargetProblemIds) {
+        for (var deleteTargetProblemId : deleteTargetProblemIds) {
+            BaekjoonProblem deleteTargetProblem = baekjoonProblemRepository.findById(deleteTargetProblemId)
+                    .orElseThrow(NotExistEntityException::new);
+            Integer tmpProblemNumber = deleteTargetProblem.getProblemNumber();
+
+            quizRepository.deleteAll(quizRepository.findAllByProblem(deleteTargetProblem));
+            baekjoonPageRepository.findByProblemNumber(deleteTargetProblem.getProblemNumber())
+                            .ifPresent(baekjoonPageRepository::delete);
+            baekjoonProblemRepository.delete(deleteTargetProblem);
+            log.info("[deleteComplete]{}번 삭제 완료", tmpProblemNumber);
+        }
     }
 
     private List<Integer> getPages(Tag tag) {
@@ -102,12 +122,16 @@ public class BaekjoonProblemService {
         return new BaekjoonPageListCrawler(tag.toBaekjoonCode(), page).getProblemNumbers();
     }
 
-    public BaekjoonProblemPage createBaekjoonProblemDto(Integer problemNumber) {
+    private BaekjoonProblemPage createBaekjoonProblemDto(Integer problemNumber, List<Long> deleteTargetProblems) {
         BaekjoonPageCrawler baekjoonPageCrawler = new BaekjoonPageCrawler(problemNumber);
-        if (baekjoonPageCrawler.getTimeLimit() == 0)
-            return null;
         BaekjoonProblem baekjoonProblem = baekjoonProblemRepository.findByProblemNumber(problemNumber)
                 .orElseThrow(NotExistEntityException::new);
+
+        if (baekjoonPageCrawler.getTimeLimit() == 0) {
+            log.info("[deleteProblemReserved]{}번 문제가 삭제될 예정입니다", baekjoonProblem.getProblemNumber());
+            deleteTargetProblems.add(baekjoonProblem.getId());
+            return null;
+        }
 
         BaekjoonProblemPage baekjoonPage = BaekjoonProblemPage.builder()
                 .baekjoonProblem(baekjoonProblem)
