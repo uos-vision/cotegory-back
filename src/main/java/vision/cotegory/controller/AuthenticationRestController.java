@@ -51,7 +51,7 @@ public class AuthenticationRestController {
     }
 
     @PostMapping("/baekjoonhandle-check")
-    public ResponseEntity<ExistBaekjoonHandleResponse> duplicatedCheck(
+    public ResponseEntity<ExistBaekjoonHandleResponse> baekjoonHandleExistCheck(
             @RequestBody @Valid ExistBaekjoonHandleRequest existBaekjoonHandleRequest) {
         Boolean exist = memberService.isExistBaekjoonHandle(existBaekjoonHandleRequest.getBaekjoonHandle());
 
