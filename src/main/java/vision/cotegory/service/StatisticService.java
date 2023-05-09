@@ -41,7 +41,7 @@ public class StatisticService {
                 tagCount.merge(submission.getSelectTag(), 1L, Long::sum);
 
             long submissionCount = tagCount.values().stream().reduce(0L, Long::sum);
-            long correctCount = tagCount.get(quiz.getAnswerTag());
+            long correctCount = tagCount.getOrDefault(quiz.getAnswerTag(), 0L);
 
             totalSubmissionCount += submissionCount;
             totalCorrectCount += correctCount;
