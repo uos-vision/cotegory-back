@@ -20,9 +20,7 @@ import vision.cotegory.service.MemberService;
 @Transactional
 public class MemberRestController {
 
-    private final JWTUtils jwtUtils;
     private final MemberService memberService;
-    private final MemberRepository memberRepository;
 
     @GetMapping("/information")
     public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") Member member) {
