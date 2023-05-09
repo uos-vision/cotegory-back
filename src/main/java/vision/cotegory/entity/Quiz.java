@@ -42,4 +42,26 @@ public class Quiz {
         problem.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
     }
+
+    @Getter
+    private Long submitCount;
+
+    public void increaseSubmitCount() {
+        this.submitCount += 1;
+    }
+
+    public void decreaseSubmitCount() {
+        this.submitCount += 1;
+    }
+
+    @Getter
+    private Long correctCount;
+
+    public void increaseCorrectCount() {
+        this.submitCount += 1;
+    }
+
+    public void decreaseCorrectCount() {
+        this.submitCount += 1;
+    }
 }
