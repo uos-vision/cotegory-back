@@ -60,8 +60,11 @@ public class StatisticService {
 
             abnormalQuizRepository.save(abnormalQuiz);
         }
-        double totalCorrectRate = (double) totalCorrectCount / (double) totalSubmissionCount;
-        elOUtils.updateCorrectRate(totalCorrectRate);
+        if(totalSubmissionCount != 0L)
+        {
+            double totalCorrectRate = (double) totalCorrectCount / (double) totalSubmissionCount;
+            elOUtils.updateCorrectRate(totalCorrectRate);
+        }
     }
 
     private boolean isAbnormalQuiz(Long submitCount, Double correctRate) {
