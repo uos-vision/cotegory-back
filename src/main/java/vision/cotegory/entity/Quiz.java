@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import vision.cotegory.entity.problem.Problem;
 
 import javax.persistence.*;
@@ -44,24 +46,24 @@ public class Quiz {
     }
 
     @Getter
-    private Long submitCount;
+    private Long submitCount = 0L;
 
     public void increaseSubmitCount() {
         this.submitCount += 1;
     }
 
     public void decreaseSubmitCount() {
-        this.submitCount += 1;
+        this.submitCount -= 1;
     }
 
     @Getter
-    private Long correctCount;
+    private Long correctCount = 0L;
 
     public void increaseCorrectCount() {
         this.submitCount += 1;
     }
 
     public void decreaseCorrectCount() {
-        this.submitCount += 1;
+        this.submitCount -= 1;
     }
 }

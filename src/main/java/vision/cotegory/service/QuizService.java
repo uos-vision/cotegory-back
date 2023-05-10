@@ -15,6 +15,7 @@ import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateQuizDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -81,6 +82,10 @@ public class QuizService {
                 .activated(true)
                 .build();
         return quizRepository.save(quiz);
+    }
+
+    public Optional<Quiz> findQuiz(Long id) {
+        return quizRepository.findById(id);
     }
 
     public Quiz recommendQuiz(Member member) {

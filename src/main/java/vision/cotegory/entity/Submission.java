@@ -29,5 +29,5 @@ public class Submission {
 
     private LocalDateTime submitTime;
 
-    private LocalDateTime playTime;
+    private Integer playTime;
 }
