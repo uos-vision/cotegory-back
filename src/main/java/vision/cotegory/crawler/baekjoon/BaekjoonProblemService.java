@@ -35,9 +35,7 @@ public class BaekjoonProblemService {
     private final QuizRepository quizRepository;
 
     public void updateAll() {
-        quizRepository.deleteAll();
         baekjoonPageRepository.deleteAll();
-        baekjoonProblemRepository.deleteAll();
 
         Stream.of(Tag.values()).forEach(tag -> {
             if (tag.equals(Tag.OTHERS))
