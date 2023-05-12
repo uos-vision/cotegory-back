@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api/submission")
 @Transactional
-public class SubmissionController {
+public class SubmissionRestController {
 
     private final SubmissionRepository submissionRepository;
     private final QuizRepository quizRepository;

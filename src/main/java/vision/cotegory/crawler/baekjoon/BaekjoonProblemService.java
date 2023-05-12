@@ -135,7 +135,6 @@ public class BaekjoonProblemService {
 
         BaekjoonProblemPage baekjoonPage = BaekjoonProblemPage.builder()
                 .baekjoonProblem(baekjoonProblem)
-                .url(baekjoonPageCrawler.getUrl())
                 .problemNumber(baekjoonPageCrawler.getProblemNumber())
                 .title(baekjoonPageCrawler.getTitle())
                 .timeLimit(baekjoonPageCrawler.getTimeLimit())

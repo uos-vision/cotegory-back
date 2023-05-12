@@ -1,6 +1,5 @@
 package vision.cotegory.controller.response;
 
-import lombok.Builder;
 import lombok.Data;
 import vision.cotegory.entity.Quiz;
 
@@ -26,6 +25,8 @@ public class QuizResponse {
     private String sampleOutput;
 
     private String title;
+
+    private String url;
     private Integer timeLimit;
     private Integer memoryLimit;
     private Long subMissionCount;
@@ -46,5 +47,6 @@ public class QuizResponse {
         this.memoryLimit = quiz.getProblem().getMemoryLimit();
         this.subMissionCount = quiz.getSubmitCount();
         this.correctUserCount = quiz.getCorrectCount();
+        this.url = quiz.getProblem().getUrl();
     }
 }

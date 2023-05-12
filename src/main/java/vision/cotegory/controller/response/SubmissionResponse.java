@@ -1,13 +1,9 @@
 package vision.cotegory.controller.response;
 
-import lombok.Builder;
 import lombok.Data;
-import vision.cotegory.entity.Member;
-import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.Tag;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data

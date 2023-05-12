@@ -20,7 +20,7 @@ public class BaekjoonProblemPage {
     @Column(unique = true)
     private Integer problemNumber;
 
-    private String url;
+    private String url; // 삭제 요망
 
     @Lob
     private String problemBody;

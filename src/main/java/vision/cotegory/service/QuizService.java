@@ -2,6 +2,7 @@ package vision.cotegory.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QuizService {
 
     private final QuizRepository quizRepository;
