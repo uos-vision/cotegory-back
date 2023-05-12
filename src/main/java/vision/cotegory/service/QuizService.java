@@ -27,7 +27,6 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final ProblemRepository problemRepository;
     private final TagGroupConst tagGroupConst;
-    private final SubmissionRepository submissionRepository;
 
     public Quiz createProgrammersQuiz(CreateQuizDto createQuizDto) {
 
@@ -105,23 +104,5 @@ public class QuizService {
             }
         }
         return target;
-    }
-
-    public Double correctRate() {
-        List<Submission> list = submissionRepository.findAll();
-        int submitCount = list.size();
-        int correctCount = 0;
-
-        if (submitCount == 0)
-            return 0.0;
-
-        for (Submission s : list)
-        {
-            if (s.getSelectTag() == s.getQuiz().getAnswerTag())
-                correctCount++;
-        }
-
-
-        return (double) correctCount / submitCount;
     }
 }
