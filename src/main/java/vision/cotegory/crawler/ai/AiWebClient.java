@@ -6,8 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import vision.cotegory.exception.exception.AIApiException;
-import vision.cotegory.exception.exception.SolvedApiException;
+import vision.cotegory.exception.exception.AiApiException;
 
 import java.util.List;
 
@@ -32,8 +31,8 @@ public class AiWebClient {
                 .retrieve()
                 .onStatus(HttpStatus::isError, response -> {
                     if (response.statusCode().equals(HttpStatus.UNPROCESSABLE_ENTITY))
-                        return Mono.error(new AIApiException("접근 불가능한 엔티티입니다"));
-                    return Mono.error(new SolvedApiException());
+                        return Mono.error(new AiApiException("접근 불가능한 엔티티입니다"));
+                    return Mono.error(new AiApiException());
                 })
                 .bodyToFlux(Integer.class)
                 .collectList()
