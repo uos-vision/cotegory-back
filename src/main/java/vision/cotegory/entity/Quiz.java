@@ -74,13 +74,15 @@ public class Quiz {
     }
 
     public Map<Tag, Long> getSubmittedCountByTags() {
-        return new HashMap<>(tagCount);
+        HashMap<Tag, Long> ret = new HashMap<>(tagCount);
+        tagGroup.getTags().forEach(tag -> ret.putIfAbsent(tag, 0L));
+        return ret;
     }
 
     public Map<Tag, Double> getSubmittedCountRateByTags() {
         var ret = new HashMap<Tag, Double>();
         Long submitCount = getSubmitCount();
-        for (var tag : tagCount.keySet()) {
+        for (var tag : tagGroup.getTags()) {
             if (submitCount.equals(0L)) {
                 ret.put(tag, 0.0);
                 continue;
