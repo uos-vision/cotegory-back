@@ -52,11 +52,11 @@ public class Quiz {
     }
 
     public void increaseSubmitCount() {
-        tagCount.merge(answerTag, 0L, (v1, v2) -> v1 + v2);
+        tagCount.merge(answerTag, +1L, Long::sum);
     }
 
     public void decreaseSubmitCount() {
-        tagCount.merge(answerTag, 0L, (v1, v2) -> v1 - v2);
+        tagCount.merge(answerTag, -1L, Long::sum);
     }
 
     public Long getSubmitCount() {
