@@ -9,11 +9,15 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 import vision.cotegory.entity.problem.Problem;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
 @NoArgsConstructor
 @Getter
 public class Quiz {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -30,9 +34,11 @@ public class Quiz {
     @Setter
     private Boolean activated;
 
-    @Getter
     @Setter
     private Integer mmr = 1200;
+
+    @ElementCollection
+    private final Map<Tag, Long> tagCount = new ConcurrentHashMap<>();
 
     @Builder
     public Quiz(Problem problem, Integer mmr, TagGroup tagGroup, Tag answerTag, Boolean activated) {
@@ -45,25 +51,43 @@ public class Quiz {
         tagGroup.getQuizzes().add(this);
     }
 
-    @Getter
-    private Long submitCount = 0L;
-
     public void increaseSubmitCount() {
-        this.submitCount += 1;
+        tagCount.merge(answerTag, 0L, (v1, v2) -> v1 + v2);
     }
 
     public void decreaseSubmitCount() {
-        this.submitCount -= 1;
+        tagCount.merge(answerTag, 0L, (v1, v2) -> v1 - v2);
     }
 
-    @Getter
-    private Long correctCount = 0L;
-
-    public void increaseCorrectCount() {
-        this.submitCount += 1;
+    public Long getSubmitCount() {
+        return tagCount.values().stream().reduce(0L, Long::sum);
     }
 
-    public void decreaseCorrectCount() {
-        this.submitCount -= 1;
+    public Long getCorrectCount() {
+        return tagCount.getOrDefault(answerTag, 0L);
+    }
+
+    public Double getCorrectRate() {
+        if (getSubmitCount().equals(0L))
+            return 0.0;
+        return (double) getCorrectCount() / (double) getSubmitCount();
+    }
+
+    public Map<Tag, Long> getSubmittedCountByTags() {
+        return new HashMap<>(tagCount);
+    }
+
+    public Map<Tag, Double> getSubmittedCountRateByTags() {
+        var ret = new HashMap<Tag, Double>();
+        Long submitCount = getSubmitCount();
+        for (var tag : tagCount.keySet()) {
+            if (submitCount.equals(0L)) {
+                ret.put(tag, 0.0);
+                continue;
+            }
+            double rate = (double) tagCount.getOrDefault(tag, 0L) / (double) submitCount;
+            ret.put(tag, rate);
+        }
+        return ret;
     }
 }
