@@ -51,12 +51,12 @@ public class Quiz {
         tagGroup.getQuizzes().add(this);
     }
 
-    public void increaseSubmitCount(Submission submission) {
-        tagCount.merge(submission.getSelectTag(), +1L, Long::sum);
+    public void increaseSubmitCount(Tag selectTag) {
+        tagCount.merge(selectTag, +1L, Long::sum);
     }
 
-    public void decreaseSubmitCount(Submission submission) {
-        tagCount.merge(submission.getSelectTag(), -1L, Long::sum);
+    public void decreaseSubmitCount(Tag selectTag) {
+        tagCount.merge(selectTag, -1L, Long::sum);
     }
 
     public Long getSubmitCount() {
