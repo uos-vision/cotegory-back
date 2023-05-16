@@ -13,6 +13,12 @@ public class ProblemResponse {
 
     private String url;
 
+    public ProblemResponse(String title, Integer problemNumber, String url) {
+        this.title = title;
+        this.problemNumber = problemNumber;
+        this.url = url;
+    }
+
     public ProblemResponse(Problem problem) {
         this.title = problem.getTitle();
         this.problemNumber = problem.getProblemNumber();

@@ -14,7 +14,6 @@ import java.util.Optional;
 @Getter
 public class ElOUtils {
 
-    @NotNull
     private double correctRate = 0.5;
 
     public void updateCorrectRate(double correctRate) {

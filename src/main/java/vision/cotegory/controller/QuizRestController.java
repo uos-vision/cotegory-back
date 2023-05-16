@@ -35,7 +35,4 @@ public class QuizRestController {
         QuizResponse quizResponse = new QuizResponse(quiz);
         return ResponseEntity.ok(quizResponse);
     }
-
-
-
 }
