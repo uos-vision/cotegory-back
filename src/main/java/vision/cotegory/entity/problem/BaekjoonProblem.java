@@ -76,6 +76,6 @@ public class BaekjoonProblem extends Problem{
 
     @Override
     public String getUrl() {
-        return problemPage.getUrl();
+        return String.format("https://www.acmicpc.net/problem/%d", problemNumber);
     }
 }

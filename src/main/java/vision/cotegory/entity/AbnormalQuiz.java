@@ -20,12 +20,4 @@ public class AbnormalQuiz {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Quiz quiz;
-
-    private Double correctRate;
-
-    private Long submitCount;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @MapKeyEnumerated(EnumType.STRING)
-    private Map<Tag, Long> selectedTagCount;
 }

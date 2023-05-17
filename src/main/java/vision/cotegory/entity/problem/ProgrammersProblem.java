@@ -77,6 +77,6 @@ public class ProgrammersProblem extends Problem{
 
     @Override
     public String getUrl() {
-        return null;
+        return String.format("https://school.programmers.co.kr/learn/courses/30/lessons/%d", problemNumber);
     }
 }

@@ -38,4 +38,7 @@ public class Member {
     private String nickName;
 
     private Boolean activated;
+
+    @OneToMany(mappedBy = "member")
+    Map<RecommendType, Recommend> recommends;
 }

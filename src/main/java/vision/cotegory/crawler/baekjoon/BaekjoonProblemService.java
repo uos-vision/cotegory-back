@@ -3,6 +3,8 @@ package vision.cotegory.crawler.baekjoon;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import vision.cotegory.crawler.baekjoon.SolvedAcProblemDto.SolvedAcTagDto;
 import vision.cotegory.crawler.baekjoon.SolvedAcProblemDto.SolvedAcTitleDto;
 import vision.cotegory.entity.Quiz;
@@ -15,6 +17,7 @@ import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.BaekjoonPageRepository;
 import vision.cotegory.repository.BaekjoonProblemRepository;
 import vision.cotegory.repository.QuizRepository;
+import vision.cotegory.repository.TagGroupRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,8 @@ public class BaekjoonProblemService {
     private final BaekjoonProblemRepository baekjoonProblemRepository;
     private final TagGroupConst tagGroupConst;
     private final QuizRepository quizRepository;
+    private final PlatformTransactionManager transactionManager;
+    private final TagGroupRepository tagGroupRepository;
 
     public void updateAll() {
         baekjoonPageRepository.deleteAll();
@@ -43,6 +48,31 @@ public class BaekjoonProblemService {
             crawlAllTagParallelByTag(tag);
         });
         crawlAllProblemBySavedTag();
+
+        logQuizByTagGroups();
+        logProblems();
+    }
+
+    public void logQuizByTagGroups() {
+        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+        transactionTemplate.execute(status -> {
+            tagGroupRepository.findAll().forEach(tagGroup -> tagGroup.getTags().forEach(answerTag -> {
+                Long cnt = quizRepository.countAllByTagGroupAndAnswerTag(tagGroup, answerTag);
+                log.info("그룹:{} | 정답태그:{} | {}개", tagGroup.getName(), answerTag.toKorean(), cnt);
+            }));
+            return null;
+        });
+    }
+
+    void logProblems(){
+        final List<BaekjoonProblem> baekjoonProblems = baekjoonProblemRepository.findAll();
+        long cnt = 0L;
+        for(var baekjoonProblem : baekjoonProblems){
+            List<Quiz> quizzes = quizRepository.findAllByProblem(baekjoonProblem);
+            if(quizzes.isEmpty())
+                ++cnt;
+        }
+        log.info("[notHaveQuizTotalCnt]{}개의 문제중 {}개의 Problem은 Quiz를 가지지 않습니다", baekjoonProblems.size(), cnt);
     }
 
     private void crawlAllTagParallelByTag(Tag tag) {
@@ -53,12 +83,13 @@ public class BaekjoonProblemService {
     }
 
     private void extractTagFromDto(SolvedAcProblemDto problemDto) {
-        if (baekjoonProblemRepository.existsByProblemNumber(problemDto.getProblemId()))
-            return;
-        if (problemDto.getTitles().stream().map(SolvedAcTitleDto::getLanguage).noneMatch(e -> e.equals("ko")))
-            return;
         if (problemDto.getTags().isEmpty())
             return;
+        if (baekjoonProblemRepository.existsByProblemNumber(problemDto.getProblemId())){
+            Integer problemNumber = problemDto.getProblemId();
+            log.info("[skipProblem]{}번 문제는 이미 DB에 존재하므로 skip됩니다", problemNumber);
+            return;
+        }
 
         Set<Tag> tags = problemDto.getTags().stream()
                 .map(SolvedAcTagDto::getBojTagId)
@@ -66,8 +97,6 @@ public class BaekjoonProblemService {
                 .collect(Collectors.toSet());
 
         final Map<TagGroup, Tag> assignableGroups = tagGroupConst.assignableGroups(tags);
-        if (assignableGroups.isEmpty())
-            return;
 
         BaekjoonProblem baekjoonProblem = BaekjoonProblem.builder()
                 .tags(tags)
@@ -75,6 +104,11 @@ public class BaekjoonProblemService {
                 .problemNumber(problemDto.getProblemId())
                 .build();
         BaekjoonProblem savedBaekjoonProblem = baekjoonProblemRepository.save(baekjoonProblem);
+
+        if (problemDto.getTitles().stream().map(SolvedAcTitleDto::getLanguage).noneMatch(e -> e.equals("ko")))
+            return;
+        if (assignableGroups.isEmpty())
+            return;
 
         assignableGroups.forEach((tagGroup, tag) -> {
             Quiz quiz = Quiz.builder()
@@ -105,10 +139,7 @@ public class BaekjoonProblemService {
             Integer tmpProblemNumber = deleteTargetProblem.getProblemNumber();
 
             quizRepository.deleteAll(quizRepository.findAllByProblem(deleteTargetProblem));
-            baekjoonPageRepository.findByProblemNumber(deleteTargetProblem.getProblemNumber())
-                            .ifPresent(baekjoonPageRepository::delete);
-            baekjoonProblemRepository.delete(deleteTargetProblem);
-            log.info("[deleteComplete]{}번 삭제 완료", tmpProblemNumber);
+            log.info("[deleteComplete]{}번 포함 퀴즈 삭제 완료", tmpProblemNumber);
         }
     }
 
@@ -126,14 +157,13 @@ public class BaekjoonProblemService {
                 .orElseThrow(NotExistEntityException::new);
 
         if (baekjoonPageCrawler.getTimeLimit() == 0) {
-            log.info("[deleteProblemReserved]{}번 문제가 삭제될 예정입니다", baekjoonProblem.getProblemNumber());
+            log.info("[deleteProblemReserved]{}번 문제를 포함한 퀴즈들이 삭제될 예정입니다", baekjoonProblem.getProblemNumber());
             deleteTargetProblems.add(baekjoonProblem.getId());
             return null;
         }
 
         BaekjoonProblemPage baekjoonPage = BaekjoonProblemPage.builder()
                 .baekjoonProblem(baekjoonProblem)
-                .url(baekjoonPageCrawler.getUrl())
                 .problemNumber(baekjoonPageCrawler.getProblemNumber())
                 .title(baekjoonPageCrawler.getTitle())
                 .timeLimit(baekjoonPageCrawler.getTimeLimit())

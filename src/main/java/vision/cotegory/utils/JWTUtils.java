@@ -32,7 +32,7 @@ public class JWTUtils {
         Map<String, Object> payloads = new HashMap<>(valueMap);
 
 //        int time = 60 * 24 * days;
-        int time = days * 30;
+        int time = days * 3000;
 
         String jwtStr = Jwts.builder()
                 .setHeader(headers)

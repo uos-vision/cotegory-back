@@ -2,6 +2,7 @@ package vision.cotegory.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
@@ -15,16 +16,17 @@ import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateQuizDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QuizService {
 
     private final QuizRepository quizRepository;
     private final ProblemRepository problemRepository;
     private final TagGroupConst tagGroupConst;
-    private final SubmissionRepository submissionRepository;
 
     public Quiz createProgrammersQuiz(CreateQuizDto createQuizDto) {
 
@@ -83,6 +85,10 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
+    public Optional<Quiz> findQuiz(Long id) {
+        return quizRepository.findById(id);
+    }
+
     public Quiz recommendQuiz(Member member) {
         int minDiff = 2000;
         Quiz target = null;
@@ -98,23 +104,5 @@ public class QuizService {
             }
         }
         return target;
-    }
-
-    public Double correctRate() {
-        List<Submission> list = submissionRepository.findAll();
-        int submitCount = list.size();
-        int correctCount = 0;
-
-        if (submitCount == 0)
-            return 0.0;
-
-        for (Submission s : list)
-        {
-            if (s.getSelectTag() == s.getQuiz().getAnswerTag())
-                correctCount++;
-        }
-
-
-        return (double) correctCount / submitCount;
     }
 }

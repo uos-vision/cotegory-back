@@ -8,5 +8,5 @@ import vision.cotegory.entity.Recommend;
 import java.util.Optional;
 
 public interface RecommendRepository extends JpaRepository<Recommend, Long> {
-    Optional<Recommend> findTopByMemberAndOriginOrderByCreateTimeDesc(Member member, Origin origin);
+    // Optional<Recommend> findTopByMemberAndOriginOrderByCreateTimeDesc(Member member, Origin origin);
 }
