@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import vision.cotegory.entity.problem.Problem;
 
 import javax.persistence.*;
@@ -41,12 +39,11 @@ public class Quiz {
     private final Map<Tag, Long> tagCount = new ConcurrentHashMap<>();
 
     @Builder
-    public Quiz(Problem problem, Integer mmr, TagGroup tagGroup, Tag answerTag, Boolean activated) {
+    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Boolean activated) {
         this.problem = problem;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;
         this.activated = activated;
-        this.mmr = mmr;
         problem.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
     }

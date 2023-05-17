@@ -48,7 +48,6 @@ class ElOUtilsTest {
                .build();
 
         Quiz quiz = Quiz.builder()
-                .mmr(1200)
                 .tagGroup(tagGroup)
                 .problem(problem)
                 .build();
