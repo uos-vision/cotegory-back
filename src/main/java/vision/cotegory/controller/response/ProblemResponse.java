@@ -7,10 +7,8 @@ import vision.cotegory.entity.problem.ProgrammersProblem;
 @Data
 public class ProblemResponse {
 
-
     private String title;
     private Integer problemNumber;
-
     private String url;
 
     public ProblemResponse(String title, Integer problemNumber, String url) {
