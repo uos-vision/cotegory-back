@@ -18,6 +18,7 @@ import vision.cotegory.exception.exception.BusinessException;
 import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.QuizRepository;
 import vision.cotegory.repository.SubmissionRepository;
+import vision.cotegory.service.QuizService;
 import vision.cotegory.service.SubmissionService;
 import vision.cotegory.service.dto.CreateSubmissionDto;
 
@@ -30,16 +31,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/submission")
 @Transactional
 public class SubmissionRestController {
-
-    private final SubmissionRepository submissionRepository;
-    private final QuizRepository quizRepository;
     private final SubmissionService submissionService;
+    private final QuizService quizService;
 
     @Operation(description = "yyyy-MM-dd'T'HH:mm:ss 형식을 요구로 합니다.")
     @GetMapping("/time")
     public ResponseEntity<List<SubmissionResponse>> timeSubmission(@RequestHeader(value = "Authorization")Member member, @Valid DateSubmissionRequest dateSubmissionRequest)
     {
-        List<Submission> submissionList = submissionRepository.findAllByMemberAndSubmitTimeBetween(member, dateSubmissionRequest.getFromTime(), dateSubmissionRequest.getToTime());
+        List<Submission> submissionList = submissionService.findAllByTime(member, dateSubmissionRequest.getFromTime(), dateSubmissionRequest.getToTime());
         List<SubmissionResponse> resultList = submissionList.stream()
                 .map(s -> new SubmissionResponse(s))
                 .collect(Collectors.toList());
@@ -51,7 +50,7 @@ public class SubmissionRestController {
     {
         CreateSubmissionDto createSubmissionDto = CreateSubmissionDto.builder()
                 .member(member)
-                        .quiz(quizRepository.findById(createSubmissionRequest.getQuizId()).orElseThrow(NotExistEntityException::new))
+                        .quiz(quizService.findQuiz(createSubmissionRequest.getQuizId()).orElseThrow(NotExistEntityException::new))
                                 .selectTag(createSubmissionRequest.getSelectTag())
                                         .submitTime(createSubmissionRequest.getSubmitTime())
                                                 .playTime(createSubmissionRequest.getPlayTime())
@@ -63,7 +62,7 @@ public class SubmissionRestController {
     @GetMapping("/pages")
     public ResponseEntity<List<SubmissionResponse>> pageSubmission(@RequestHeader(value = "Authorization")Member member, Pageable pageable)
     {
-        Page<Submission> submissionList = submissionRepository.findAllByMember(member, pageable);
+        Page<Submission> submissionList = submissionService.findAllByPageable(member, pageable);
         List<SubmissionResponse> resultList = submissionList.stream()
                 .map(s -> new SubmissionResponse(s))
                 .collect(Collectors.toList());
@@ -74,7 +73,7 @@ public class SubmissionRestController {
     @GetMapping("/page")
     public ResponseEntity<SubmissionPageInfoResponse> pageInfo(@RequestHeader(value = "Authorization")Member member, @Valid SubmissionPageInfoRequest sr)
     {
-        Integer cnt = submissionRepository.findAllByMember(member).size();
+        Integer cnt = submissionService.findAll(member).size();
         Integer totalPages = cnt % sr.getSize() == 0 ? cnt / sr.getSize() : cnt / sr.getSize() + 1;
         if(sr.getPageNum() > totalPages)
             throw new BusinessException();

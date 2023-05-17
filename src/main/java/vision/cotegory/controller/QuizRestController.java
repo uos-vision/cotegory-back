@@ -17,9 +17,6 @@ import vision.cotegory.service.QuizService;
 @RequestMapping("/api/quiz")
 @Transactional
 public class QuizRestController {
-
-    private final QuizRepository quizRepository;
-    private final SubmissionRepository submissionRepository;
     private final QuizService quizService;
 
     @GetMapping("/{id}")

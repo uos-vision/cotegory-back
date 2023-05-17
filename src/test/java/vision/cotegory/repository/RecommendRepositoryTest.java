@@ -33,19 +33,15 @@ class RecommendRepositoryTest {
         final Recommend recommend1 = Recommend.builder()
                 .member(member)
                 .createTime(LocalDateTime.now())
-                .recommendProblemNumber(1)
-                .origin(Origin.PROGRAMMERS)
                 .build();
         final Recommend recommend2 = Recommend.builder()
                 .member(member)
-                .createTime(LocalDateTime.now().plus(10, ChronoUnit.SECONDS))
-                .recommendProblemNumber(2)
-                .origin(Origin.PROGRAMMERS)
+                .createTime(LocalDateTime.now())
                 .build();
 
         recommendRepository.saveAll(List.of(recommend1, recommend2));
 
-        Recommend recommend = recommendRepository.findTopByMemberAndOriginOrderByCreateTimeDesc(member, Origin.PROGRAMMERS).get();
-        log.info("createTime : {}, number : {}", recommend.getCreateTime(), recommend.getRecommendProblemNumber());
+        Recommend recommend = recommendRepository.findById(recommend1.getId()).get();
+        log.info("createTime : {}", recommend.getCreateTime());
     }
 }

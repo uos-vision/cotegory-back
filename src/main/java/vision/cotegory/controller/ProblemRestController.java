@@ -1,5 +1,6 @@
 package vision.cotegory.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -30,6 +31,7 @@ public class ProblemRestController {
         return ResponseEntity.ok(problemResponse);
     }
 
+    @Operation(summary = "랜덤한 기업문제를 보여줍니다.")
     @GetMapping("/company")
     public ResponseEntity<ProblemResponse> findCompanyProblem() {
         List<String> list = problemService.findCompanyProblem();
@@ -48,6 +50,7 @@ public class ProblemRestController {
         problemService.createCompanyProblem(createCompanyProblemDto);
     } //AdminRestController로 옮길예정
 
+    //비회원을 위한 기능이 있을지도 몰라서 일단 만들었습니다.
     @GetMapping("/today")
     public ResponseEntity<ProblemResponse> findTodayProblem() {
         Problem problem = problemService.findTodayProblem();
