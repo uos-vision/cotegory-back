@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
+import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
 import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateSubmissionDto;
@@ -19,16 +20,20 @@ import java.util.List;
 public class SubmissionService {
     private final SubmissionRepository submissionRepository;
 
-    public Submission createSubmission(CreateSubmissionDto createSubmissionDto)
-    {
+    public Submission createSubmission(CreateSubmissionDto createSubmissionDto) {
+        Member member = createSubmissionDto.getMember();
+        Quiz quiz = createSubmissionDto.getQuiz();
+
         Submission submission = Submission.builder()
-                .member(createSubmissionDto.getMember())
+                .member(member)
                 .quiz(createSubmissionDto.getQuiz())
                 .selectTag(createSubmissionDto.getSelectTag())
                 .submitTime(createSubmissionDto.getSubmitTime())
                 .playTime(createSubmissionDto.getPlayTime())
                 .build();
 
+        member.addSubmit(submission);
+        quiz.increaseSubmitCount(submission);
         return submissionRepository.save(submission);
     }
 
