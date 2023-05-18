@@ -100,7 +100,7 @@ public class AdminRestController {
     }
 
     @Operation(description = "프론트에서 호출할일은 거의 없습니다", summary = "5분이상 걸리는 작업입니다")
-    @PostMapping("/baekjoon/fetch")
+    @PostMapping("/baekjoon/crawl")
     public void updateBaekjoonProblems() {
         baekjoonCrawler.crawlAll();
     }
