@@ -3,22 +3,22 @@ package vision.cotegory.crawler.baekjoon;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 import vision.cotegory.crawler.baekjoon.dto.BaekjoonProblemMetaDto;
 import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
 import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto.SolvedAcTagDto;
-import vision.cotegory.entity.*;
+import vision.cotegory.entity.Origin;
+import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.entity.tag.Tag;
 import vision.cotegory.entity.tag.TagGroup;
-import vision.cotegory.repository.TagGroupRepository;
-import vision.cotegory.service.TagGroupService;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
+import vision.cotegory.repository.TagGroupRepository;
+import vision.cotegory.service.TagGroupService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,6 @@ public class BaekjoonCrawler {
     private final SolvedAcWebClient solvedAcWebClient;
     private final TagGroupService tagGroupService;
     private final QuizRepository quizRepository;
-    private final TagGroupRepository tagGroupRepository;
 
     public void crawlAll() {
         var stopWatch = new StopWatch();
