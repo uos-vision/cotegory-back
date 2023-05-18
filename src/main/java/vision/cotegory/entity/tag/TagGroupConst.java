@@ -1,5 +1,6 @@
 package vision.cotegory.entity.tag;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import static vision.cotegory.entity.tag.Tag.*;
 
 @Component
 @Transactional
+@Slf4j
 public class TagGroupConst {
 
     private final TagGroupRepository tagGroupRepository;
@@ -47,7 +49,12 @@ public class TagGroupConst {
         )).build();
         tagGroups.add(groupC);
 
-        tagGroupRepository.saveAll(tagGroups);
+        for(var tagGroup : tagGroups){
+            if(tagGroupRepository.findByName(tagGroup.getName()).isPresent())
+                continue;
+            tagGroupRepository.save(tagGroup);
+            log.info("[tagGroupConst]{}가 repo에 save되었습니다", tagGroup.getName());
+        }
     }
 
     public Map<TagGroup, Tag> assignableGroups(Set<Tag> tags) {

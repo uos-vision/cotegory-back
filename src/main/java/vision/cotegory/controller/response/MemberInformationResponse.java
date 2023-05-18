@@ -1,17 +1,50 @@
 package vision.cotegory.controller.response;
 
-import lombok.Builder;
 import lombok.Data;
+import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
+import vision.cotegory.entity.tag.Tag;
+import vision.cotegory.entity.tag.TagGroup;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
-@Builder
 public class MemberInformationResponse {
-    private Long id;
+    private Long memberId;
     private String baekjoonHandle;
     private String imgUrl;
     private String nickName;
     private Set<Role> roles;
+
+    private List<MemberTagGroupInformationResponse> memberTagGroupInformationResponses;
+    private Map<Tag, Double> correctRate;
+
+    public MemberInformationResponse(Member member) {
+        this.memberId = member.getId();
+        this.baekjoonHandle = member.getBaekjoonHandle();
+        this.imgUrl = member.getImgUrl();
+        this.nickName = member.getNickName();
+        this.roles = member.getRoles();
+
+        this.memberTagGroupInformationResponses = member.getMmr().entrySet().stream().map(entry -> {
+            TagGroup tagGroup = entry.getKey();
+            Integer mmr = entry.getValue();
+            return new MemberTagGroupInformationResponse(tagGroup.getId(), mmr);
+        }).collect(Collectors.toList());
+        this.correctRate = member.getCorrectRate();
+    }
+
+    @Data
+    static class MemberTagGroupInformationResponse {
+        private Long tagGroupId;
+        private Integer mmr;
+
+        public MemberTagGroupInformationResponse(Long tagGroupId, Integer mmr) {
+            this.tagGroupId = tagGroupId;
+            this.mmr = mmr;
+        }
+    }
 }

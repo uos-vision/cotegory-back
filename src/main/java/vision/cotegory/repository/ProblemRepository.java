@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface ProblemRepository extends JpaRepository<Problem, Long> {
 
-    @Query("select p from Problem p where p.problemMeta.problemMetaContents.problemNumber = :problemNumber and p.problemMeta.problemMetaContents.origin = :origin")
+    @Query("select p from Problem p where p.problemMeta.problemNumber = :problemNumber and p.problemMeta.origin = :origin")
     Optional<Problem> findByProblemNumberAndOrigin(@Param("problemNumber") Integer problemNumber, @Param("origin") Origin origin);
 }

@@ -1,10 +1,12 @@
-package vision.cotegory.controller.request;
+package vision.cotegory.service.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import vision.cotegory.entity.Origin;
 
 @Data
-public class CreateProblemMetaRequest {
+@Builder
+public class CreateProblemMetaDto {
     private Integer problemNumber;
 
     private Origin origin;

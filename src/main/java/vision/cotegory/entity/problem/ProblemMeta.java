@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import vision.cotegory.entity.Origin;
 
 import javax.persistence.*;
 
@@ -18,10 +19,14 @@ public class ProblemMeta {
     @GeneratedValue
     private Long id;
 
-    @Embedded
-    private ProblemMetaContents problemMetaContents;
+    @Column(name = "problem_number")
+    private Integer problemNumber;
 
-    public ProblemMeta(ProblemMetaContents problemMetaContents) {
-        this.problemMetaContents = problemMetaContents;
-    }
+    @Column(name = "origin")
+    @Enumerated(EnumType.STRING)
+    private Origin origin;
+
+    private String title;
+
+    private String url;
 }

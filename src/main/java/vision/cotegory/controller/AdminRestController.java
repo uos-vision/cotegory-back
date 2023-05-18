@@ -23,6 +23,7 @@ import vision.cotegory.repository.TagGroupRepository;
 import vision.cotegory.service.ProblemService;
 import vision.cotegory.service.StatisticService;
 import vision.cotegory.service.QuizService;
+import vision.cotegory.service.dto.CreateProblemMetaDto;
 import vision.cotegory.service.dto.CreateQuizDto;
 
 import javax.validation.Valid;
@@ -67,25 +68,40 @@ public class AdminRestController {
     public void createQuiz(@RequestBody @Valid CreateQuizRequest createQuizRequest) {
         TagGroup tagGroup = tagGroupRepository.findById(createQuizRequest.getTagGroupId())
                 .orElseThrow(NotExistEntityException::new);
+
         CreateQuizDto createQuizDto = CreateQuizDto.builder()
-                .tagGroup(tagGroup)
                 .answerTag(createQuizRequest.getAnswerTag())
-                .problemContents(createQuizRequest.getProblemContents())
-                .problemMetaContents(createQuizRequest.getProblemMetaContents())
-                .tags(createQuizRequest.getTags())
+                .tagGroup(tagGroup)
+                .problemNumber(createQuizRequest.getProblemNumber())
+                .origin(createQuizRequest.getOrigin())
+                .url(createQuizRequest.getUrl())
+                .problemNumber(createQuizRequest.getProblemNumber())
+                .problemBody(createQuizRequest.getProblemBody())
+                .problemInput(createQuizRequest.getProblemInput())
+                .problemOutput(createQuizRequest.getProblemOutput())
+                .sampleInput(createQuizRequest.getSampleInput())
+                .sampleOutput(createQuizRequest.getSampleOutput())
+                .timeLimit(createQuizRequest.getTimeLimit())
+                .memoryLimit(createQuizRequest.getMemoryLimit())
                 .build();
 
         quizService.createQuiz(createQuizDto);
     }
 
     @PostMapping("/create-meta")
-    public void createProblemMeta(@RequestBody @Valid CreateProblemMetaRequest createProblemMetaRequest){
-        problemService.createProblemMeta(createProblemMetaRequest.getProblemMetaContents());
+    public void createProblemMeta(@RequestBody @Valid CreateProblemMetaRequest createProblemMetaRequest) {
+        CreateProblemMetaDto createProblemMetaDto = CreateProblemMetaDto.builder()
+                .origin(createProblemMetaRequest.getOrigin())
+                .url(createProblemMetaRequest.getUrl())
+                .origin(createProblemMetaRequest.getOrigin())
+                .title(createProblemMetaRequest.getTitle())
+                .build();
+        problemService.createProblemMeta(createProblemMetaDto);
     }
 
     @Operation(description = "프론트에서 호출할일은 거의 없습니다", summary = "5분이상 걸리는 작업입니다")
     @PostMapping("/baekjoon/fetch")
     public void updateBaekjoonProblems() {
-        baekjoonCrawler.fetchAll();
+        baekjoonCrawler.crawlAll();
     }
 }
