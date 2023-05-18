@@ -39,6 +39,40 @@ public class Initializer {
         makeAdmin();
         saveTagGroup();
     }
+    private void makeUser() {
+        if(memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
+            return;
+        Member member = Member.builder()
+                .loginId("member")
+                .pw(passwordEncoder.encode("1111"))
+                .roles(Set.of(Role.ROLE_USER))
+                .baekjoonHandle("tori1753")
+                .activated(true)
+                .mmr(Map.of(
+                        tagGroupService.getTagGroupConsts().get(0), 200,
+                        tagGroupService.getTagGroupConsts().get(1), 300,
+                        tagGroupService.getTagGroupConsts().get(2), 400))
+                .nickName("UOS닉네임")
+                .build();
+
+        memberRepository.save(member);
+        log.info("[memberInit]{}", member);
+    }
+
+    private void makeAdmin() {
+        if(memberRepository.findByLoginIdAndActivatedIsTrue("admin").isPresent())
+            return;
+        Member admin = Member.builder()
+                .loginId("admin")
+                .pw(passwordEncoder.encode("1111"))
+                .roles(Set.of(Role.ROLE_ADMIN))
+                .activated(true)
+                .nickName("admin닉네임")
+                .build();
+
+        memberRepository.save(admin);
+        log.info("[adminInit]{}", admin);
+    }
 
     private void saveTagGroup() {
         List<TagGroup> tagGroups = new ArrayList<>();
@@ -71,43 +105,8 @@ public class Initializer {
             if(tagGroupRepository.findByName(tagGroup.getName()).isPresent())
                 continue;
             tagGroupRepository.save(tagGroup);
-            log.info("[tagGroupConst]{}가 repo에 save되었습니다", tagGroup.getName());
+            log.info("[tagGroupConstInit]{}", tagGroup.getName());
         }
-    }
-
-    private void makeUser() {
-        if(memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
-            return;
-        Member member = Member.builder()
-                .loginId("member")
-                .pw(passwordEncoder.encode("1111"))
-                .roles(Set.of(Role.ROLE_USER))
-                .baekjoonHandle("tori1753")
-                .activated(true)
-                .mmr(Map.of(
-                        tagGroupService.getTagGroupConsts().get(0), 200,
-                        tagGroupService.getTagGroupConsts().get(1), 300,
-                        tagGroupService.getTagGroupConsts().get(2), 400))
-                .nickName("UOS닉네임")
-                .build();
-
-        memberRepository.save(member);
-        log.info("[memberInit] {}", member);
-    }
-
-    private void makeAdmin() {
-        if(memberRepository.findByLoginIdAndActivatedIsTrue("admin").isPresent())
-            return;
-        Member admin = Member.builder()
-                .loginId("admin")
-                .pw(passwordEncoder.encode("1111"))
-                .roles(Set.of(Role.ROLE_ADMIN))
-                .activated(true)
-                .nickName("admin닉네임")
-                .build();
-
-        memberRepository.save(admin);
-        log.info("[adminInit] {}", admin);
     }
 
 }
