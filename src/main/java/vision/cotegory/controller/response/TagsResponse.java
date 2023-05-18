@@ -2,7 +2,7 @@ package vision.cotegory.controller.response;
 
 import lombok.Builder;
 import lombok.Data;
-import vision.cotegory.entity.Tag;
+import vision.cotegory.entity.tag.Tag;
 
 import java.util.List;
 

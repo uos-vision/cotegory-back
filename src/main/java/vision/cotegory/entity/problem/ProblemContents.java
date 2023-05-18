@@ -1,40 +1,25 @@
 package vision.cotegory.entity.problem;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@SuperBuilder
+@Embeddable
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class BaekjoonProblemPage {
-    @OneToOne(fetch = FetchType.LAZY)
-    private BaekjoonProblem baekjoonProblem;
-
-    @Id
-    @Column(unique = true)
-    private Integer problemNumber;
-
-    private String url; // 삭제 요망
-
+public class ProblemContents {
     @Lob
     private String problemBody;
-
     @Lob
     private String problemInput;
     @Lob
     private String problemOutput;
-
     @Lob
     private String sampleInput;
     @Lob
     private String sampleOutput;
-
     private String title;
     private Integer timeLimit;
     private Integer memoryLimit;

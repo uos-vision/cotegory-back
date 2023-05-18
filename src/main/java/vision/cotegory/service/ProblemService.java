@@ -2,10 +2,11 @@ package vision.cotegory.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import vision.cotegory.entity.problem.BaekjoonProblem;
+import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.problem.Problem;
-import vision.cotegory.entity.problem.ProgrammersProblem;
-import vision.cotegory.repository.BaekjoonProblemRepository;
+import vision.cotegory.entity.problem.ProblemMeta;
+import vision.cotegory.entity.problem.ProblemMetaContents;
+import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.service.dto.CreateCompanyProblemDto;
 import vision.cotegory.utils.CSVUtils;
@@ -13,20 +14,20 @@ import vision.cotegory.utils.CSVUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class ProblemService {
 
     private final ProblemRepository problemRepository;
-    private final BaekjoonProblemRepository baekjoonProblemRepository;
+    private final ProblemMetaRepository problemMetaRepository;
+
     private Problem todayRandomProblem = null;
     private String filePath = "src/main/java/vision/cotegory/data/companyProblemCSV.csv";
 
 
-    public Optional<BaekjoonProblem> findBaekjoonProblem(Integer problemNumber) {
-        return baekjoonProblemRepository.findByProblemNumber(problemNumber);
+    public Optional<Problem> findBaekjoonProblem(Integer problemNumber) {
+        return problemRepository.findByProblemNumberAndOrigin(problemNumber, Origin.BAEKJOON);
     }
 
     public void updateTodayProblem() {
@@ -56,11 +57,8 @@ public class ProblemService {
         return companyProblem;
     }
 
-    public void createCompanyProblem(CreateCompanyProblemDto createCompanyProblemDto) {
-        String data = String.format("%s,%d,%s",
-                createCompanyProblemDto.getProblemName(),
-                createCompanyProblemDto.getProblemNum(),
-                createCompanyProblemDto.getOrigin());
-        CSVUtils.writeCSV(this.filePath, data);
+    public void createProblemMeta(ProblemMetaContents problemMetaContents){
+        ProblemMeta problemMeta = new ProblemMeta(problemMetaContents);
+        problemMetaRepository.save(problemMeta);
     }
 }

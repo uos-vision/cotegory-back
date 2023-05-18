@@ -1,4 +1,4 @@
-package vision.cotegory.entity;
+package vision.cotegory.entity.tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,7 @@ import vision.cotegory.repository.TagGroupRepository;
 
 import java.util.*;
 
-import static vision.cotegory.entity.Tag.*;
+import static vision.cotegory.entity.tag.Tag.*;
 
 @Component
 @Transactional

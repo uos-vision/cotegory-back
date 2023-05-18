@@ -16,8 +16,6 @@ import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Submission;
 import vision.cotegory.exception.exception.BusinessException;
 import vision.cotegory.exception.exception.NotExistEntityException;
-import vision.cotegory.repository.QuizRepository;
-import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.QuizService;
 import vision.cotegory.service.SubmissionService;
 import vision.cotegory.service.dto.CreateSubmissionDto;
@@ -36,8 +34,7 @@ public class SubmissionRestController {
 
     @Operation(description = "yyyy-MM-dd'T'HH:mm:ss 형식을 요구로 합니다.")
     @GetMapping("/time")
-    public ResponseEntity<List<SubmissionResponse>> timeSubmission(@RequestHeader(value = "Authorization")Member member, @Valid DateSubmissionRequest dateSubmissionRequest)
-    {
+    public ResponseEntity<List<SubmissionResponse>> timeSubmission(@RequestHeader(value = "Authorization") Member member, @Valid DateSubmissionRequest dateSubmissionRequest) {
         List<Submission> submissionList = submissionService.findAllByTime(member, dateSubmissionRequest.getFromTime(), dateSubmissionRequest.getToTime());
         List<SubmissionResponse> resultList = submissionList.stream()
                 .map(s -> new SubmissionResponse(s))
@@ -46,22 +43,20 @@ public class SubmissionRestController {
     }
 
     @PostMapping
-    public void createSubmission(@RequestHeader(value = "Authorization") Member member, @RequestBody @Valid CreateSubmissionRequest createSubmissionRequest)
-    {
+    public void createSubmission(@RequestHeader(value = "Authorization") Member member, @RequestBody @Valid CreateSubmissionRequest createSubmissionRequest) {
         CreateSubmissionDto createSubmissionDto = CreateSubmissionDto.builder()
                 .member(member)
-                        .quiz(quizService.findQuiz(createSubmissionRequest.getQuizId()).orElseThrow(NotExistEntityException::new))
-                                .selectTag(createSubmissionRequest.getSelectTag())
-                                        .submitTime(createSubmissionRequest.getSubmitTime())
-                                                .playTime(createSubmissionRequest.getPlayTime())
-                                                        .build();
+                .quiz(quizService.findQuiz(createSubmissionRequest.getQuizId()).orElseThrow(NotExistEntityException::new))
+                .selectTag(createSubmissionRequest.getSelectTag())
+                .submitTime(createSubmissionRequest.getSubmitTime())
+                .playTime(createSubmissionRequest.getPlayTime())
+                .build();
         submissionService.createSubmission(createSubmissionDto);
     }
 
     @Operation(description = "submitTime과 playTime을 기준으로 페이징 하시면 됩니다.")
     @GetMapping("/pages")
-    public ResponseEntity<List<SubmissionResponse>> pageSubmission(@RequestHeader(value = "Authorization")Member member, Pageable pageable)
-    {
+    public ResponseEntity<List<SubmissionResponse>> pageSubmission(@RequestHeader(value = "Authorization") Member member, Pageable pageable) {
         Page<Submission> submissionList = submissionService.findAllByPageable(member, pageable);
         List<SubmissionResponse> resultList = submissionList.stream()
                 .map(s -> new SubmissionResponse(s))
@@ -71,11 +66,10 @@ public class SubmissionRestController {
 
     @Operation(description = "페이지 조회 기능 입니다. \n pageNum는 조회하고자 하는 페이지의 숫자입니다. \n pageSize는 조회하고자 하는 페이징 방식의 크기 입니다")
     @GetMapping("/page")
-    public ResponseEntity<SubmissionPageInfoResponse> pageInfo(@RequestHeader(value = "Authorization")Member member, @Valid SubmissionPageInfoRequest sr)
-    {
+    public ResponseEntity<SubmissionPageInfoResponse> pageInfo(@RequestHeader(value = "Authorization") Member member, @Valid SubmissionPageInfoRequest sr) {
         Integer cnt = submissionService.findAll(member).size();
         Integer totalPages = cnt % sr.getSize() == 0 ? cnt / sr.getSize() : cnt / sr.getSize() + 1;
-        if(sr.getPageNum() > totalPages)
+        if (sr.getPageNum() > totalPages)
             throw new BusinessException();
         SubmissionPageInfoResponse submissionPageInfoResponse = SubmissionPageInfoResponse.builder()
                 .totalDataCnt(cnt)

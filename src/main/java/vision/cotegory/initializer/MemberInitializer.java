@@ -3,15 +3,13 @@ package vision.cotegory.initializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
-import vision.cotegory.entity.TagGroup;
-import vision.cotegory.entity.TagGroupConst;
+import vision.cotegory.entity.tag.TagGroupConst;
 import vision.cotegory.repository.MemberRepository;
 
 import java.util.Map;

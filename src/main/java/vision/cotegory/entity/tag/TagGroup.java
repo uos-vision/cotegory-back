@@ -1,9 +1,10 @@
-package vision.cotegory.entity;
+package vision.cotegory.entity.tag;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import vision.cotegory.entity.Quiz;
 
 import javax.persistence.*;
 import java.util.ArrayList;

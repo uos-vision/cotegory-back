@@ -3,7 +3,6 @@ package vision.cotegory.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vision.cotegory.controller.response.TagGroupResponse;
 import vision.cotegory.controller.response.TagGroupsResponse;
 import vision.cotegory.controller.response.TagsResponse;
-import vision.cotegory.entity.Tag;
-import vision.cotegory.entity.TagGroup;
+import vision.cotegory.entity.tag.Tag;
 import vision.cotegory.repository.TagGroupRepository;
 
 import java.util.stream.Collectors;
@@ -38,8 +36,7 @@ public class TagRestController {
     @GetMapping("/groups")
     public ResponseEntity<TagGroupsResponse> tagGroups() {
         return ResponseEntity.ok(TagGroupsResponse.builder()
-                .tagGroups(tagGroupRepository
-                        .findAll()
+                .tagGroups(tagGroupRepository.findAll()
                         .stream()
                         .map(TagGroupResponse::new)
                         .collect(Collectors.toList()))

@@ -1,4 +1,4 @@
-package vision.cotegory.entity;
+package vision.cotegory.entity.tag;
 
 import lombok.extern.slf4j.Slf4j;
 

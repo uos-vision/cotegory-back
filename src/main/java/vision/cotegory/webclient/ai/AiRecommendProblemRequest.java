@@ -1,4 +1,4 @@
-package vision.cotegory.crawler.ai;
+package vision.cotegory.webclient.ai;
 
 import lombok.Data;
 
