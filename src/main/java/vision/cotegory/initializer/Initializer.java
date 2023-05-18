@@ -35,9 +35,9 @@ public class Initializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void memberInit() {
+        saveTagGroup();
         makeUser();
         makeAdmin();
-        saveTagGroup();
     }
     private void makeUser() {
         if(memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
