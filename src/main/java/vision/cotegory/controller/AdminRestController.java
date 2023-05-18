@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vision.cotegory.controller.request.CreateProblemMetaRequest;
 import vision.cotegory.controller.request.CreateQuizRequest;
 import vision.cotegory.controller.request.DeactivateRequest;
 import vision.cotegory.controller.response.AbnormalQuizResponse;
-import vision.cotegory.crawler.baekjoon.BaekjoonProblemService;
+import vision.cotegory.crawler.baekjoon.BaekjoonCrawler;
 import vision.cotegory.entity.AbnormalQuiz;
-import vision.cotegory.entity.Origin;
-import vision.cotegory.entity.TagGroup;
+import vision.cotegory.entity.tag.TagGroup;
 import vision.cotegory.exception.exception.NotExistEntityException;
-import vision.cotegory.exception.exception.NotSupportedOriginException;
 import vision.cotegory.repository.AbnormalQuizRepository;
 import vision.cotegory.repository.TagGroupRepository;
+import vision.cotegory.service.ProblemService;
 import vision.cotegory.service.StatisticService;
 import vision.cotegory.service.QuizService;
 import vision.cotegory.service.dto.CreateQuizDto;
@@ -34,11 +34,14 @@ import javax.validation.Valid;
 @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
 public class AdminRestController {
 
-    private final StatisticService statisticService;
-    private final QuizService quizService;
     private final AbnormalQuizRepository abnormalQuizRepository;
     private final TagGroupRepository tagGroupRepository;
-    private final BaekjoonProblemService baekjoonProblemService;
+
+    private final BaekjoonCrawler baekjoonCrawler;
+
+    private final StatisticService statisticService;
+    private final QuizService quizService;
+    private final ProblemService problemService;
 
     @Operation(description = "모든문제(n)에 대한 모든제출(m)을 검사하므로 O(nm)입니다. 자주 호출하지 마세요.\\\n전체유저 정답률과 비정상 데이터 리스트를 업데이트 합니다")
     @PostMapping("/statistic/update")
@@ -64,33 +67,25 @@ public class AdminRestController {
     public void createQuiz(@RequestBody @Valid CreateQuizRequest createQuizRequest) {
         TagGroup tagGroup = tagGroupRepository.findById(createQuizRequest.getTagGroupId())
                 .orElseThrow(NotExistEntityException::new);
-
         CreateQuizDto createQuizDto = CreateQuizDto.builder()
-                .problemNumber(createQuizRequest.getProblemNumber())
-                .title(createQuizRequest.getTitle())
-                .tags(createQuizRequest.getTags())
-                .timeLimit(createQuizRequest.getTimeLimit())
-                .memoryLimit(createQuizRequest.getMemoryLimit())
-                .problemBody(createQuizRequest.getProblemBody())
-                .problemInput(createQuizRequest.getSampleInput())
-                .problemOutput(createQuizRequest.getProblemOutput())
-                .sampleInput(createQuizRequest.getSampleInput())
-                .sampleOutput(createQuizRequest.getSampleOutput())
-                .answerTag(createQuizRequest.getAnswerTag())
                 .tagGroup(tagGroup)
+                .answerTag(createQuizRequest.getAnswerTag())
+                .problemContents(createQuizRequest.getProblemContents())
+                .problemMetaContents(createQuizRequest.getProblemMetaContents())
+                .tags(createQuizRequest.getTags())
                 .build();
 
-        if (createQuizRequest.getOrigin().equals(Origin.PROGRAMMERS))
-            quizService.createProgrammersQuiz(createQuizDto);
-        else if(createQuizRequest.getOrigin().equals(Origin.HANDWRITE))
-            quizService.createHandWriteQuiz(createQuizDto);
-        else
-            throw new NotSupportedOriginException();
+        quizService.createQuiz(createQuizDto);
+    }
+
+    @PostMapping("/create-meta")
+    public void createProblemMeta(@RequestBody @Valid CreateProblemMetaRequest createProblemMetaRequest){
+        problemService.createProblemMeta(createProblemMetaRequest.getProblemMetaContents());
     }
 
     @Operation(description = "프론트에서 호출할일은 거의 없습니다", summary = "5분이상 걸리는 작업입니다")
-    @PostMapping("/baekjoon/update")
-    public void updateBaekjoonProblems(){
-        baekjoonProblemService.updateAll();
+    @PostMapping("/baekjoon/fetch")
+    public void updateBaekjoonProblems() {
+        baekjoonCrawler.fetchAll();
     }
 }

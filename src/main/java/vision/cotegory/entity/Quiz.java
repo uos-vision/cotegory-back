@@ -4,9 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import vision.cotegory.entity.problem.Problem;
+import vision.cotegory.entity.tag.Tag;
+import vision.cotegory.entity.tag.TagGroup;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -41,22 +41,21 @@ public class Quiz {
     private final Map<Tag, Long> tagCount = new ConcurrentHashMap<>();
 
     @Builder
-    public Quiz(Problem problem, Integer mmr, TagGroup tagGroup, Tag answerTag, Boolean activated) {
+    public Quiz(Problem problem, TagGroup tagGroup, Tag answerTag, Boolean activated) {
         this.problem = problem;
         this.tagGroup = tagGroup;
         this.answerTag = answerTag;
         this.activated = activated;
-        this.mmr = mmr;
         problem.getQuizzes().add(this);
         tagGroup.getQuizzes().add(this);
     }
 
-    public void increaseSubmitCount(Tag selectTag) {
-        tagCount.merge(selectTag, +1L, Long::sum);
+    public void increaseSubmitCount(Submission submission) {
+        tagCount.merge(submission.getSelectTag(), +1L, Long::sum);
     }
 
-    public void decreaseSubmitCount(Tag selectTag) {
-        tagCount.merge(selectTag, -1L, Long::sum);
+    public void decreaseSubmitCount(Submission submission) {
+        tagCount.merge(submission.getSelectTag(), -1L, Long::sum);
     }
 
     public Long getSubmitCount() {

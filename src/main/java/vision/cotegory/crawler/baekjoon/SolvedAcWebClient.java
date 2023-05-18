@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
 import vision.cotegory.exception.exception.SolvedApiException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,8 @@ public class SolvedAcWebClient {
     }
 
     public List<SolvedAcProblemDto> getSolvedAcProblemDtosByProblemNumbers(List<Integer> problemNumbers) {
+        if(problemNumbers.isEmpty())
+            return new ArrayList<>();
         String problemIds = problemNumbers.stream().map(String::valueOf).collect(Collectors.joining(","));
 
         return webClient.get()

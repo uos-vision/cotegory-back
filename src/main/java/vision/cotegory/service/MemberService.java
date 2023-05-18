@@ -1,7 +1,6 @@
 package vision.cotegory.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
-import vision.cotegory.entity.TagGroupConst;
+import vision.cotegory.entity.tag.TagGroupConst;
 import vision.cotegory.exception.exception.DuplicatedEntityException;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.MemberRepository;

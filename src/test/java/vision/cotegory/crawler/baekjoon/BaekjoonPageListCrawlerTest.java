@@ -7,13 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Slf4j
-class CrawlerTest {
+class BaekjoonPageListCrawlerTest {
 
     @Autowired
-    BaekjoonProblemService baekjoonProblemService;
-
+    BaekjoonCrawler baekjoonCrawler;
+    
     @Test
-    void crawlTagParallelByTagTest() {
-        baekjoonProblemService.updateAll();
+    void crawl(){
+        baekjoonCrawler.fetchAll();
     }
 }

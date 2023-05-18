@@ -1,12 +1,11 @@
 package vision.cotegory.entity.problem;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.Tag;
+import vision.cotegory.entity.tag.Tag;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,23 +13,31 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn
-@SuperBuilder
 @NoArgsConstructor
-public abstract class Problem implements ProblemSearchable {
+@AllArgsConstructor
+@Getter
+public class Problem {
     @Id
     @GeneratedValue
-    @Getter
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    ProblemMeta problemMeta;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    @Getter
     private Set<Tag> tags;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "problem")
-    @Builder.Default
-    @Getter
     private List<Quiz> quizzes = new ArrayList<>();
+
+    @Embedded
+    ProblemContents problemContents;
+
+    @Builder
+    public Problem(ProblemMeta problemMeta, Set<Tag> tags, ProblemContents problemContents) {
+        this.problemMeta = problemMeta;
+        this.tags = tags;
+        this.problemContents = problemContents;
+    }
 }

@@ -3,6 +3,8 @@ package vision.cotegory.crawler.baekjoon;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import vision.cotegory.crawler.baekjoon.dto.BaekjoonProblemMetaDto;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.stream.Stream;
 public class BaekjoonPageListCrawler {
     private final Document doc;
 
-    public BaekjoonPageListCrawler(Integer algoCode, Integer page){
+    public BaekjoonPageListCrawler(Integer algoCode, Integer page) {
         String url = String.format(
                 "https://www.acmicpc.net/problemset?sort=ac_desc&algo=%d&algo_if=and&page=%d",
                 algoCode,
@@ -21,7 +23,7 @@ public class BaekjoonPageListCrawler {
         this.doc = getDocument(url);
     }
 
-    public BaekjoonPageListCrawler(Integer algoCode){
+    public BaekjoonPageListCrawler(Integer algoCode) {
         String url = String.format(
                 "https://www.acmicpc.net/problemset?sort=ac_desc&algo=%d&algo_if=and&page=%d",
                 algoCode,
@@ -37,7 +39,7 @@ public class BaekjoonPageListCrawler {
         }
     }
 
-    public List<Integer> getProblemPages() {
+    public List<Integer> getProblemPageNumbers() {
         return doc.select("body > div.wrapper > div.container.content > div:nth-child(6) > div:nth-child(2) > div > ul")
                 .stream()
                 .map(e -> e.getElementsByTag("li"))
@@ -46,12 +48,13 @@ public class BaekjoonPageListCrawler {
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> getProblemNumbers() {
+    public List<BaekjoonProblemMetaDto> getProblemMetas() {
         return doc.select("#problemset > tbody")
                 .select("tr")
                 .stream()
-                .flatMap(e -> Stream.of(e.text().split(" ")).limit(1))
-                .map(Integer::parseInt)
+                .map(e -> e.select("td"))
+                .map(e -> e.stream().map(Element::text).limit(2).collect(Collectors.toList()))
+                .map(e -> new BaekjoonProblemMetaDto(Integer.parseInt(e.get(0)), e.get(1)))
                 .collect(Collectors.toList());
     }
 }
