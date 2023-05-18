@@ -43,17 +43,6 @@ public class ProblemRestController {
         return ResponseEntity.ok(problemResponse);
     }
 
-    @PostMapping("/company")
-    public void createCompanyProblem(@RequestBody @Valid CreateCompanyProblemRequest createCompanyProblemRequest) {
-        CreateCompanyProblemDto createCompanyProblemDto = CreateCompanyProblemDto
-                .builder()
-                .problemName(createCompanyProblemRequest.getProblemName())
-                .problemNum(createCompanyProblemRequest.getProblemNum())
-                .origin(createCompanyProblemRequest.getOrigin())
-                .build();
-        problemService.createCompanyProblem(createCompanyProblemDto);
-    } //AdminRestController로 옮길예정
-
     //비회원을 위한 기능이 있을지도 몰라서 일단 만들었습니다.
     @GetMapping("/today")
     public ResponseEntity<ProblemMetaResponse> findTodayProblem() {

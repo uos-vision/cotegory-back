@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.problem.Problem;
+import vision.cotegory.entity.problem.ProblemMeta;
+import vision.cotegory.entity.problem.ProblemMetaContents;
+import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.service.dto.CreateCompanyProblemDto;
 import vision.cotegory.utils.CSVUtils;
@@ -17,6 +20,8 @@ import java.util.Optional;
 public class ProblemService {
 
     private final ProblemRepository problemRepository;
+    private final ProblemMetaRepository problemMetaRepository;
+
     private Problem todayRandomProblem = null;
     private String filePath = "src/main/java/vision/cotegory/data/companyProblemCSV.csv";
 
@@ -52,11 +57,8 @@ public class ProblemService {
         return companyProblem;
     }
 
-    public void createCompanyProblem(CreateCompanyProblemDto createCompanyProblemDto) {
-        String data = String.format("%s,%d,%s",
-                createCompanyProblemDto.getProblemName(),
-                createCompanyProblemDto.getProblemNum(),
-                createCompanyProblemDto.getOrigin());
-        CSVUtils.writeCSV(this.filePath, data);
+    public void createProblemMeta(ProblemMetaContents problemMetaContents){
+        ProblemMeta problemMeta = new ProblemMeta(problemMetaContents);
+        problemMetaRepository.save(problemMeta);
     }
 }
