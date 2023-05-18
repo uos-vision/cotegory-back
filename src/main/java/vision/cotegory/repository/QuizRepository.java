@@ -3,8 +3,8 @@ package vision.cotegory.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.Tag;
-import vision.cotegory.entity.TagGroup;
+import vision.cotegory.entity.tag.Tag;
+import vision.cotegory.entity.tag.TagGroup;
 import vision.cotegory.entity.problem.Problem;
 
 import java.util.List;

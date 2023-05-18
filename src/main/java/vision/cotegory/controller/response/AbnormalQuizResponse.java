@@ -2,9 +2,7 @@ package vision.cotegory.controller.response;
 
 import lombok.Data;
 import vision.cotegory.entity.AbnormalQuiz;
-import vision.cotegory.entity.Origin;
-import vision.cotegory.entity.Tag;
-import vision.cotegory.entity.problem.Problem;
+import vision.cotegory.entity.tag.Tag;
 
 import java.util.Map;
 

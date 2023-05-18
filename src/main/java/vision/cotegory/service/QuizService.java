@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.TagGroupConst;
+import vision.cotegory.entity.tag.TagGroupConst;
 import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.repository.ProblemMetaRepository;

@@ -2,14 +2,14 @@ package vision.cotegory.entity;
 
 
 import lombok.*;
+import vision.cotegory.entity.tag.Tag;
+import vision.cotegory.entity.tag.TagGroup;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 @Entity
 @Builder

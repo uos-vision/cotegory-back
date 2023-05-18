@@ -1,8 +1,7 @@
 package vision.cotegory.controller.request;
 
 import lombok.Data;
-import vision.cotegory.entity.Origin;
-import vision.cotegory.entity.Tag;
+import vision.cotegory.entity.tag.Tag;
 import vision.cotegory.entity.problem.ProblemContents;
 import vision.cotegory.entity.problem.ProblemMetaContents;
 

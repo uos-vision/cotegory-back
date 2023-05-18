@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vision.cotegory.controller.response.TagGroupResponse;
 import vision.cotegory.controller.response.TagGroupsResponse;
 import vision.cotegory.controller.response.TagsResponse;
-import vision.cotegory.entity.Tag;
+import vision.cotegory.entity.tag.Tag;
 import vision.cotegory.repository.TagGroupRepository;
 
 import java.util.stream.Collectors;

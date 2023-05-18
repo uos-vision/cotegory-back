@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.TagGroup;
+import vision.cotegory.entity.tag.TagGroup;
 import vision.cotegory.entity.problem.Problem;
 
 import java.util.HashMap;

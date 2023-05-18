@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.Tag;
+import vision.cotegory.entity.tag.Tag;
 
 import javax.persistence.*;
 import java.util.ArrayList;

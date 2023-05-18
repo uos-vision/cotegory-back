@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.Tag;
+import vision.cotegory.entity.tag.Tag;
 
 import java.time.LocalDateTime;
 
