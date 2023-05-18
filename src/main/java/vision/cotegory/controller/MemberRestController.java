@@ -24,13 +24,7 @@ public class MemberRestController {
 
     @GetMapping("/information")
     public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") Member member) {
-        return ResponseEntity.ok(MemberInformationResponse.builder()
-                .id(member.getId())
-                .roles(member.getRoles())
-                .baekjoonHandle(member.getBaekjoonHandle())
-                .nickName(member.getNickName())
-                .imgUrl(member.getImgUrl())
-                .build());
+        return ResponseEntity.ok(new MemberInformationResponse(member));
     }
 
     @Operation(summary = "profile='prod'에서만 정상적 호출이 가능합니다.")

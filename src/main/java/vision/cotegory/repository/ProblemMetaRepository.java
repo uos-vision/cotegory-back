@@ -9,6 +9,6 @@ import vision.cotegory.entity.problem.ProblemMeta;
 import java.util.Optional;
 
 public interface ProblemMetaRepository extends JpaRepository<ProblemMeta, Long> {
-    @Query("select pm from ProblemMeta pm where pm.problemMetaContents.problemNumber = :problemNumber and pm.problemMetaContents.origin = :origin")
+    @Query("select pm from ProblemMeta pm where pm.problemNumber = :problemNumber and pm.origin = :origin")
     Optional<ProblemMeta> findByProblemNumberAndOrigin(@Param("problemNumber") Integer problemNumber, @Param("origin") Origin origin);
 }

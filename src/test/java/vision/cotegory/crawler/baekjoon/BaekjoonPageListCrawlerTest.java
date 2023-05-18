@@ -14,6 +14,6 @@ class BaekjoonPageListCrawlerTest {
     
     @Test
     void crawl(){
-        baekjoonCrawler.fetchAll();
+        baekjoonCrawler.crawlAll();
     }
 }

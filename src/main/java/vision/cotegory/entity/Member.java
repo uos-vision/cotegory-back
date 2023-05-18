@@ -23,7 +23,8 @@ public class Member {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @MapKeyJoinColumn(name = "tag_group_id")
-    private Map<TagGroup, Integer> mmr;
+    @Builder.Default
+    private Map<TagGroup, Integer> mmr = new ConcurrentHashMap<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -46,9 +47,11 @@ public class Member {
     Map<RecommendType, Recommend> recommends;
 
     @ElementCollection
+    @Builder.Default
     Map<Tag, Long> submissionCount = new ConcurrentHashMap<>();
 
     @ElementCollection
+    @Builder.Default
     Map<Tag, Long> correctCount = new ConcurrentHashMap<>();
 
     public void addSubmit(Submission submission) {

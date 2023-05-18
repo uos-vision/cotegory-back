@@ -22,14 +22,12 @@ public class QuizRestController {
     @GetMapping("/{id}")
     public ResponseEntity<QuizResponse> quiz(@PathVariable("id") Long id) {
         Quiz quiz = quizService.findQuiz(id).orElseThrow(NotExistEntityException::new);
-        QuizResponse quizResponse = new QuizResponse(quiz);
-        return ResponseEntity.ok(quizResponse);
+        return ResponseEntity.ok(new QuizResponse(quiz));
     }
 
     @GetMapping("/recommend")
     public ResponseEntity<QuizResponse> recommendQuiz(@RequestHeader(value = "Authorization") Member member) {
         Quiz quiz = quizService.recommendQuiz(member);
-        QuizResponse quizResponse = new QuizResponse(quiz);
-        return ResponseEntity.ok(quizResponse);
+        return ResponseEntity.ok(new QuizResponse(quiz));
     }
 }
