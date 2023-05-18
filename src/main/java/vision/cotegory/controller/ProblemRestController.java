@@ -24,7 +24,7 @@ import java.util.List;
 public class ProblemRestController {
     private final ProblemService problemService;
 
-    @GetMapping("/backjoon/{problemNum}")
+    @GetMapping("/baekjoon/{problemNum}")
     public ResponseEntity<ProblemResponse> findBaekjoonProblem(@PathVariable("problemNum") Integer problemNum) {
         BaekjoonProblem baekjoonProblem = problemService.findBaekjoonProblem(problemNum).orElseThrow(NotExistEntityException::new);
         ProblemResponse problemResponse = new ProblemResponse(baekjoonProblem);

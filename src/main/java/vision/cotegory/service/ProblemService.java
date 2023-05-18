@@ -47,7 +47,7 @@ public class ProblemService {
         defaultlist.get(0).add("150370");
         defaultlist.get(0).add("개인정보 수집 유효기간");
         return defaultlist;
-    }
+    } //삭제할예정
 
     public List<String> findCompanyProblem() {
         List<List<String>> file = CSVUtils.readCSV(this.filePath).orElse(makeDefaultList());

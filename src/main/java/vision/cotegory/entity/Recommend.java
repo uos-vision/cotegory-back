@@ -29,10 +29,9 @@ public class Recommend {
     private Member member;
 
     @Builder
-    public Recommend(RecommendType recommendType, Problem problem, LocalDateTime createTime, Member member) {
+    public Recommend(RecommendType recommendType, Problem problem, Member member) {
         this.recommendType = recommendType;
         this.problem = problem;
-        this.createTime = createTime;
         this.member = member;
         member.getRecommends().put(recommendType,this);
     }

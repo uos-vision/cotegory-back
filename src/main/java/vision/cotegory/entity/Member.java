@@ -41,4 +41,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     Map<RecommendType, Recommend> recommends;
+
+    //태그별 정답률
 }
