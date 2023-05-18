@@ -6,10 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.tag.TagGroupConst;
 import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
-import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
 import vision.cotegory.service.dto.CreateProblemMetaDto;
@@ -26,7 +24,7 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
     private final ProblemRepository problemRepository;
-    private final TagGroupConst tagGroupConst;
+    private final TagGroupService tagGroupService;
     private final ProblemService problemService;
 
     public void createQuiz(CreateQuizDto createQuizDto) {
@@ -63,7 +61,7 @@ public class QuizService {
     }
 
     private boolean isNotAssignableTagGroup(CreateQuizDto createQuizDto) {
-        return !tagGroupConst.assignableGroups(createQuizDto.getTags())
+        return !tagGroupService.assignableGroups(createQuizDto.getTags())
                 .containsKey(createQuizDto.getTagGroup());
     }
 

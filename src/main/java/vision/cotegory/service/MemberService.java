@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
-import vision.cotegory.entity.tag.TagGroupConst;
 import vision.cotegory.exception.exception.DuplicatedEntityException;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.MemberRepository;
@@ -26,7 +25,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TagGroupConst tagGroupConst;
+    private final TagGroupService tagGroupService;
     private final WebClient webClient;
     private final S3Utils s3Utils;
 
@@ -45,7 +44,7 @@ public class MemberService {
         Member member = Member.builder()
                 .loginId(registerDto.getLoginId())
                 .baekjoonHandle(registerDto.getBaekjoonHandle())
-                .mmr(tagGroupConst.getTagGroupConsts().stream().collect(Collectors.toMap(
+                .mmr(tagGroupService.getTagGroupConsts().stream().collect(Collectors.toMap(
                         v1 -> v1,
                         v1 -> 1200
                 )))

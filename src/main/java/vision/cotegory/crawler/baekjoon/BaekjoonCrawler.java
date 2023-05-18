@@ -12,7 +12,7 @@ import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.entity.tag.Tag;
 import vision.cotegory.entity.tag.TagGroup;
-import vision.cotegory.entity.tag.TagGroupConst;
+import vision.cotegory.service.TagGroupService;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
@@ -33,7 +33,7 @@ public class BaekjoonCrawler {
     private final ProblemRepository problemRepository;
     private final ProblemMetaRepository problemMetaRepository;
     private final SolvedAcWebClient solvedAcWebClient;
-    private final TagGroupConst tagGroupConst;
+    private final TagGroupService tagGroupService;
     private final QuizRepository quizRepository;
 
     public void crawlAll() {
@@ -72,7 +72,7 @@ public class BaekjoonCrawler {
                     .map(SolvedAcTagDto::getBojTagId)
                     .map(Tag::of)
                     .collect(Collectors.toSet());
-            Map<TagGroup, Tag> assignableGroups = tagGroupConst.assignableGroups(tags);
+            Map<TagGroup, Tag> assignableGroups = tagGroupService.assignableGroups(tags);
             if (assignableGroups.isEmpty())
                 return;
 
