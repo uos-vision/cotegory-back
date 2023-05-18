@@ -31,7 +31,6 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
-@Transactional
 @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
 public class AdminRestController {
 
@@ -50,12 +49,14 @@ public class AdminRestController {
         statisticService.updateStatisticData();
     }
 
+    @Transactional
     @Operation(description = "update api호출로 생성된 데이터들을 봅니다. 자주 호출해도 됩니다.")
     @PostMapping("/abnormal/list")
     public Page<AbnormalQuizResponse> listAbnormal(Pageable pageable) {
         return abnormalQuizRepository.findAllActivateTrue(pageable).map(AbnormalQuizResponse::new);
     }
 
+    @Transactional
     @PostMapping("/abnormal/deactivate")
     public void deactivateAbnormal(@RequestBody @Valid DeactivateRequest deactivateRequest) {
         AbnormalQuiz abnormalQuiz = abnormalQuizRepository.findById(deactivateRequest.getAbnormalQuizId())
@@ -64,6 +65,7 @@ public class AdminRestController {
         abnormalQuiz.getQuiz().setActivated(false);
     }
 
+    @Transactional
     @PostMapping("/create-quiz")
     public void createQuiz(@RequestBody @Valid CreateQuizRequest createQuizRequest) {
         TagGroup tagGroup = tagGroupRepository.findById(createQuizRequest.getTagGroupId())
@@ -88,6 +90,7 @@ public class AdminRestController {
         quizService.createQuiz(createQuizDto);
     }
 
+    @Transactional
     @PostMapping("/create-meta")
     public void createProblemMeta(@RequestBody @Valid CreateProblemMetaRequest createProblemMetaRequest) {
         CreateProblemMetaDto createProblemMetaDto = CreateProblemMetaDto.builder()
