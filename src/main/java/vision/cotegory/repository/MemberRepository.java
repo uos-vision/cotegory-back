@@ -8,7 +8,6 @@ import vision.cotegory.entity.Member;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByLoginId(String loginId);
     Optional<Member> findByLoginIdAndActivatedIsTrue(String loginId);
 
     @Query("select m.id from Member m where m.activated = TRUE and m.loginId = :loginId")
