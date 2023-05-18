@@ -3,6 +3,7 @@ package vision.cotegory.crawler.baekjoon;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 import vision.cotegory.crawler.baekjoon.dto.BaekjoonProblemMetaDto;
 import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
@@ -12,6 +13,7 @@ import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.entity.tag.Tag;
 import vision.cotegory.entity.tag.TagGroup;
+import vision.cotegory.repository.TagGroupRepository;
 import vision.cotegory.service.TagGroupService;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.ProblemMetaRepository;
@@ -35,6 +37,7 @@ public class BaekjoonCrawler {
     private final SolvedAcWebClient solvedAcWebClient;
     private final TagGroupService tagGroupService;
     private final QuizRepository quizRepository;
+    private final TagGroupRepository tagGroupRepository;
 
     public void crawlAll() {
         var stopWatch = new StopWatch();
@@ -49,6 +52,7 @@ public class BaekjoonCrawler {
         log.info("[problemMeta]총 {}개의 problemMeta가 저장되었습니다", problemMetaRepository.count());
         log.info("[problem]총 {}개의 problem이 저장되었습니다", problemRepository.count());
     }
+
 
     public void crawlByTag(Tag tag) {
         List<Integer> problemPageNumbers = new BaekjoonPageListCrawler(tag.toBaekjoonCode()).getProblemPageNumbers();
@@ -73,6 +77,7 @@ public class BaekjoonCrawler {
                     .map(Tag::of)
                     .collect(Collectors.toSet());
             Map<TagGroup, Tag> assignableGroups = tagGroupService.assignableGroups(tags);
+
             if (assignableGroups.isEmpty())
                 return;
 
