@@ -2,14 +2,12 @@ package vision.cotegory.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Tag;
 import vision.cotegory.entity.TagGroup;
 import vision.cotegory.entity.problem.Problem;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface QuizRepository extends JpaRepository<Quiz, Long> {

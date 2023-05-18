@@ -5,19 +5,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.TagGroupConst;
-import vision.cotegory.entity.problem.HandWriteProblem;
-import vision.cotegory.entity.problem.ProgrammersProblem;
-import vision.cotegory.exception.exception.NotProperTagGroupAssignException;
+import vision.cotegory.entity.problem.Problem;
+import vision.cotegory.entity.problem.ProblemMeta;
+import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
-import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateQuizDto;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -26,64 +23,36 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
     private final ProblemRepository problemRepository;
+    private final ProblemMetaRepository problemMetaRepository;
     private final TagGroupConst tagGroupConst;
 
-    public Quiz createProgrammersQuiz(CreateQuizDto createQuizDto) {
+    public void createQuiz(CreateQuizDto createQuizDto) {
+        if (isNotAssignableTagGroup(createQuizDto))
+            return;
+        ProblemMeta problemMeta = new ProblemMeta(createQuizDto.getProblemMetaContents());
+        problemMetaRepository.save(problemMeta);
 
-        if (!isAssignableTagGroup(createQuizDto))
-            throw new NotProperTagGroupAssignException();
-
-        ProgrammersProblem programmersProblem = ProgrammersProblem.builder()
-                .problemNumber(createQuizDto.getProblemNumber())
-                .title(createQuizDto.getTitle())
+        Problem problem = Problem.builder()
+                .problemMeta(problemMeta)
                 .tags(createQuizDto.getTags())
-                .timeLimit(createQuizDto.getTimeLimit())
-                .memoryLimit(createQuizDto.getMemoryLimit())
-                .problemBody(createQuizDto.getProblemBody())
-                .problemInput(createQuizDto.getProblemInput())
-                .problemOutput(createQuizDto.getProblemOutput())
-                .sampleInput(createQuizDto.getSampleInput())
-                .sampleOutput(createQuizDto.getSampleOutput())
+                .problemContents(createQuizDto.getProblemContents())
                 .build();
-        problemRepository.save(programmersProblem);
+        problemRepository.save(problem);
 
         Quiz quiz = Quiz.builder()
-                .answerTag(createQuizDto.getAnswerTag())
-                .tagGroup(createQuizDto.getTagGroup())
-                .problem(programmersProblem)
                 .activated(true)
+                .tagGroup(createQuizDto.getTagGroup())
+                .problem(problem)
+                .answerTag(createQuizDto.getAnswerTag())
                 .build();
-        return quizRepository.save(quiz);
+        quizRepository.save(quiz);
     }
 
-    private boolean isAssignableTagGroup(CreateQuizDto createQuizDto) {
-        return tagGroupConst.assignableGroups(createQuizDto.getTags())
+    private boolean isNotAssignableTagGroup(CreateQuizDto createQuizDto) {
+        return !tagGroupConst.assignableGroups(createQuizDto.getTags())
                 .containsKey(createQuizDto.getTagGroup());
     }
 
-    public Quiz createHandWriteQuiz(CreateQuizDto createQuizDto) {
-        HandWriteProblem handWriteProblem = HandWriteProblem.builder()
-                .problemNumber(createQuizDto.getProblemNumber())
-                .title(createQuizDto.getTitle())
-                .tags(createQuizDto.getTags())
-                .timeLimit(createQuizDto.getTimeLimit())
-                .memoryLimit(createQuizDto.getMemoryLimit())
-                .problemBody(createQuizDto.getProblemBody())
-                .problemInput(createQuizDto.getProblemInput())
-                .problemOutput(createQuizDto.getProblemOutput())
-                .sampleInput(createQuizDto.getSampleInput())
-                .sampleOutput(createQuizDto.getSampleOutput())
-                .build();
-        problemRepository.save(handWriteProblem);
-
-        Quiz quiz = Quiz.builder()
-                .answerTag(createQuizDto.getAnswerTag())
-                .tagGroup(createQuizDto.getTagGroup())
-                .problem(handWriteProblem)
-                .activated(true)
-                .build();
-        return quizRepository.save(quiz);
-    }
 
     public Optional<Quiz> findQuiz(Long id) {
         return quizRepository.findById(id);
@@ -94,11 +63,9 @@ public class QuizService {
         Quiz target = null;
         List<Quiz> list = quizRepository.findAll();
 
-        for(Quiz q : list)
-        {
-            int diff = Math.abs(q.getMmr()- member.getMmr().get(q.getTagGroup()));
-            if (diff < minDiff)
-            {
+        for (Quiz q : list) {
+            int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
+            if (diff < minDiff) {
                 minDiff = diff;
                 target = q;
             }

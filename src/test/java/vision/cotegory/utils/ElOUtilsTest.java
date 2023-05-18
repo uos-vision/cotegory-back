@@ -5,12 +5,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.util.Pair;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.TagGroup;
-import vision.cotegory.entity.problem.BaekjoonProblem;
 import vision.cotegory.entity.problem.Problem;
 
 import java.util.HashMap;
@@ -44,7 +42,7 @@ class ElOUtilsTest {
                 .mmr(map)
                 .build();
 
-        Problem problem = BaekjoonProblem.builder()
+        Problem problem = Problem.builder()
                .build();
 
         Quiz quiz = Quiz.builder()
