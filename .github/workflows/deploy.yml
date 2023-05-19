@@ -1,0 +1,30 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Connect to EC2 instance
+        run: ssh -o StrictHostKeyChecking=no -A ${{ secrets.SSH_USER }}@${{ secrets.EC2_PUBLIC_IP }}
+
+      - name: Update code and build
+        run: |
+          cd cotegory-back
+          git pull
+          docker-compose up -d --build
