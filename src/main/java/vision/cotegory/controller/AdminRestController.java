@@ -76,8 +76,9 @@ public class AdminRestController {
                 .tagGroup(tagGroup)
                 .problemNumber(createQuizRequest.getProblemNumber())
                 .origin(createQuizRequest.getOrigin())
+                .title(createQuizRequest.getTitle())
                 .url(createQuizRequest.getUrl())
-                .problemNumber(createQuizRequest.getProblemNumber())
+                .tags(createQuizRequest.getTags())
                 .problemBody(createQuizRequest.getProblemBody())
                 .problemInput(createQuizRequest.getProblemInput())
                 .problemOutput(createQuizRequest.getProblemOutput())
@@ -96,7 +97,7 @@ public class AdminRestController {
         CreateProblemMetaDto createProblemMetaDto = CreateProblemMetaDto.builder()
                 .origin(createProblemMetaRequest.getOrigin())
                 .url(createProblemMetaRequest.getUrl())
-                .origin(createProblemMetaRequest.getOrigin())
+                .problemNumber(createProblemMetaRequest.getProblemNumber())
                 .title(createProblemMetaRequest.getTitle())
                 .build();
         problemService.createProblemMeta(createProblemMetaDto);
