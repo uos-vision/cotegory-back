@@ -38,7 +38,7 @@ public class Quiz {
     private Integer mmr = 1200;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @Enumerated(EnumType.STRING)
+    @MapKeyEnumerated(EnumType.STRING)
     private final Map<Tag, Long> tagCount = new ConcurrentHashMap<>();
 
     @Builder
