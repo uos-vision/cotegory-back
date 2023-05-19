@@ -23,6 +23,6 @@ jobs:
 
       - name: Update code and build
         run: |
-          cd cotegory-back/
+          cd cotegory-back
           git pull
           docker-compose up -d --build
