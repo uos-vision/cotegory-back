@@ -21,7 +21,7 @@ class AiWebClientTest {
         AiRecommendProblemRequest aiRecommendProblemRequest = AiRecommendProblemRequest.builder()
                 .cnt(10)
                 .handle("tori1753")
-                .tag(Tag.DP.toKorean())
+                .tag(Tag.BFS.toKorean())
                 .build();
         final List<Integer> recommendProblemNumbers = aiWebClient.getRecommendProblemNumbers(aiRecommendProblemRequest);
         for(var number : recommendProblemNumbers)

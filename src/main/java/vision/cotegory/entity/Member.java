@@ -43,14 +43,17 @@ public class Member {
 
     private Boolean activated;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @Enumerated(EnumType.STRING)
     Map<RecommendType, Recommend> recommends;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
     @Builder.Default
     Map<Tag, Long> submissionCount = new ConcurrentHashMap<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
     @Builder.Default
     Map<Tag, Long> correctCount = new ConcurrentHashMap<>();
 
