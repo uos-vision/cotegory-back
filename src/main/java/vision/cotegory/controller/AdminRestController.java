@@ -96,7 +96,7 @@ public class AdminRestController {
         CreateProblemMetaDto createProblemMetaDto = CreateProblemMetaDto.builder()
                 .origin(createProblemMetaRequest.getOrigin())
                 .url(createProblemMetaRequest.getUrl())
-                .origin(createProblemMetaRequest.getOrigin())
+                .problemNumber(createProblemMetaRequest.getProblemNumber())
                 .title(createProblemMetaRequest.getTitle())
                 .build();
         problemService.createProblemMeta(createProblemMetaDto);
