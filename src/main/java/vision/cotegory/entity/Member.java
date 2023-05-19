@@ -44,16 +44,16 @@ public class Member {
     private Boolean activated;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    @Enumerated(EnumType.STRING)
+    @MapKeyEnumerated(EnumType.STRING)
     Map<RecommendType, Recommend> recommends;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @Enumerated(EnumType.STRING)
+    @MapKeyEnumerated(EnumType.STRING)
     @Builder.Default
     Map<Tag, Long> submissionCount = new ConcurrentHashMap<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @Enumerated(EnumType.STRING)
+    @MapKeyEnumerated(EnumType.STRING)
     @Builder.Default
     Map<Tag, Long> correctCount = new ConcurrentHashMap<>();
 
