@@ -32,7 +32,7 @@ public class MemberInformationResponse {
         this.memberTagGroupInformationResponses = member.getMmr().entrySet().stream().map(entry -> {
             TagGroup tagGroup = entry.getKey();
             Integer mmr = entry.getValue();
-            return new MemberTagGroupInformationResponse(tagGroup.getId(), mmr);
+            return new MemberTagGroupInformationResponse(tagGroup, mmr);
         }).collect(Collectors.toList());
         this.correctRate = member.getCorrectRate();
     }
@@ -40,10 +40,12 @@ public class MemberInformationResponse {
     @Data
     static class MemberTagGroupInformationResponse {
         private Long tagGroupId;
+        private String tagGroupName;
         private Integer mmr;
 
-        public MemberTagGroupInformationResponse(Long tagGroupId, Integer mmr) {
-            this.tagGroupId = tagGroupId;
+        public MemberTagGroupInformationResponse(TagGroup tagGroup, Integer mmr) {
+            this.tagGroupId = tagGroup.getId();
+            this.tagGroupName = tagGroup.getName();
             this.mmr = mmr;
         }
     }
