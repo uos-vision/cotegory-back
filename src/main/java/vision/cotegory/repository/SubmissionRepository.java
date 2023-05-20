@@ -13,9 +13,6 @@ import java.util.stream.Stream;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
-    @Query("select s from Submission s")
-    Stream<Submission> stream();
-
     List<Submission> findAllByMember(Member member);
 
     Page<Submission> findAllByMember(Member member, Pageable pageable);
