@@ -28,8 +28,9 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        Long memberId = memberRepository.getIdByLoginId(authentication.getName())
-                .orElseThrow(NotExistEntityException::new);
+        Long memberId = memberRepository.findByLoginIdAndActivatedIsTrue(authentication.getName())
+                .orElseThrow(NotExistEntityException::new)
+                .getId();
 
         log.info("Login Success Handler......................");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

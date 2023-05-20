@@ -34,13 +34,16 @@ public class Member {
 
     private String pw;
 
+    @Setter
     private String baekjoonHandle;
 
     @Setter
     private String imgUrl;
 
+    @Setter
     private String nickName;
 
+    @Setter
     private Boolean activated;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")

@@ -37,7 +37,7 @@ public class MemberService {
         if (memberOptional.isPresent())
             throw new DuplicatedEntityException("로그인아이디가 중복됩니다");
 
-        if(!isExistBaekjoonHandle(registerDto.getBaekjoonHandle()))
+        if (!isExistBaekjoonHandle(registerDto.getBaekjoonHandle()))
             throw new NotExistBaekjoonHandleException();
 
 
@@ -58,7 +58,7 @@ public class MemberService {
     }
 
     public Boolean isExistBaekjoonHandle(String baekjoonHandle) {
-        try{
+        try {
             webClient.mutate()
                     .baseUrl("https://www.acmicpc.net")
                     .build()
@@ -68,7 +68,7 @@ public class MemberService {
                     .toBodilessEntity()
                     .block()
                     .getStatusCode();
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
         return true;
@@ -80,11 +80,16 @@ public class MemberService {
         return memberOptional.isPresent();
     }
 
-    public String uploadImage(Member member, MultipartFile multipartFile){
+    public String uploadImage(Member member, MultipartFile multipartFile) {
         s3Utils.delete(member.getImgUrl());
         String uploadedUrl = s3Utils.upload(multipartFile);
         member.setImgUrl(uploadedUrl);
 
         return uploadedUrl;
+    }
+
+    public void deleteImage(Member member) {
+        s3Utils.delete(member.getImgUrl());
+        member.setImgUrl(null);
     }
 }
