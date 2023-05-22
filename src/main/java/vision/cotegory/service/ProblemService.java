@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
-import vision.cotegory.entity.problem.ProblemMetaContents;
+import vision.cotegory.exception.exception.DuplicatedEntityException;
 import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
-import vision.cotegory.service.dto.CreateCompanyProblemDto;
+import vision.cotegory.service.dto.CreateProblemMetaDto;
 import vision.cotegory.utils.CSVUtils;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class ProblemService {
     public void updateTodayProblem() {
         List<Problem> problems = problemRepository.findAll();
         long count = problemRepository.count();
-        todayRandomProblem = problems.get((int)(Math.random() * count));
+        todayRandomProblem = problems.get((int) (Math.random() * count));
     }
 
     public Problem findTodayProblem() {
@@ -52,13 +52,23 @@ public class ProblemService {
 
     public List<String> findCompanyProblem() {
         List<List<String>> file = CSVUtils.readCSV(this.filePath).orElse(makeDefaultList());
-        Integer randNum = (int)(Math.random() * file.size()); //유저 Entity에 저장해야 하는지 검토 필요
+        Integer randNum = (int) (Math.random() * file.size()); //유저 Entity에 저장해야 하는지 검토 필요
         List<String> companyProblem = file.get(randNum);
         return companyProblem;
     }
 
-    public void createProblemMeta(ProblemMetaContents problemMetaContents){
-        ProblemMeta problemMeta = new ProblemMeta(problemMetaContents);
-        problemMetaRepository.save(problemMeta);
+    public ProblemMeta createProblemMeta(CreateProblemMetaDto createProblemMetaDto) {
+        if (problemMetaRepository.findByProblemNumberAndOrigin(
+                createProblemMetaDto.getProblemNumber(),
+                createProblemMetaDto.getOrigin()).isPresent())
+            throw new DuplicatedEntityException();
+
+        ProblemMeta problemMeta = ProblemMeta.builder()
+                .url(createProblemMetaDto.getUrl())
+                .title(createProblemMetaDto.getTitle())
+                .origin(createProblemMetaDto.getOrigin())
+                .problemNumber(createProblemMetaDto.getProblemNumber())
+                .build();
+        return problemMetaRepository.save(problemMeta);
     }
 }

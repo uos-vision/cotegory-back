@@ -9,28 +9,36 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
-import vision.cotegory.entity.tag.TagGroupConst;
+import vision.cotegory.entity.tag.TagGroup;
+import vision.cotegory.service.TagGroupService;
 import vision.cotegory.repository.MemberRepository;
+import vision.cotegory.repository.TagGroupRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static vision.cotegory.entity.tag.Tag.*;
+import static vision.cotegory.entity.tag.Tag.UNION_FIND;
 
 @Component
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class MemberInitializer {
+public class Initializer {
 
     private final MemberRepository memberRepository;
-    private final TagGroupConst tagGroupConst;
+    private final TagGroupService tagGroupService;
     private final PasswordEncoder passwordEncoder;
+    private final TagGroupRepository tagGroupRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void memberInit() {
+        saveTagGroup();
         makeUser();
         makeAdmin();
     }
-
     private void makeUser() {
         if(memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
             return;
@@ -41,14 +49,14 @@ public class MemberInitializer {
                 .baekjoonHandle("tori1753")
                 .activated(true)
                 .mmr(Map.of(
-                        tagGroupConst.getTagGroupConsts().get(0), 200,
-                        tagGroupConst.getTagGroupConsts().get(1), 300,
-                        tagGroupConst.getTagGroupConsts().get(2), 400))
+                        tagGroupService.getTagGroupConsts().get(0), 200,
+                        tagGroupService.getTagGroupConsts().get(1), 300,
+                        tagGroupService.getTagGroupConsts().get(2), 400))
                 .nickName("UOS닉네임")
                 .build();
 
         memberRepository.save(member);
-        log.info("[memberInit] {}", member);
+        log.info("[memberInit]{}", member);
     }
 
     private void makeAdmin() {
@@ -63,6 +71,42 @@ public class MemberInitializer {
                 .build();
 
         memberRepository.save(admin);
-        log.info("[adminInit] {}", admin);
+        log.info("[adminInit]{}", admin);
     }
+
+    private void saveTagGroup() {
+        List<TagGroup> tagGroups = new ArrayList<>();
+
+        final TagGroup groupA = TagGroup.builder().name("groupA").tags(Set.of(
+                GREEDY,
+                DP,
+                BRUTE_FORCE,
+                BINARY_SEARCH
+        )).build();
+        tagGroups.add(groupA);
+
+        final TagGroup groupB = TagGroup.builder().name("groupB").tags(Set.of(
+                DFS,
+                BFS,
+                BRUTE_FORCE,
+                DP
+        )).build();
+        tagGroups.add(groupB);
+
+        final TagGroup groupC = TagGroup.builder().name("groupC").tags(Set.of(
+                DIJKSTRA,
+                FLOYD_WARSHALL,
+                BIT_MASKING,
+                UNION_FIND
+        )).build();
+        tagGroups.add(groupC);
+
+        for(var tagGroup : tagGroups){
+            if(tagGroupRepository.findByName(tagGroup.getName()).isPresent())
+                continue;
+            tagGroupRepository.save(tagGroup);
+            log.info("[tagGroupConstInit]{}", tagGroup.getName());
+        }
+    }
+
 }

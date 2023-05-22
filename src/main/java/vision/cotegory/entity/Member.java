@@ -23,7 +23,8 @@ public class Member {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @MapKeyJoinColumn(name = "tag_group_id")
-    private Map<TagGroup, Integer> mmr;
+    @Builder.Default
+    private Map<TagGroup, Integer> mmr = new ConcurrentHashMap<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -33,22 +34,30 @@ public class Member {
 
     private String pw;
 
+    @Setter
     private String baekjoonHandle;
 
     @Setter
     private String imgUrl;
 
+    @Setter
     private String nickName;
 
+    @Setter
     private Boolean activated;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @MapKeyEnumerated(EnumType.STRING)
     Map<RecommendType, Recommend> recommends;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @MapKeyEnumerated(EnumType.STRING)
+    @Builder.Default
     Map<Tag, Long> submissionCount = new ConcurrentHashMap<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @MapKeyEnumerated(EnumType.STRING)
+    @Builder.Default
     Map<Tag, Long> correctCount = new ConcurrentHashMap<>();
 
     public void addSubmit(Submission submission) {

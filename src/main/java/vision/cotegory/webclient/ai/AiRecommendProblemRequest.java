@@ -8,6 +8,8 @@ import lombok.Data;
 public class AiRecommendProblemRequest {
     private String handle;
     private String tag;
-    private Integer cnt;
-    private String model;
+    @Builder.Default
+    private Integer cnt = 1;
+    @Builder.Default
+    private String model = "EASE";
 }

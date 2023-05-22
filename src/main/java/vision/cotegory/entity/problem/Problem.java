@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class Problem {
     @Id
     @GeneratedValue
@@ -29,15 +30,19 @@ public class Problem {
     private Set<Tag> tags;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "problem")
+    @Builder.Default
     private List<Quiz> quizzes = new ArrayList<>();
 
-    @Embedded
-    ProblemContents problemContents;
-
-    @Builder
-    public Problem(ProblemMeta problemMeta, Set<Tag> tags, ProblemContents problemContents) {
-        this.problemMeta = problemMeta;
-        this.tags = tags;
-        this.problemContents = problemContents;
-    }
+    @Lob
+    private String problemBody;
+    @Lob
+    private String problemInput;
+    @Lob
+    private String problemOutput;
+    @Lob
+    private String sampleInput;
+    @Lob
+    private String sampleOutput;
+    private Integer timeLimit;
+    private Integer memoryLimit;
 }

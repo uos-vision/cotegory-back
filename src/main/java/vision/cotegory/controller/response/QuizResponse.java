@@ -1,27 +1,49 @@
 package vision.cotegory.controller.response;
 
 import lombok.Data;
+import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.Quiz;
-import vision.cotegory.entity.problem.ProblemContents;
+import vision.cotegory.entity.tag.Tag;
+import vision.cotegory.entity.tag.TagGroup;
+
+import java.util.Set;
 
 @Data
 public class QuizResponse {
 
-    private Long id;
-    private String tagGroup;
-    private String answerTag;
-    private Boolean activated;
+    private Long quizId;
+    private Tag answerTag;
+    private TagGroupResponse tagGroupResponse;
 
-    private ProblemMetaResponse problemMetaResponse;
-    private ProblemContents problemContents;
+    private Integer problemNumber;
+    private Origin origin;
+    private String title;
+    private String url;
+
+    private String problemBody;
+    private String problemInput;
+    private String problemOutput;
+    private String sampleInput;
+    private String sampleOutput;
+    private Integer timeLimit;
+    private Integer memoryLimit;
 
     public QuizResponse(Quiz quiz) {
-        this.id = quiz.getId();
-        this.tagGroup = quiz.getTagGroup().getName();
-        this.answerTag = quiz.getAnswerTag().toString();
-        this.activated = quiz.getActivated();
+        this.quizId = quiz.getId();
+        this.answerTag = quiz.getAnswerTag();
+        this.tagGroupResponse = new TagGroupResponse(quiz.getTagGroup());
 
-        this.problemMetaResponse = new ProblemMetaResponse(quiz.getProblem().getProblemMeta());
-        this.problemContents = quiz.getProblem().getProblemContents();
+        this.problemNumber = quiz.getProblem().getProblemMeta().getProblemNumber();
+        this.origin = quiz.getProblem().getProblemMeta().getOrigin();
+        this.title = quiz.getProblem().getProblemMeta().getTitle();
+        this.url = quiz.getProblem().getProblemMeta().getUrl();
+
+        this.problemBody = quiz.getProblem().getProblemBody();
+        this.problemInput = quiz.getProblem().getProblemInput();
+        this.problemOutput = quiz.getProblem().getProblemOutput();
+        this.sampleInput = quiz.getProblem().getSampleInput();
+        this.sampleOutput = quiz.getProblem().getSampleOutput();
+        this.timeLimit = quiz.getProblem().getTimeLimit();
+        this.memoryLimit = quiz.getProblem().getMemoryLimit();
     }
 }

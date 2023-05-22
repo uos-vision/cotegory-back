@@ -11,7 +11,7 @@ public enum Tag {
     BFS("너비 우선 탐색", 126),
     BRUTE_FORCE("브루트포스 알고리즘", 125),
     GREEDY("그리디 알고리즘", 33),
-    BINARY_SEARCH("이분탐색", 12),
+    BINARY_SEARCH("이분 탐색", 12),
     BIT_MASKING("비트마스킹", 14),
     DIJKSTRA("데이크스트라", 22),
     FLOYD_WARSHALL("플로이드-워셜", 31),
