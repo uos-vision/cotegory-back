@@ -4,9 +4,6 @@ import lombok.Data;
 import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.tag.Tag;
-import vision.cotegory.entity.tag.TagGroup;
-
-import java.util.Set;
 
 @Data
 public class QuizResponse {
@@ -19,6 +16,8 @@ public class QuizResponse {
     private Origin origin;
     private String title;
     private String url;
+
+    private Integer mmr;
 
     private String problemBody;
     private String problemInput;
@@ -37,6 +36,7 @@ public class QuizResponse {
         this.origin = quiz.getProblem().getProblemMeta().getOrigin();
         this.title = quiz.getProblem().getProblemMeta().getTitle();
         this.url = quiz.getProblem().getProblemMeta().getUrl();
+        this.mmr = quiz.getMmr();
 
         this.problemBody = quiz.getProblem().getProblemBody();
         this.problemInput = quiz.getProblem().getProblemInput();

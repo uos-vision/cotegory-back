@@ -10,8 +10,6 @@ import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.exception.exception.NotExistEntityException;
-import vision.cotegory.repository.QuizRepository;
-import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.QuizService;
 
 import java.util.List;
@@ -29,14 +27,14 @@ public class QuizRestController {
         return ResponseEntity.ok(new QuizResponse(quiz));
     }
 
-    @GetMapping("/recommend")
+    @GetMapping
     public ResponseEntity<QuizResponse> recommendQuiz(@RequestHeader(value = "Authorization") Member member) {
         Quiz quiz = quizService.recommendQuiz(member);
         return ResponseEntity.ok(new QuizResponse(quiz));
     }
 
     @GetMapping("/origin/list")
-    public ResponseEntity<OriginListResponse> originList(){
+    public ResponseEntity<OriginListResponse> originList() {
         return ResponseEntity.ok(new OriginListResponse(List.of(Origin.values())));
     }
 }

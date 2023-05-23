@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vision.cotegory.controller.request.CreateCompanyProblemRequest;
 import vision.cotegory.controller.request.CreateProblemMetaRequest;
 import vision.cotegory.controller.request.CreateQuizRequest;
 import vision.cotegory.controller.request.DeactivateRequest;
@@ -23,6 +24,7 @@ import vision.cotegory.repository.TagGroupRepository;
 import vision.cotegory.service.ProblemService;
 import vision.cotegory.service.StatisticService;
 import vision.cotegory.service.QuizService;
+import vision.cotegory.service.dto.CreateCompanyProblemDto;
 import vision.cotegory.service.dto.CreateProblemMetaDto;
 import vision.cotegory.service.dto.CreateQuizDto;
 
@@ -89,6 +91,18 @@ public class AdminRestController {
                 .build();
 
         quizService.createQuiz(createQuizDto);
+    }
+
+    @Transactional
+    @PostMapping("/create-company-problem")
+    public void createCompanyProblem(@RequestBody @Valid CreateCompanyProblemRequest createCompanyProblemRequest) {
+        CreateCompanyProblemDto createCompanyProblemDto = CreateCompanyProblemDto
+                .builder()
+                .problemName(createCompanyProblemRequest.getProblemName())
+                .problemNum(createCompanyProblemRequest.getProblemNum())
+                .origin(createCompanyProblemRequest.getOrigin())
+                .build();
+        problemService.createCompanyProblem(createCompanyProblemDto);
     }
 
     @Transactional

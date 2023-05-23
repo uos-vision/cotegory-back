@@ -78,6 +78,9 @@ public class QuizService {
         for (Quiz q : list) {
             int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
             if (diff < minDiff) {
+                System.out.println("diff = " + q.getMmr());
+                System.out.println("member.getMmr().get(q.getTagGroup()) = " + member.getMmr().get(q.getTagGroup()));
+                System.out.println("diff = " + diff);
                 minDiff = diff;
                 target = q;
             }

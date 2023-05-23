@@ -8,6 +8,7 @@ import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.exception.exception.DuplicatedEntityException;
 import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
+import vision.cotegory.service.dto.CreateCompanyProblemDto;
 import vision.cotegory.service.dto.CreateProblemMetaDto;
 import vision.cotegory.utils.CSVUtils;
 
@@ -23,7 +24,7 @@ public class ProblemService {
     private final ProblemMetaRepository problemMetaRepository;
 
     private Problem todayRandomProblem = null;
-    private String filePath = "src/main/java/vision/cotegory/data/companyProblemCSV.csv";
+    private final String filePath = "src/main/java/vision/cotegory/data/companyProblemCSV.csv";
 
 
     public Optional<Problem> findBaekjoonProblem(Integer problemNumber) {
@@ -52,7 +53,7 @@ public class ProblemService {
 
     public List<String> findCompanyProblem() {
         List<List<String>> file = CSVUtils.readCSV(this.filePath).orElse(makeDefaultList());
-        Integer randNum = (int) (Math.random() * file.size()); //유저 Entity에 저장해야 하는지 검토 필요
+        int randNum = (int) (Math.random() * file.size()); //유저 Entity에 저장해야 하는지 검토 필요
         List<String> companyProblem = file.get(randNum);
         return companyProblem;
     }
@@ -70,5 +71,13 @@ public class ProblemService {
                 .problemNumber(createProblemMetaDto.getProblemNumber())
                 .build();
         return problemMetaRepository.save(problemMeta);
+    }
+
+    public void createCompanyProblem(CreateCompanyProblemDto createCompanyProblemDto) {
+        String data = String.format("%s,%d,%s",
+                createCompanyProblemDto.getProblemName(),
+                createCompanyProblemDto.getProblemNum(),
+                createCompanyProblemDto.getOrigin());
+        CSVUtils.writeCSV(this.filePath, data);
     }
 }

@@ -3,7 +3,8 @@ package vision.cotegory.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import vision.cotegory.entity.problem.Problem;
+
+import vision.cotegory.entity.problem.ProblemMeta;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,8 +20,9 @@ public class Recommend {
     @Enumerated(EnumType.STRING)
     private RecommendType recommendType;
 
+    //Problem -> ProblemMeta
     @ManyToOne(fetch = FetchType.LAZY)
-    private Problem problem;
+    private ProblemMeta problemMeta;
 
     private LocalDateTime createTime;
 
@@ -28,9 +30,9 @@ public class Recommend {
     private Member member;
 
     @Builder
-    public Recommend(RecommendType recommendType, Problem problem, Member member) {
+    public Recommend(RecommendType recommendType, ProblemMeta problemMeta, Member member) {
         this.recommendType = recommendType;
-        this.problem = problem;
+        this.problemMeta = problemMeta;
         this.member = member;
         member.getRecommends().put(recommendType,this);
     }
