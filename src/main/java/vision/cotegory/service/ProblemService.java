@@ -54,8 +54,7 @@ public class ProblemService {
     public List<String> findCompanyProblem() {
         List<List<String>> file = CSVUtils.readCSV(this.filePath).orElse(makeDefaultList());
         int randNum = (int) (Math.random() * file.size()); //유저 Entity에 저장해야 하는지 검토 필요
-        List<String> companyProblem = file.get(randNum);
-        return companyProblem;
+        return file.get(randNum);
     }
 
     public ProblemMeta createProblemMeta(CreateProblemMetaDto createProblemMetaDto) {
