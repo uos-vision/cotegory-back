@@ -5,15 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import vision.cotegory.controller.request.CreateCompanyProblemRequest;
 import vision.cotegory.controller.response.ProblemMetaResponse;
 import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.service.ProblemService;
-import vision.cotegory.service.dto.CreateCompanyProblemDto;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
