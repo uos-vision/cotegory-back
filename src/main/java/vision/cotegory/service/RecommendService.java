@@ -84,14 +84,16 @@ public class RecommendService {
 
 
     public Recommend updateCompanyProblem(Member member) {
-        List<ProblemMeta> companyProblemMetas = problemMetaRepository.findAllByCompanyIsTrue().orElseThrow(NotExistEntityException::new);
+        List<ProblemMeta> companyProblemMetas = problemMetaRepository.findAllByIsCompanyIsTrue();
+        if (companyProblemMetas.isEmpty())
+            throw new NotExistEntityException();
         int randNum = (int) (Math.random() * companyProblemMetas.size());
         ProblemMeta companyProblem = companyProblemMetas.get(randNum);
         Recommend recommend = Recommend
                 .builder()
                 .problemMeta(companyProblem)
                 .member(member)
-                .recommendType(RecommendType.TODAY)
+                .recommendType(RecommendType.COMPANY)
                 .build();
         return recommendRepository.save(recommend);
     }

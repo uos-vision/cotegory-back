@@ -13,5 +13,5 @@ public interface ProblemMetaRepository extends JpaRepository<ProblemMeta, Long> 
     @Query("select pm from ProblemMeta pm where pm.problemNumber = :problemNumber and pm.origin = :origin")
     Optional<ProblemMeta> findByProblemNumberAndOrigin(@Param("problemNumber") Integer problemNumber, @Param("origin") Origin origin);
 
-    Optional<List<ProblemMeta>> findAllByCompanyIsTrue();
+    List<ProblemMeta> findAllByIsCompanyIsTrue();
 }

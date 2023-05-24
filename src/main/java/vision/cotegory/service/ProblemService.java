@@ -86,7 +86,19 @@ public class ProblemService {
         final String filePath = "src/main/java/vision/cotegory/data/companyProblemCSV.csv";
         List<List<String>> files = CSVUtils.readCSV(filePath).orElseThrow(NotExistEntityException::new);
         for(List<String> file : files) {
-
+            Optional<ProblemMeta> problemMeta = problemMetaRepository.findByProblemNumberAndOrigin(Integer.parseInt(file.get(1)), Origin.valueOf(file.get(2)));
+            if (problemMeta.isEmpty())
+            {
+                ProblemMeta saveProblemMeta = ProblemMeta
+                        .builder()
+                        .url("https://school.programmers.co.kr/learn/courses/30/lessons/" + file.get(1))
+                        .problemNumber(Integer.parseInt(file.get(1)))
+                        .origin(Origin.valueOf(file.get(2)))
+                        .title(file.get(0))
+                        .isCompany(true)
+                                .build();
+                problemMetaRepository.save(saveProblemMeta);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
 import vision.cotegory.entity.tag.TagGroup;
+import vision.cotegory.service.ProblemService;
 import vision.cotegory.service.TagGroupService;
 import vision.cotegory.repository.MemberRepository;
 import vision.cotegory.repository.TagGroupRepository;
@@ -32,12 +33,14 @@ public class Initializer {
     private final TagGroupService tagGroupService;
     private final PasswordEncoder passwordEncoder;
     private final TagGroupRepository tagGroupRepository;
+    private final ProblemService problemService;
 
     @EventListener(ApplicationReadyEvent.class)
     public void memberInit() {
         saveTagGroup();
         makeUser();
         makeAdmin();
+        problemService.addCompanyProblemMeta();
     }
     private void makeUser() {
         if(memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
