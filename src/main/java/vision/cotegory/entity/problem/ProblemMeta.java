@@ -29,4 +29,7 @@ public class ProblemMeta {
     private String title;
 
     private String url;
+
+    @Builder.Default
+    private boolean isCompany = false;
 }

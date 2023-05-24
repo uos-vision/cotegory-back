@@ -26,7 +26,7 @@ public class AiWebClient {
 
     public List<Integer> getRecommendProblemNumbers(AiRecommendProblemRequest aiRecommendProblemRequest) {
         return webClient.post()
-                .uri("/recommand")
+                .uri("/recommend")
                 .bodyValue(aiRecommendProblemRequest)
                 .retrieve()
                 .onStatus(HttpStatus::isError, response -> {

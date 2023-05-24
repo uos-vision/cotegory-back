@@ -6,6 +6,7 @@ import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.exception.exception.DuplicatedEntityException;
+import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.service.dto.CreateCompanyProblemDto;
@@ -78,5 +79,14 @@ public class ProblemService {
                 createCompanyProblemDto.getProblemNum(),
                 createCompanyProblemDto.getOrigin());
         CSVUtils.writeCSV(this.filePath, data);
+    }
+
+    //서비스 클래스를 새로 만드는 것이 어떨까요
+    public void addCompanyProblemMeta() {
+        final String filePath = "src/main/java/vision/cotegory/data/companyProblemCSV.csv";
+        List<List<String>> files = CSVUtils.readCSV(filePath).orElseThrow(NotExistEntityException::new);
+        for(List<String> file : files) {
+
+        }
     }
 }
