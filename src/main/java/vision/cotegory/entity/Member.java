@@ -63,7 +63,7 @@ public class Member {
     public void addSubmit(Submission submission) {
         Tag answerTag = submission.getQuiz().getAnswerTag();
         Tag selectTag = submission.getSelectTag();
-        submissionCount.merge(selectTag, +1L, Long::sum);
+        submissionCount.merge(answerTag, +1L, Long::sum);
         if (selectTag.equals(answerTag))
             correctCount.merge(selectTag, +1L, Long::sum);
     }
@@ -71,7 +71,7 @@ public class Member {
     public void minusSubmit(Submission submission) {
         Tag answerTag = submission.getQuiz().getAnswerTag();
         Tag selectTag = submission.getSelectTag();
-        submissionCount.merge(selectTag, -1L, Long::sum);
+        submissionCount.merge(answerTag, -1L, Long::sum);
         if (selectTag.equals(answerTag))
             correctCount.merge(answerTag, -1L, Long::sum);
     }
