@@ -25,6 +25,7 @@ public class MemberRestController {
 
     private final MemberService memberService;
 
+    @Operation(description = "correctRate에서 한번도 시도하지 않는 Tag는 null을 반환합니다")
     @GetMapping("/information")
     public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") Member member) {
         return ResponseEntity.ok(new MemberInformationResponse(member));
