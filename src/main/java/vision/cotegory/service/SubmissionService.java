@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.Submission;
+import vision.cotegory.entity.tag.Tag;
+import vision.cotegory.exception.exception.NotProperTagGroupAssignException;
 import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.dto.CreateSubmissionDto;
 import vision.cotegory.utils.ElOUtils;
@@ -28,11 +30,15 @@ public class SubmissionService {
     public Submission createSubmission(CreateSubmissionDto createSubmissionDto) {
         Member member = createSubmissionDto.getMember();
         Quiz quiz = createSubmissionDto.getQuiz();
+        Tag selectTag = createSubmissionDto.getSelectTag();
+
+        if(!quiz.getTagGroup().getTags().contains(selectTag))
+            throw new NotProperTagGroupAssignException("고른 태그는 선지에 존재하지 않습니다");
 
         Submission submission = Submission.builder()
                 .member(member)
-                .quiz(createSubmissionDto.getQuiz())
-                .selectTag(createSubmissionDto.getSelectTag())
+                .quiz(quiz)
+                .selectTag(selectTag)
                 .submitTime(createSubmissionDto.getSubmitTime())
                 .playTime(createSubmissionDto.getPlayTime())
                 .build();
