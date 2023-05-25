@@ -17,7 +17,9 @@ import vision.cotegory.problemloader.ai.AiWebClient;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +34,10 @@ public class RecommendService {
         double tmp = 0.0;
         Tag answerTag = Tag.DP;
         Map<Tag, Double> correctRate = member.getCorrectRate();
-        Set<Tag> tags = correctRate.keySet();
+        Set<Tag> tags = correctRate.entrySet().stream()
+                .filter(entry -> !Objects.isNull(entry.getValue()) && !entry.getKey().equals(Tag.OTHERS))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
 
         for (Tag tag : tags) {
             correctSum += 1 - correctRate.get(tag);
