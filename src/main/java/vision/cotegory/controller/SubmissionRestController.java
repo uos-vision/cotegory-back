@@ -56,14 +56,12 @@ public class SubmissionRestController {
 
     @Operation(description = "yyyy-MM-dd'T'HH:mm:ss 형식을 요구로 합니다.")
     @GetMapping("/time")
-    public ResponseEntity<List<SubmissionResponse>> timeSubmission(
+    public Page<SubmissionResponse> timeSubmission(
             @RequestHeader(value = "Authorization") Member member,
-            @ParameterObject @ModelAttribute @Valid DateSubmissionRequest dateSubmissionRequest) {
-        List<Submission> submissionList = submissionService.findAllByTime(member, dateSubmissionRequest.getFromTime(), dateSubmissionRequest.getToTime());
-        List<SubmissionResponse> resultList = submissionList.stream()
-                .map(SubmissionResponse::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(resultList);
+            @ParameterObject @ModelAttribute @Valid DateSubmissionRequest dateSubmissionRequest,
+            @ParameterObject @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        return submissionService.findAllByTime(member, dateSubmissionRequest.getFromTime(), dateSubmissionRequest.getToTime(), pageable)
+                .map(SubmissionResponse::new);
     }
 
     @Operation(description = "현재 로그인한 유저의 모든 Submission을 봅니다.\\\n기본값으로, 최근제출순으로 정렬되어있습니다")
