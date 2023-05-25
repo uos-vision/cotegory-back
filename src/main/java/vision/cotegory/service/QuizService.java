@@ -13,6 +13,7 @@ import vision.cotegory.repository.QuizRepository;
 import vision.cotegory.service.dto.CreateProblemMetaDto;
 import vision.cotegory.service.dto.CreateQuizDto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,7 @@ public class QuizService {
         int minDiff = 2000;
         Quiz target = null;
         List<Quiz> list = quizRepository.findAllByActivatedIsTrue();
+        Collections.shuffle(list);
 
         for (Quiz q : list) {
             int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
