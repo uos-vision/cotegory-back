@@ -15,10 +15,7 @@ import vision.cotegory.service.TagGroupService;
 import vision.cotegory.repository.MemberRepository;
 import vision.cotegory.repository.TagGroupRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static vision.cotegory.entity.tag.Tag.*;
 import static vision.cotegory.entity.tag.Tag.UNION_FIND;
@@ -33,16 +30,17 @@ public class Initializer {
     private final TagGroupService tagGroupService;
     private final PasswordEncoder passwordEncoder;
     private final TagGroupRepository tagGroupRepository;
-    private final ProblemMetaService problemMetaService;
 
     @EventListener(ApplicationReadyEvent.class)
     public void memberInit() {
+        setTimeZoneToAsiaSeoul();
         saveTagGroup();
         makeUser();
         makeAdmin();
     }
+
     private void makeUser() {
-        if(memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
+        if (memberRepository.findByLoginIdAndActivatedIsTrue("member").isPresent())
             return;
         Member member = Member.builder()
                 .loginId("member")
@@ -62,7 +60,7 @@ public class Initializer {
     }
 
     private void makeAdmin() {
-        if(memberRepository.findByLoginIdAndActivatedIsTrue("admin").isPresent())
+        if (memberRepository.findByLoginIdAndActivatedIsTrue("admin").isPresent())
             return;
         Member admin = Member.builder()
                 .loginId("admin")
@@ -103,12 +101,15 @@ public class Initializer {
         )).build();
         tagGroups.add(groupC);
 
-        for(var tagGroup : tagGroups){
-            if(tagGroupRepository.findByName(tagGroup.getName()).isPresent())
+        for (var tagGroup : tagGroups) {
+            if (tagGroupRepository.findByName(tagGroup.getName()).isPresent())
                 continue;
             tagGroupRepository.save(tagGroup);
             log.info("[tagGroupConstInit]{}", tagGroup.getName());
         }
     }
 
+    public void setTimeZoneToAsiaSeoul() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+    }
 }
