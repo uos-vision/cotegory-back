@@ -79,6 +79,8 @@ public class Member {
     public Map<Tag, Double> getCorrectRate() {
         var ret = new HashMap<Tag, Double>();
         for (var tag : Tag.values()) {
+            if(tag.equals(Tag.OTHERS))
+                continue;
             Long submissionCnt = submissionCount.getOrDefault(tag, 0L);
             Long correctCnt = correctCount.getOrDefault(tag, 0L);
             if (submissionCnt.equals(0L))
