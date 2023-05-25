@@ -33,7 +33,6 @@ public class Initializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void memberInit() {
-        setTimeZoneToAsiaSeoul();
         saveTagGroup();
         makeUser();
         makeAdmin();
@@ -107,9 +106,5 @@ public class Initializer {
             tagGroupRepository.save(tagGroup);
             log.info("[tagGroupConstInit]{}", tagGroup.getName());
         }
-    }
-
-    public void setTimeZoneToAsiaSeoul() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
     }
 }
