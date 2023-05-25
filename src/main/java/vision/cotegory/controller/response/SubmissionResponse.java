@@ -13,6 +13,8 @@ public class SubmissionResponse {
 
     private Tag selectTag;
 
+    private Tag answerTag;
+
     private LocalDateTime submitTime;
 
     private Integer playTime;
@@ -20,6 +22,7 @@ public class SubmissionResponse {
     public SubmissionResponse(Submission submission) {
         this.quizId = submission.getQuiz().getId();
         this.selectTag = submission.getSelectTag();
+        this.answerTag = submission.getQuiz().getAnswerTag();
         this.submitTime = submission.getSubmitTime();
         this.playTime = submission.getPlayTime();
     }
