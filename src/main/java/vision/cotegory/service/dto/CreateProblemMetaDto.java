@@ -14,4 +14,6 @@ public class CreateProblemMetaDto {
     private String title;
 
     private String url;
+
+    private Boolean isCompany;
 }

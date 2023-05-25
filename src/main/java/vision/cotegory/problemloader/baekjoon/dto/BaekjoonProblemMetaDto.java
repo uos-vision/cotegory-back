@@ -1,9 +1,6 @@
-package vision.cotegory.crawler.baekjoon.dto;
+package vision.cotegory.problemloader.baekjoon.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class BaekjoonProblemMetaDto {

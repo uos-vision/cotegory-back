@@ -1,4 +1,4 @@
-package vision.cotegory.webclient.ai;
+package vision.cotegory.problemloader.ai;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +7,6 @@ import org.springframework.test.context.ActiveProfiles;
 import vision.cotegory.entity.tag.Tag;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("prod")

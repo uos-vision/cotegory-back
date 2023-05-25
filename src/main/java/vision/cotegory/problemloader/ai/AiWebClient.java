@@ -1,4 +1,4 @@
-package vision.cotegory.webclient.ai;
+package vision.cotegory.problemloader.ai;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

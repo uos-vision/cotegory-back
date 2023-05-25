@@ -9,11 +9,11 @@ import vision.cotegory.entity.Recommend;
 import vision.cotegory.entity.RecommendType;
 import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.entity.tag.Tag;
-import vision.cotegory.exception.exception.NotExistEntityException;import vision.cotegory.exception.exception.NotExistPathException;
+import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.ProblemMetaRepository;
-import vision.cotegory.repository.RecommendRepository;import vision.cotegory.utils.CSVUtils;
-import vision.cotegory.webclient.ai.AiRecommendProblemRequest;
-import vision.cotegory.webclient.ai.AiWebClient;
+import vision.cotegory.repository.RecommendRepository;
+import vision.cotegory.problemloader.ai.AiRecommendProblemRequest;
+import vision.cotegory.problemloader.ai.AiWebClient;
 
 import java.util.List;
 import java.util.Map;
@@ -59,6 +59,7 @@ public class RecommendService {
                 .cnt(1)
                 .model("EASE")
                 .build();
+
         List<Integer> list = aiWebClient.getRecommendProblemNumbers(aiRecommendProblemRequest);
         ProblemMeta problemMeta = problemMetaRepository.findByProblemNumberAndOrigin(list.get(0), Origin.BAEKJOON).orElseThrow(NotExistEntityException::new);
         Recommend recommend = Recommend

@@ -10,21 +10,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vision.cotegory.controller.request.CreateCompanyProblemRequest;
 import vision.cotegory.controller.request.CreateProblemMetaRequest;
 import vision.cotegory.controller.request.CreateQuizRequest;
 import vision.cotegory.controller.request.DeactivateRequest;
 import vision.cotegory.controller.response.AbnormalQuizResponse;
-import vision.cotegory.crawler.baekjoon.BaekjoonCrawler;
+import vision.cotegory.problemloader.baekjoon.BaekjoonCrawler;
 import vision.cotegory.entity.AbnormalQuiz;
 import vision.cotegory.entity.tag.TagGroup;
 import vision.cotegory.exception.exception.NotExistEntityException;
+import vision.cotegory.problemloader.programmers.ProgrammersCSVReader;
 import vision.cotegory.repository.AbnormalQuizRepository;
 import vision.cotegory.repository.TagGroupRepository;
-import vision.cotegory.service.ProblemService;
-import vision.cotegory.service.StatisticService;
+import vision.cotegory.service.ProblemMetaService;
 import vision.cotegory.service.QuizService;
-import vision.cotegory.service.dto.CreateCompanyProblemDto;
+import vision.cotegory.service.StatisticService;
 import vision.cotegory.service.dto.CreateProblemMetaDto;
 import vision.cotegory.service.dto.CreateQuizDto;
 
@@ -39,25 +38,27 @@ public class AdminRestController {
     private final AbnormalQuizRepository abnormalQuizRepository;
     private final TagGroupRepository tagGroupRepository;
 
-    private final BaekjoonCrawler baekjoonCrawler;
-
     private final StatisticService statisticService;
     private final QuizService quizService;
-    private final ProblemService problemService;
+    private final ProblemMetaService problemMetaService;
 
-    @Operation(description = "모든문제(n)에 대한 모든제출(m)을 검사하므로 O(nm)입니다. 자주 호출하지 마세요.\\\n전체유저 정답률과 비정상 데이터 리스트를 업데이트 합니다")
+    private final BaekjoonCrawler baekjoonCrawler;
+    private final ProgrammersCSVReader programmersCSVReader;
+
+    @Operation(summary = "전체유저 정답률과 비정상 데이터 리스트를 업데이트 합니다")
     @PostMapping("/statistic/update")
     public void updateAbnormal() {
         statisticService.updateStatisticData();
     }
 
     @Transactional
-    @Operation(description = "update api호출로 생성된 데이터들을 봅니다. 자주 호출해도 됩니다.")
+    @Operation(summary = "비정상 데이터 리스트를 봅니다.")
     @PostMapping("/abnormal/list")
     public Page<AbnormalQuizResponse> listAbnormal(Pageable pageable) {
         return abnormalQuizRepository.findAllActivateTrue(pageable).map(AbnormalQuizResponse::new);
     }
 
+    @Operation(summary = "비정상 Quiz를 비활성화 합니다. QuizId가 아니라 AbnormalQuizId를 받습니다")
     @Transactional
     @PostMapping("/abnormal/deactivate")
     public void deactivateAbnormal(@RequestBody @Valid DeactivateRequest deactivateRequest) {
@@ -94,32 +95,22 @@ public class AdminRestController {
     }
 
     @Transactional
-    @PostMapping("/create-company-problem")
-    public void createCompanyProblem(@RequestBody @Valid CreateCompanyProblemRequest createCompanyProblemRequest) {
-        CreateCompanyProblemDto createCompanyProblemDto = CreateCompanyProblemDto
-                .builder()
-                .problemName(createCompanyProblemRequest.getProblemName())
-                .problemNum(createCompanyProblemRequest.getProblemNum())
-                .origin(createCompanyProblemRequest.getOrigin())
-                .build();
-        problemService.createCompanyProblem(createCompanyProblemDto);
-    }
-
-    @Transactional
-    @PostMapping("/create-meta")
+//    @PostMapping("/create-meta")
     public void createProblemMeta(@RequestBody @Valid CreateProblemMetaRequest createProblemMetaRequest) {
         CreateProblemMetaDto createProblemMetaDto = CreateProblemMetaDto.builder()
                 .origin(createProblemMetaRequest.getOrigin())
                 .url(createProblemMetaRequest.getUrl())
                 .problemNumber(createProblemMetaRequest.getProblemNumber())
                 .title(createProblemMetaRequest.getTitle())
+                .isCompany(createProblemMetaRequest.getIsCompany())
                 .build();
-        problemService.createProblemMeta(createProblemMetaDto);
+        problemMetaService.createProblemMeta(createProblemMetaDto);
     }
 
-    @Operation(description = "프론트에서 호출할일은 거의 없습니다", summary = "5분이상 걸리는 작업입니다")
-    @PostMapping("/baekjoon/crawl")
+    @Operation(summary = "백준문제와 프로그래머스 문제를 DB에 저장합니다")
+    @PostMapping("/problem-load")
     public void updateBaekjoonProblems() {
         baekjoonCrawler.crawlAll();
+        programmersCSVReader.readCSV();
     }
 }

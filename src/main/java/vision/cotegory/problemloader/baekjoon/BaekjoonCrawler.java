@@ -1,12 +1,12 @@
-package vision.cotegory.crawler.baekjoon;
+package vision.cotegory.problemloader.baekjoon;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import vision.cotegory.crawler.baekjoon.dto.BaekjoonProblemMetaDto;
-import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto;
-import vision.cotegory.crawler.baekjoon.dto.SolvedAcProblemDto.SolvedAcTagDto;
+import vision.cotegory.problemloader.baekjoon.dto.BaekjoonProblemMetaDto;
+import vision.cotegory.problemloader.baekjoon.dto.SolvedAcProblemDto;
+import vision.cotegory.problemloader.baekjoon.dto.SolvedAcProblemDto.SolvedAcTagDto;
 import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.Quiz;
 import vision.cotegory.entity.problem.Problem;
@@ -17,7 +17,6 @@ import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
-import vision.cotegory.repository.TagGroupRepository;
 import vision.cotegory.service.TagGroupService;
 
 import java.util.ArrayList;
@@ -39,17 +38,11 @@ public class BaekjoonCrawler {
     private final QuizRepository quizRepository;
 
     public void crawlAll() {
-        var stopWatch = new StopWatch();
-        stopWatch.start();
         Stream.of(Tag.values()).forEach(tag -> {
             if (tag.equals(Tag.OTHERS))
                 return;
             crawlByTag(tag);
         });
-        stopWatch.stop();
-        log.info("[problemStopWatch]총 {}초 소요되었습니다", stopWatch.getTotalTimeSeconds());
-        log.info("[problemMeta]총 {}개의 problemMeta가 저장되었습니다", problemMetaRepository.count());
-        log.info("[problem]총 {}개의 problem이 저장되었습니다", problemRepository.count());
     }
 
 
@@ -136,7 +129,7 @@ public class BaekjoonCrawler {
         var savedProblemMetaDtos = new ArrayList<BaekjoonProblemMetaDto>();
         for (var dto : dtos) {
             if (problemMetaRepository.findByProblemNumberAndOrigin(dto.getProblemNumber(), Origin.BAEKJOON).isPresent()) {
-                log.info("[skipProblemMeta]{}번 problemMeta은 이미 ProblemMetaRepo에 존재하므로 skip됩니다", dto.getProblemNumber());
+                log.info("[skipMeta]{}번 problemMeta은 이미 ProblemMetaRepo에 존재하므로 skip됩니다", dto.getProblemNumber());
                 continue;
             }
             ProblemMeta problemMeta = ProblemMeta.builder()

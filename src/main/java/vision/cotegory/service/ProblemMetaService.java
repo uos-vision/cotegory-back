@@ -11,15 +11,15 @@ import vision.cotegory.repository.ProblemMetaRepository;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.service.dto.CreateCompanyProblemDto;
 import vision.cotegory.service.dto.CreateProblemMetaDto;
-import vision.cotegory.utils.CSVUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
-public class ProblemService {
+public class ProblemMetaService {
 
     private final ProblemRepository problemRepository;
     private final ProblemMetaRepository problemMetaRepository;
@@ -44,18 +44,11 @@ public class ProblemService {
         return todayRandomProblem;
     }
 
-    private List<List<String>> makeDefaultList() {
-        List<List<String>> defaultlist = new ArrayList<>();
-        defaultlist.add(new ArrayList<>());
-        defaultlist.get(0).add("150370");
-        defaultlist.get(0).add("개인정보 수집 유효기간");
-        return defaultlist;
-    } //삭제할예정
+    public ProblemMeta findCompanyProblem() {
+        List<Long> Ids = problemMetaRepository.findAllIdByOriginAndCompanyIsTrue();
+        Long randId = Ids.get(ThreadLocalRandom.current().nextInt(0, Ids.size()));
 
-    public List<String> findCompanyProblem() {
-        List<List<String>> file = CSVUtils.readCSV(this.filePath).orElse(makeDefaultList());
-        int randNum = (int) (Math.random() * file.size()); //유저 Entity에 저장해야 하는지 검토 필요
-        return file.get(randNum);
+        return problemMetaRepository.findById(randId).orElseThrow(NotExistEntityException::new);
     }
 
     public ProblemMeta createProblemMeta(CreateProblemMetaDto createProblemMetaDto) {
@@ -69,36 +62,8 @@ public class ProblemService {
                 .title(createProblemMetaDto.getTitle())
                 .origin(createProblemMetaDto.getOrigin())
                 .problemNumber(createProblemMetaDto.getProblemNumber())
+                .isCompany(createProblemMetaDto.getIsCompany())
                 .build();
         return problemMetaRepository.save(problemMeta);
-    }
-
-    public void createCompanyProblem(CreateCompanyProblemDto createCompanyProblemDto) {
-        String data = String.format("%s,%d,%s",
-                createCompanyProblemDto.getProblemName(),
-                createCompanyProblemDto.getProblemNum(),
-                createCompanyProblemDto.getOrigin());
-        CSVUtils.writeCSV(this.filePath, data);
-    }
-
-    //서비스 클래스를 새로 만드는 것이 어떨까요
-    public void addCompanyProblemMeta() {
-        final String filePath = "src/main/java/vision/cotegory/data/companyProblemCSV.csv";
-        List<List<String>> files = CSVUtils.readCSV(filePath).orElseThrow(NotExistEntityException::new);
-        for(List<String> file : files) {
-            Optional<ProblemMeta> problemMeta = problemMetaRepository.findByProblemNumberAndOrigin(Integer.parseInt(file.get(1)), Origin.valueOf(file.get(2)));
-            if (problemMeta.isEmpty())
-            {
-                ProblemMeta saveProblemMeta = ProblemMeta
-                        .builder()
-                        .url("https://school.programmers.co.kr/learn/courses/30/lessons/" + file.get(1))
-                        .problemNumber(Integer.parseInt(file.get(1)))
-                        .origin(Origin.valueOf(file.get(2)))
-                        .title(file.get(0))
-                        .isCompany(true)
-                                .build();
-                problemMetaRepository.save(saveProblemMeta);
-            }
-        }
     }
 }

@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import vision.cotegory.controller.response.ProblemMetaResponse;
 import vision.cotegory.entity.Origin;
 import vision.cotegory.entity.problem.Problem;
+import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.exception.exception.NotExistEntityException;
-import vision.cotegory.service.ProblemService;
+import vision.cotegory.service.ProblemMetaService;
 
 import java.util.List;
 
@@ -18,34 +19,29 @@ import java.util.List;
 @RequestMapping("/api/problem")
 @Transactional
 public class ProblemRestController {
-    private final ProblemService problemService;
+    private final ProblemMetaService problemMetaService;
 
-    @GetMapping("/backjoon/{problemNum}")
+//    @GetMapping("/baekjoon/{problemNum}")
     public ResponseEntity<ProblemMetaResponse> findBaekjoonProblem(@PathVariable("problemNum") Integer problemNum) {
-        Problem baekjoonProblem = problemService
+        Problem baekjoonProblem = problemMetaService
                 .findBaekjoonProblem(problemNum)
                 .orElseThrow(NotExistEntityException::new);
         return ResponseEntity.ok(new ProblemMetaResponse(baekjoonProblem.getProblemMeta()));
     }
 
     @Operation(summary = "랜덤한 기업문제를 보여줍니다.")
-    @GetMapping("/company")
+//    @GetMapping("/company")
     public ResponseEntity<ProblemMetaResponse> findCompanyProblem() {
-        List<String> list = problemService.findCompanyProblem();
-        ProblemMetaResponse problemResponse = new ProblemMetaResponse(
-                Integer.parseInt(list.get(1)),
-                Origin.PROGRAMMERS,
-                list.get(0),
-                "https://school.programmers.co.kr/learn/courses/30/lessons/" + list.get(1));
-        return ResponseEntity.ok(problemResponse);
+        ProblemMeta companyProblemMeta = problemMetaService.findCompanyProblem();
+
+        return ResponseEntity.ok(new ProblemMetaResponse(companyProblemMeta));
     }
 
     //비회원을 위한 기능이 있을지도 몰라서 일단 만들었습니다.
-    @GetMapping("/today")
+//    @GetMapping("/today")
     public ResponseEntity<ProblemMetaResponse> findTodayProblem() {
-        Problem problem = problemService.findTodayProblem();
+        Problem problem = problemMetaService.findTodayProblem();
         ProblemMetaResponse problemResponse = new ProblemMetaResponse(problem.getProblemMeta());
         return ResponseEntity.ok(problemResponse);
     }
-
 }

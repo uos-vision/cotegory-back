@@ -1,4 +1,4 @@
-package vision.cotegory.crawler.baekjoon;
+package vision.cotegory.problemloader.baekjoon;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -10,14 +10,11 @@ import vision.cotegory.repository.TagGroupRepository;
 
 @SpringBootTest
 @Slf4j
-@ActiveProfiles("default")
 class BaekjoonPageListCrawlerTest {
 
     @Autowired
     BaekjoonCrawler baekjoonCrawler;
-    @Autowired
-    TagGroupRepository tagGroupRepository;
-    
+
     @Test
     void crawl(){
         baekjoonCrawler.crawlAll();
