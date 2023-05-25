@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,10 +33,13 @@ public class RecommendService {
     private Tag findTag(Member member) {
         double correctSum = 0.0;
         double tmp = 0.0;
-        Tag answerTag = Tag.DP;
+
+        List<Tag> tagValues = Tag.valuesWithoutOthers();
+        Tag answerTag = tagValues.get(ThreadLocalRandom.current().nextInt(0, tagValues.size()));
+
         Map<Tag, Double> correctRate = member.getCorrectRate();
         Set<Tag> tags = correctRate.entrySet().stream()
-                .filter(entry -> !Objects.isNull(entry.getValue()) && !entry.getKey().equals(Tag.OTHERS))
+                .filter(entry -> !Objects.isNull(entry.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
 

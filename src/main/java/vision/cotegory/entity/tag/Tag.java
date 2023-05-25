@@ -2,9 +2,10 @@ package vision.cotegory.entity.tag;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
-@Slf4j
 public enum Tag {
     DP("다이나믹 프로그래밍", 25),
     DFS("깊이 우선 탐색", 127),
@@ -25,6 +26,7 @@ public enum Tag {
 
     private final String korean;
     private final Integer baekjoonCode;
+    private static List<Tag> valuesWithoutOthers;
 
     public String toKorean() {
         return this.korean;
@@ -41,10 +43,23 @@ public enum Tag {
                 .orElse(OTHERS);
     }
 
-    public static Tag of(String korean){
+    public static Tag of(String korean) {
         return Stream.of(values())
                 .filter(e -> e.toKorean().equals(korean))
                 .findAny()
                 .orElse(OTHERS);
+    }
+
+    public static List<Tag> valuesWithoutOthers() {
+        if (valuesWithoutOthers != null)
+            return valuesWithoutOthers;
+
+        valuesWithoutOthers = new ArrayList<>();
+        for (var tag : values()) {
+            if (tag.equals(OTHERS))
+                continue;
+            valuesWithoutOthers.add(tag);
+        }
+        return valuesWithoutOthers;
     }
 }

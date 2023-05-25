@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -49,11 +50,10 @@ public class SandBox {
 
     @Test
     public void sandBox() throws FileNotFoundException {
-        BaekjoonPageCrawler baekjoonPageCrawler = new BaekjoonPageCrawler(25021);
-        log.info("problemInput:{}", baekjoonPageCrawler.getProblemInput());
-        log.info("problemInputSize:{}", baekjoonPageCrawler.getProblemInput().length());
-        log.info("problemInputEmpty:{}", baekjoonPageCrawler.getProblemInput().isEmpty());
-        log.info("problemInputBlank:{}", baekjoonPageCrawler.getProblemInput().isBlank());
+        for (int i = 0; i < 100; ++i){
+            final int val = ThreadLocalRandom.current().nextInt(0, 10);
+            System.out.println(val);
+        }
     }
 }
 
