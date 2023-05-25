@@ -56,7 +56,9 @@ public class SubmissionRestController {
 
     @Operation(description = "yyyy-MM-dd'T'HH:mm:ss 형식을 요구로 합니다.")
     @GetMapping("/time")
-    public ResponseEntity<List<SubmissionResponse>> timeSubmission(@RequestHeader(value = "Authorization") Member member, @Valid DateSubmissionRequest dateSubmissionRequest) {
+    public ResponseEntity<List<SubmissionResponse>> timeSubmission(
+            @RequestHeader(value = "Authorization") Member member,
+            @RequestBody @Valid DateSubmissionRequest dateSubmissionRequest) {
         List<Submission> submissionList = submissionService.findAllByTime(member, dateSubmissionRequest.getFromTime(), dateSubmissionRequest.getToTime());
         List<SubmissionResponse> resultList = submissionList.stream()
                 .map(SubmissionResponse::new)
