@@ -2,14 +2,12 @@ package vision.cotegory.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vision.cotegory.controller.request.CreateProblemMetaRequest;
 import vision.cotegory.controller.request.CreateQuizRequest;
 import vision.cotegory.controller.request.DeactivateRequest;
@@ -53,8 +51,8 @@ public class AdminRestController {
 
     @Transactional
     @Operation(description = "비정상 데이터 리스트를 봅니다.")
-    @PostMapping("/abnormal/list")
-    public Page<AbnormalQuizResponse> listAbnormal(Pageable pageable) {
+    @GetMapping("/abnormal/list")
+    public Page<AbnormalQuizResponse> listAbnormal(@ParameterObject Pageable pageable) {
         return abnormalQuizRepository.findAllActivateTrue(pageable).map(AbnormalQuizResponse::new);
     }
 

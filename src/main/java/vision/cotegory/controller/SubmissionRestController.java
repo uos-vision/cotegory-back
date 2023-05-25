@@ -2,6 +2,7 @@ package vision.cotegory.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -67,7 +68,7 @@ public class SubmissionRestController {
     @GetMapping("/list")
     public Page<SubmissionResponse> pageSubmission(
             @RequestHeader(value = "Authorization") Member member,
-            @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
+            @ParameterObject @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
         return submissionRepository.findAllByMember(member, pageable)
                 .map(SubmissionResponse::new);
     }
