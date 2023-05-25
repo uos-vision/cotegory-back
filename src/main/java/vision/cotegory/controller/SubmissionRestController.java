@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +62,8 @@ public class SubmissionRestController {
 
     @Operation(description = "현재 로그인한 유저의 모든 Submission을 봅니다")
     @GetMapping("/list")
-    public Page<SubmissionResponse> pageSubmission(@RequestHeader(value = "Authorization") Member member, Pageable pageable) {
+    public Page<SubmissionResponse> pageSubmission(@RequestHeader(value = "Authorization") Member member,
+                                                   @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
         return submissionRepository.findAllByMember(member, pageable)
                 .map(SubmissionResponse::new);
     }
