@@ -24,7 +24,7 @@ public class TagRestController {
 
     private final TagGroupRepository tagGroupRepository;
 
-    @Operation(summary = "인증토큰 없이 호출 가능")
+    @Operation(description = "인증토큰 없이 호출 가능")
     @GetMapping("/list")
     public ResponseEntity<TagsResponse> tags() {
         return ResponseEntity.ok(TagsResponse.builder()
@@ -32,7 +32,7 @@ public class TagRestController {
                 .build());
     }
 
-    @Operation(summary = "인증토큰 없이 호출 가능")
+    @Operation(description = "인증토큰 없이 호출 가능")
     @GetMapping("/groups")
     public ResponseEntity<TagGroupsResponse> tagGroups() {
         return ResponseEntity.ok(TagGroupsResponse.builder()

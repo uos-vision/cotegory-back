@@ -30,7 +30,7 @@ public class MemberRestController {
         return ResponseEntity.ok(new MemberInformationResponse(member));
     }
 
-    @Operation(summary = "profile='prod'에서만 정상적 호출이 가능합니다.")
+    @Operation(description = "profile='prod'에서만 정상적 호출이 가능합니다.")
     @PostMapping(value = "/img/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void imgUpdate(
             @RequestHeader(value = "Authorization") Member member,
@@ -38,7 +38,7 @@ public class MemberRestController {
         memberService.uploadImage(member, multipartFile);
     }
 
-    @Operation(summary = "profile='prod'에서만 정상적 호출이 가능합니다.")
+    @Operation(description = "profile='prod'에서만 정상적 호출이 가능합니다.")
     @PostMapping(value = "/img/delete", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void imgDelete(@RequestHeader(value = "Authorization") Member member) {
         memberService.deleteImage(member);
