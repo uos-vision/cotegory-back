@@ -62,8 +62,9 @@ public class SubmissionRestController {
 
     @Operation(description = "현재 로그인한 유저의 모든 Submission을 봅니다")
     @GetMapping("/list")
-    public Page<SubmissionResponse> pageSubmission(@RequestHeader(value = "Authorization") Member member,
-                                                   @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<SubmissionResponse> pageSubmission(
+            @RequestHeader(value = "Authorization") Member member,
+            @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
         return submissionRepository.findAllByMember(member, pageable)
                 .map(SubmissionResponse::new);
     }
