@@ -35,6 +35,7 @@ public class QuizRestController {
         return ResponseEntity.ok(new QuizResponse(quiz));
     }
 
+    @Operation(description = "지원하는 사이트 목록을 봅니다")
     @GetMapping("/origin/list")
     public ResponseEntity<OriginListResponse> originList() {
         return ResponseEntity.ok(new OriginListResponse(List.of(Origin.values())));
