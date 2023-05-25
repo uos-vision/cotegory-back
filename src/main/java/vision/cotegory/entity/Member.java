@@ -82,7 +82,7 @@ public class Member {
             Long submissionCnt = submissionCount.getOrDefault(tag, 0L);
             Long correctCnt = correctCount.getOrDefault(tag, 0L);
             if (submissionCnt.equals(0L))
-                ret.put(tag, 0.0);
+                ret.put(tag, null);
             else
                 ret.put(tag, (double) correctCnt / (double) submissionCnt);
         }
