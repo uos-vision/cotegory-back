@@ -1,10 +1,10 @@
-package vision.cotegory.crawler.baekjoon;
+package vision.cotegory.problemloader.baekjoon;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import vision.cotegory.crawler.baekjoon.dto.BaekjoonProblemMetaDto;
+import vision.cotegory.problemloader.baekjoon.dto.BaekjoonProblemMetaDto;
 
 import java.io.IOException;
 import java.util.List;

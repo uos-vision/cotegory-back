@@ -1,4 +1,4 @@
-package vision.cotegory.webclient.ai;
+package vision.cotegory.problemloader.ai;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ public class AiWebClient {
 
     public List<Integer> getRecommendProblemNumbers(AiRecommendProblemRequest aiRecommendProblemRequest) {
         return webClient.post()
-                .uri("/recommand")
+                .uri("/recommend")
                 .bodyValue(aiRecommendProblemRequest)
                 .retrieve()
                 .onStatus(HttpStatus::isError, response -> {

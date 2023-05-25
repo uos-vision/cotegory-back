@@ -1,5 +1,6 @@
 package vision.cotegory.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class QuizRestController {
         return ResponseEntity.ok(new QuizResponse(quiz));
     }
 
+    @Operation(summary = "퀴즈 출제를 요청합니다")
     @GetMapping
     public ResponseEntity<QuizResponse> recommendQuiz(@RequestHeader(value = "Authorization") Member member) {
         Quiz quiz = quizService.recommendQuiz(member);

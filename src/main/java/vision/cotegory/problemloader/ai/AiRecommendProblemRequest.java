@@ -1,4 +1,4 @@
-package vision.cotegory.webclient.ai;
+package vision.cotegory.problemloader.ai;
 
 import lombok.Builder;
 import lombok.Data;

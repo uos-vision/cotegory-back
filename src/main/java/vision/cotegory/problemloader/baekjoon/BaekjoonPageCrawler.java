@@ -1,4 +1,4 @@
-package vision.cotegory.crawler.baekjoon;
+package vision.cotegory.problemloader.baekjoon;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -49,6 +49,26 @@ public class BaekjoonPageCrawler {
         return contentParseInt(getContent("#problem-info > tbody > tr > td:nth-child(2)"));
     }
 
+    public String getProblemBody() {
+        return doc.select("#problem_description").html();
+    }
+
+    public String getProblemInput() {
+        return doc.select("#problem_input").html();
+    }
+
+    public String getProblemOutput() {
+        return doc.select("#problem_output").html();
+    }
+
+    public String getSampleInput() {
+        return doc.select("#sample-input-1").html();
+    }
+
+    public String getSampleOutput() {
+        return doc.select("#sample-output-1").html();
+    }
+
     public int getSubmissionCount() {
         return contentParseInt(getContent("#problem-info > tbody > tr > td:nth-child(3)"));
     }
@@ -63,26 +83,6 @@ public class BaekjoonPageCrawler {
 
     public Double getCorrectRate() {
         return contentParseDouble(getContent("#problem-info > tbody > tr > td:nth-child(6)"));
-    }
-
-    public String getProblemBody() {
-        return doc.select("#problem_description").html();
-    }
-
-    public String getProblemInput() {
-        return getContent("#problem_input");
-    }
-
-    public String getProblemOutput() {
-        return getContent("#problem_output");
-    }
-
-    public String getSampleInput() {
-        return getContent("#sample-input-1");
-    }
-
-    public String getSampleOutput() {
-        return getContent("#sample-output-1");
     }
 
     private double contentParseDouble(String content) {

@@ -12,4 +12,6 @@ public class CreateProblemMetaRequest {
     private String title;
 
     private String url;
+
+    private Boolean isCompany;
 }

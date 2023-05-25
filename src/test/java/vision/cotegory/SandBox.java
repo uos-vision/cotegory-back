@@ -1,5 +1,8 @@
 package vision.cotegory;
 
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +11,11 @@ import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
 import vision.cotegory.repository.MemberRepository;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,11 +45,13 @@ public class SandBox {
     }
 
     @Test
-    public void sandBox() {
-        Map<Integer, Integer> map = new HashMap<>();
-        map.merge(1, 2, Integer::sum);
-        map.merge(1, 4, Integer::sum);
-        System.out.println(map.get(1));
+    public void sandBox() throws FileNotFoundException {
+        File file = new File("src/main/java/vision/cotegory/data/programmersKaKao.csv");
 
+        CSVReader csvReader = new CSVReaderBuilder(new FileReader(file))
+                .withSkipLines(1)
+                .build();
+        csvReader.forEach(line -> System.out.println(String.join("||", line)));
     }
 }
+

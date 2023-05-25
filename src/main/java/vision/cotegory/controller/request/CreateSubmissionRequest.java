@@ -20,10 +20,6 @@ public class CreateSubmissionRequest {
     @Schema(example = "DP")
     private Tag selectTag;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @Schema(example = "2023-05-03T08:10:52")
-    private LocalDateTime submitTime;
-
     @NotNull(message = "PlayTime is required")
     private Integer playTime;
 }

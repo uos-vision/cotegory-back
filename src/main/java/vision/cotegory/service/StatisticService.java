@@ -21,7 +21,7 @@ public class StatisticService {
     public void updateStatisticData() {
         abnormalQuizRepository.deleteAll();
 
-        List<Quiz> quizzes = quizRepository.findAll();
+        List<Quiz> quizzes = quizRepository.findAllByActivatedIsTrue();
 
         long totalSubmissionCount = 0L;
         long totalCorrectCount = 0L;

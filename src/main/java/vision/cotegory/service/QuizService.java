@@ -25,7 +25,7 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final ProblemRepository problemRepository;
     private final TagGroupService tagGroupService;
-    private final ProblemService problemService;
+    private final ProblemMetaService problemMetaService;
 
     public void createQuiz(CreateQuizDto createQuizDto) {
         if (isNotAssignableTagGroup(createQuizDto))
@@ -36,7 +36,7 @@ public class QuizService {
                 .url(createQuizDto.getUrl())
                 .problemNumber(createQuizDto.getProblemNumber())
                 .build();
-        ProblemMeta problemMeta = problemService.createProblemMeta(createProblemMetaDto);
+        ProblemMeta problemMeta = problemMetaService.createProblemMeta(createProblemMetaDto);
 
         Problem problem = Problem.builder()
                 .problemMeta(problemMeta)
@@ -73,14 +73,16 @@ public class QuizService {
     public Quiz recommendQuiz(Member member) {
         int minDiff = 2000;
         Quiz target = null;
-        List<Quiz> list = quizRepository.findAll();
+        List<Quiz> list = quizRepository.findAllByActivatedIsTrue();
 
         for (Quiz q : list) {
             int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
             if (diff < minDiff) {
-                System.out.println("diff = " + q.getMmr());
-                System.out.println("member.getMmr().get(q.getTagGroup()) = " + member.getMmr().get(q.getTagGroup()));
-                System.out.println("diff = " + diff);
+                log.info("[mmr]quizMmr = {}, memberMmr = {}, diff = {}",
+                        q.getMmr(),
+                        member.getMmr().get(q.getTagGroup()),
+                        diff);
+
                 minDiff = diff;
                 target = q;
             }

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
 import vision.cotegory.entity.tag.TagGroup;
+import vision.cotegory.service.ProblemMetaService;
 import vision.cotegory.service.TagGroupService;
 import vision.cotegory.repository.MemberRepository;
 import vision.cotegory.repository.TagGroupRepository;
@@ -32,6 +33,7 @@ public class Initializer {
     private final TagGroupService tagGroupService;
     private final PasswordEncoder passwordEncoder;
     private final TagGroupRepository tagGroupRepository;
+    private final ProblemMetaService problemMetaService;
 
     @EventListener(ApplicationReadyEvent.class)
     public void memberInit() {
