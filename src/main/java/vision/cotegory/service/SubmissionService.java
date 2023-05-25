@@ -55,8 +55,8 @@ public class SubmissionService {
         return submissionRepository.save(submission);
     }
 
-    public List<Submission> findAllByTime(Member member, LocalDateTime fromTime, LocalDateTime toTime) {
-        return submissionRepository.findAllByMemberAndSubmitTimeBetween(member, fromTime, toTime);
+    public Page<Submission> findAllByTime(Member member, LocalDateTime fromTime, LocalDateTime toTime, Pageable pageable) {
+        return submissionRepository.findAllByMemberAndSubmitTimeBetween(member, fromTime, toTime, pageable);
     }
 
     public Page<Submission> findAllByPageable(Member member, Pageable pageable) {

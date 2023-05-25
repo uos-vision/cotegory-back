@@ -17,5 +17,5 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     Page<Submission> findAllByMember(Member member, Pageable pageable);
 
-    List<Submission> findAllByMemberAndSubmitTimeBetween(Member member, LocalDateTime fromTime, LocalDateTime toTime);
+    Page<Submission> findAllByMemberAndSubmitTimeBetween(Member member, LocalDateTime fromTime, LocalDateTime toTime, Pageable pageable);
 }
