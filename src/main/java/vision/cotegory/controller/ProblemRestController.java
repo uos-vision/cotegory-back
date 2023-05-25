@@ -29,7 +29,7 @@ public class ProblemRestController {
         return ResponseEntity.ok(new ProblemMetaResponse(baekjoonProblem.getProblemMeta()));
     }
 
-    @Operation(summary = "랜덤한 기업문제를 보여줍니다.")
+    @Operation(description = "랜덤한 기업문제를 보여줍니다.")
 //    @GetMapping("/company")
     public ResponseEntity<ProblemMetaResponse> findCompanyProblem() {
         ProblemMeta companyProblemMeta = problemMetaService.findCompanyProblem();

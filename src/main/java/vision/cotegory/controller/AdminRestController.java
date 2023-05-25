@@ -45,20 +45,20 @@ public class AdminRestController {
     private final BaekjoonCrawler baekjoonCrawler;
     private final ProgrammersCSVReader programmersCSVReader;
 
-    @Operation(summary = "전체유저 정답률과 비정상 데이터 리스트를 업데이트 합니다")
+    @Operation(description = "전체유저 정답률과 비정상 데이터 리스트를 업데이트 합니다")
     @PostMapping("/statistic/update")
     public void updateAbnormal() {
         statisticService.updateStatisticData();
     }
 
     @Transactional
-    @Operation(summary = "비정상 데이터 리스트를 봅니다.")
+    @Operation(description = "비정상 데이터 리스트를 봅니다.")
     @PostMapping("/abnormal/list")
     public Page<AbnormalQuizResponse> listAbnormal(Pageable pageable) {
         return abnormalQuizRepository.findAllActivateTrue(pageable).map(AbnormalQuizResponse::new);
     }
 
-    @Operation(summary = "비정상 Quiz를 비활성화 합니다. QuizId가 아니라 AbnormalQuizId를 받습니다")
+    @Operation(description = "비정상 Quiz를 비활성화 합니다. QuizId가 아니라 AbnormalQuizId를 받습니다")
     @Transactional
     @PostMapping("/abnormal/deactivate")
     public void deactivateAbnormal(@RequestBody @Valid DeactivateRequest deactivateRequest) {
@@ -107,7 +107,7 @@ public class AdminRestController {
         problemMetaService.createProblemMeta(createProblemMetaDto);
     }
 
-    @Operation(summary = "백준문제와 프로그래머스 문제를 DB에 저장합니다")
+    @Operation(description = "백준문제와 프로그래머스 문제를 DB에 저장합니다")
     @PostMapping("/problem-load")
     public void updateBaekjoonProblems() {
         baekjoonCrawler.crawlAll();
