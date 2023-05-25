@@ -52,8 +52,8 @@ public class StatisticService {
     }
 
     private boolean isAbnormalQuiz(Long submitCount, Double correctRate) {
-        final Double correctRateThreshold = 0.3;
-        final Long minimumSubmitCountThreshold = 5L;
+        final double correctRateThreshold = 0.3;
+        final long minimumSubmitCountThreshold = 5L;
 
         return submitCount.compareTo(minimumSubmitCountThreshold) > 0
                 && correctRate.compareTo(correctRateThreshold) < 0;
