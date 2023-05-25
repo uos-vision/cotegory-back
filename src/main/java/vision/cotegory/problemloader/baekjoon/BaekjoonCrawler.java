@@ -2,6 +2,7 @@ package vision.cotegory.problemloader.baekjoon;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.result.Output;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import vision.cotegory.problemloader.baekjoon.dto.BaekjoonProblemMetaDto;
@@ -60,9 +61,8 @@ public class BaekjoonCrawler {
                     .collect(Collectors.toList());
             return solvedAcWebClient.getSolvedAcProblemDtosByProblemNumbers(problemNumbers).stream();
         }).parallel().forEach(solvedAcProblemDto -> {
-            if (isNotProperProblemToQuiz(solvedAcProblemDto)) {
+            if (isNotProperProblemToQuiz(solvedAcProblemDto))
                 return;
-            }
 
             Set<Tag> tags = solvedAcProblemDto.getTags().stream()
                     .map(SolvedAcTagDto::getBojTagId)
@@ -74,23 +74,38 @@ public class BaekjoonCrawler {
                 return;
 
             BaekjoonPageCrawler baekjoonPageCrawler = new BaekjoonPageCrawler(solvedAcProblemDto.getProblemId());
+            Integer timeLimit = baekjoonPageCrawler.getTimeLimit();
+            Integer memoryLimit = baekjoonPageCrawler.getMemoryLimit();
+            String problemBody = baekjoonPageCrawler.getProblemBody();
+            String problemInput = baekjoonPageCrawler.getProblemInput();
+            String problemOutput = baekjoonPageCrawler.getProblemOutput();
+            String sampleInput = baekjoonPageCrawler.getSampleInput();
+            String sampleOutput = baekjoonPageCrawler.getSampleOutput();
 
-            if (baekjoonPageCrawler.getTimeLimit() == 0)
+
+            if (timeLimit.equals(0)
+                    || memoryLimit.equals(0)
+                    || problemBody.isBlank()
+                    || problemInput.isBlank()
+                    || problemOutput.isBlank()
+                    || sampleInput.isBlank()
+                    || sampleOutput.isBlank())
                 return;
+
             ProblemMeta problemMeta = problemMetaRepository
                     .findByProblemNumberAndOrigin(solvedAcProblemDto.getProblemId(), Origin.BAEKJOON)
                     .orElseThrow(NotExistBaekjoonHandleException::new);
 
             Problem problem = Problem.builder()
-                    .problemMeta(problemMeta)
                     .tags(tags)
-                    .problemBody(baekjoonPageCrawler.getProblemBody())
-                    .problemInput(baekjoonPageCrawler.getProblemInput())
-                    .problemOutput(baekjoonPageCrawler.getProblemOutput())
-                    .sampleInput(baekjoonPageCrawler.getSampleInput())
-                    .sampleOutput(baekjoonPageCrawler.getSampleOutput())
-                    .timeLimit(baekjoonPageCrawler.getTimeLimit())
-                    .memoryLimit(baekjoonPageCrawler.getMemoryLimit())
+                    .problemMeta(problemMeta)
+                    .memoryLimit(memoryLimit)
+                    .timeLimit(timeLimit)
+                    .problemBody(problemBody)
+                    .problemInput(problemInput)
+                    .problemOutput(problemOutput)
+                    .sampleInput(sampleInput)
+                    .sampleOutput(sampleOutput)
                     .build();
             problemRepository.save(problem);
 

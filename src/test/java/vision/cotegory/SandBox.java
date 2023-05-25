@@ -3,12 +3,14 @@ package vision.cotegory;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
+import vision.cotegory.problemloader.baekjoon.BaekjoonPageCrawler;
 import vision.cotegory.repository.MemberRepository;
 
 import java.io.BufferedReader;
@@ -22,6 +24,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 @SpringBootTest
+@Slf4j
 public class SandBox {
 
     @Autowired
@@ -46,12 +49,11 @@ public class SandBox {
 
     @Test
     public void sandBox() throws FileNotFoundException {
-        File file = new File("src/main/java/vision/cotegory/data/programmersKaKao.csv");
-
-        CSVReader csvReader = new CSVReaderBuilder(new FileReader(file))
-                .withSkipLines(1)
-                .build();
-        csvReader.forEach(line -> System.out.println(String.join("||", line)));
+        BaekjoonPageCrawler baekjoonPageCrawler = new BaekjoonPageCrawler(25021);
+        log.info("problemInput:{}", baekjoonPageCrawler.getProblemInput());
+        log.info("problemInputSize:{}", baekjoonPageCrawler.getProblemInput().length());
+        log.info("problemInputEmpty:{}", baekjoonPageCrawler.getProblemInput().isEmpty());
+        log.info("problemInputBlank:{}", baekjoonPageCrawler.getProblemInput().isBlank());
     }
 }
 
