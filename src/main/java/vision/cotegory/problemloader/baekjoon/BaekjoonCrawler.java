@@ -39,11 +39,7 @@ public class BaekjoonCrawler {
     private final QuizRepository quizRepository;
 
     public void crawlAll() {
-        Stream.of(Tag.values()).forEach(tag -> {
-            if (tag.equals(Tag.OTHERS))
-                return;
-            crawlByTag(tag);
-        });
+        Tag.valuesWithoutOthers().forEach(this::crawlByTag);
     }
 
 

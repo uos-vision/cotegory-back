@@ -20,13 +20,13 @@ public class DPRandomTest {
     public void dpRandomTest() {
 
         Map<Tag, Long> submission = new HashMap<>();
-        for(Tag tag : Tag.values())
+        for(Tag tag : Tag.valuesWithoutOthers())
         {
             submission.put(tag, 10L);
         }
 
         Map<Tag, Long> correct = new HashMap<>();
-        for(Tag tag : Tag.values())
+        for(Tag tag : Tag.valuesWithoutOthers())
         {
             correct.put(tag, 10L);
         }

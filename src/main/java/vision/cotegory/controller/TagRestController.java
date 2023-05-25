@@ -28,7 +28,7 @@ public class TagRestController {
     @GetMapping("/list")
     public ResponseEntity<TagsResponse> tags() {
         return ResponseEntity.ok(TagsResponse.builder()
-                .tags(Stream.of(Tag.values()).collect(Collectors.toList()))
+                .tags(Tag.valuesWithoutOthers())
                 .build());
     }
 
