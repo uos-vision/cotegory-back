@@ -13,7 +13,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"problem_number", "origin"}))
+@Table(indexes={
+        @Index(columnList = "origin, problem_number", unique = true),
+        @Index(columnList = "is_company, origin, problem_number")
+})
 public class ProblemMeta {
     @Id
     @GeneratedValue
@@ -30,6 +33,7 @@ public class ProblemMeta {
 
     private String url;
 
+    @Column(name="is_company")
     @Builder.Default
     private boolean isCompany = false;
 }
