@@ -7,8 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import vision.cotegory.controller.response.RecommendResponse;
 import vision.cotegory.entity.Member;
+import vision.cotegory.entity.Recommend;
 import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.service.RecommendService;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +25,8 @@ public class RecommendRestController {
     @Operation(description = "오늘의 문제추천")
     @GetMapping("/today")
     public ResponseEntity<RecommendResponse> recommendTodayProblem(@RequestHeader(value = "Authorization") Member member) {
-        ProblemMeta problemMeta = recommendService.findTodayProblem(member);
-        return ResponseEntity.ok(new RecommendResponse(problemMeta));
+        Recommend recommend = recommendService.findTodayProblem(member);
+        return ResponseEntity.ok(new RecommendResponse(recommend));
     }
 
     @Operation(description = "오늘의 문제추천 새로고침")
@@ -33,8 +38,8 @@ public class RecommendRestController {
     @Operation(description = "기업 문제추천")
     @GetMapping("/company")
     public ResponseEntity<RecommendResponse> recommendCompanyProblem(@RequestHeader(value = "Authorization") Member member) {
-        ProblemMeta problemMeta = recommendService.findCompanyProblem(member);
-        return ResponseEntity.ok(new RecommendResponse(problemMeta));
+        Recommend recommend = recommendService.findCompanyProblem(member);
+        return ResponseEntity.ok(new RecommendResponse(recommend));
     }
 
     @Operation(description = "기업 문제추천 새로고침")
@@ -46,8 +51,8 @@ public class RecommendRestController {
     @Operation(description = "ai 문제추천")
     @GetMapping("/ai")
     public ResponseEntity<RecommendResponse> recommendAIProblem(@RequestHeader(value = "Authorization") Member member) {
-        ProblemMeta problemMeta = recommendService.findAIProblem(member);
-        return ResponseEntity.ok(new RecommendResponse(problemMeta));
+        Recommend recommend = recommendService.findAIProblem(member);
+        return ResponseEntity.ok(new RecommendResponse(recommend));
     }
 
     @Operation(description = "ai 문제추천 새로고침")
@@ -56,4 +61,17 @@ public class RecommendRestController {
         recommendService.updateAIRecommend(member);
     }
 
+    @Operation(description = "모든 타입(ai, today, company)에 대한 문제를 한번에 추천받기")
+    @GetMapping("/all-type")
+    public ResponseEntity<RecommendResponses> recommendAllProblem(@RequestHeader(value = "Authorization") Member member) {
+        Recommend recommendAi = recommendService.findAIProblem(member);
+        Recommend recommendCompany = recommendService.findCompanyProblem(member);
+        Recommend recommendToday = recommendService.findTodayProblem(member);
+
+        List<RecommendResponse> recommendResponses = Stream.of(recommendAi, recommendCompany, recommendToday)
+                .map(RecommendResponse::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new RecommendResponses(recommendResponses));
+    }
 }
