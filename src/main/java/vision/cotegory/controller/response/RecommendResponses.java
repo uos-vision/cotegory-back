@@ -1,4 +1,4 @@
-package vision.cotegory.controller;
+package vision.cotegory.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

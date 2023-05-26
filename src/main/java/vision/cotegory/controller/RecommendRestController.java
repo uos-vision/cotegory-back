@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import vision.cotegory.controller.response.RecommendResponse;
+import vision.cotegory.controller.response.RecommendResponses;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Recommend;
-import vision.cotegory.entity.problem.ProblemMeta;
 import vision.cotegory.service.RecommendService;
 
 import java.util.List;
