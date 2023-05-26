@@ -108,21 +108,21 @@ public class RecommendService {
         return recommendRepository.save(recommend);
     }
 
-    public ProblemMeta findAIProblem(Member member) {
+    public Recommend findAIProblem(Member member) {
         if (!member.getRecommends().containsKey(RecommendType.AI))
             updateAIRecommend(member);
-        return member.getRecommends().get(RecommendType.AI).getProblemMeta();
+        return member.getRecommends().get(RecommendType.AI);
     }
 
-    public ProblemMeta findTodayProblem(Member member) {
+    public Recommend findTodayProblem(Member member) {
         if (!member.getRecommends().containsKey(RecommendType.TODAY))
             updateTodayProblem(member);
-        return member.getRecommends().get(RecommendType.TODAY).getProblemMeta();
+        return member.getRecommends().get(RecommendType.TODAY);
     }
 
-    public ProblemMeta findCompanyProblem(Member member) {
+    public Recommend findCompanyProblem(Member member) {
         if (!member.getRecommends().containsKey(RecommendType.COMPANY))
             updateCompanyProblem(member);
-        return member.getRecommends().get(RecommendType.COMPANY).getProblemMeta();
+        return member.getRecommends().get(RecommendType.COMPANY);
     }
 }
