@@ -61,7 +61,7 @@ public class RecommendRestController {
         recommendService.updateAIRecommend(member);
     }
 
-    @Operation(description = "모든 타입에 대한 문제추천")
+    @Operation(description = "모든 타입(ai, today, company)에 대한 문제를 한번에 추천받기")
     @GetMapping("/all-type")
     public ResponseEntity<RecommendResponses> recommendAllProblem(@RequestHeader(value = "Authorization") Member member) {
         Recommend recommendAi = recommendService.findAIProblem(member);
