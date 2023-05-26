@@ -48,9 +48,9 @@ public class Initializer {
                 .baekjoonHandle("tori1753")
                 .activated(true)
                 .mmr(Map.of(
-                        tagGroupService.getTagGroupConsts().get(0), 200,
-                        tagGroupService.getTagGroupConsts().get(1), 300,
-                        tagGroupService.getTagGroupConsts().get(2), 400))
+                        tagGroupService.getTagGroupConsts().get(0), 1000,
+                        tagGroupService.getTagGroupConsts().get(1), 1200,
+                        tagGroupService.getTagGroupConsts().get(2), 1400))
                 .nickName("UOS닉네임")
                 .build();
 
