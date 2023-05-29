@@ -62,7 +62,7 @@ public class MemberRestController {
             @RequestHeader(value = "Authorization") Member member,
             @RequestBody ChangeBaekjoonHandleRequest changeBaekjoonHandleRequest) {
         String baekjoonHandle = changeBaekjoonHandleRequest.getBaekjoonHandle();
-        if (memberService.isExistBaekjoonHandle(baekjoonHandle))
+        if (!memberService.isExistBaekjoonHandle(baekjoonHandle))
             throw new NotExistBaekjoonHandleException();
         member.setBaekjoonHandle(baekjoonHandle);
     }
