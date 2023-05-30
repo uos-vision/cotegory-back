@@ -116,7 +116,6 @@ public class BaekjoonPageCrawler {
                 continue;
             element.getElementsByTag(tag).attr(attr, baseUrl + path);
         }
-
         return document.html();
     }
 }
