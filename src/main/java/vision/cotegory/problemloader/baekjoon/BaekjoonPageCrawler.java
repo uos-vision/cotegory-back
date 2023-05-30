@@ -102,12 +102,12 @@ public class BaekjoonPageCrawler {
         return 0;
     }
 
-    private String convertRelativeImgPathToAbsoluteImgPath(String html){
+    public String convertRelativeImgPathToAbsoluteImgPath(String html){
         final String tag = "img";
         final String attr = "src";
         final String baseUrl = "https://www.acmicpc.net";
 
-        Document document = Jsoup.parse(html, "https://www.acmicpc.net");
+        Document document = Jsoup.parse(html);
         Elements elements = document.getElementsByTag(tag);
 
         for(var element :elements){
@@ -116,6 +116,6 @@ public class BaekjoonPageCrawler {
                 continue;
             element.getElementsByTag(tag).attr(attr, baseUrl + path);
         }
-        return document.html();
+        return document.getElementsByTag("body").html();
     }
 }

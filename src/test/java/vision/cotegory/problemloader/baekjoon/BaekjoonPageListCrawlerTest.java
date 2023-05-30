@@ -19,4 +19,11 @@ class BaekjoonPageListCrawlerTest {
     void crawl(){
         baekjoonCrawler.crawlAll();
     }
+
+    @Test
+    void convertTest(){
+        BaekjoonPageCrawler baekjoonPageCrawler = new BaekjoonPageCrawler(1309);
+        String problemBody = baekjoonPageCrawler.getProblemBody();
+        System.out.println("problemBody = " + problemBody);
+    }
 }
