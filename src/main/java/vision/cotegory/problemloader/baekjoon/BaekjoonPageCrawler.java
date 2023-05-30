@@ -3,6 +3,7 @@ package vision.cotegory.problemloader.baekjoon;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -50,23 +51,23 @@ public class BaekjoonPageCrawler {
     }
 
     public String getProblemBody() {
-        return doc.select("#problem_description").html();
+        return convertRelativeImgPathToAbsoluteImgPath(doc.select("#problem_description").html());
     }
 
     public String getProblemInput() {
-        return doc.select("#problem_input").html();
+        return convertRelativeImgPathToAbsoluteImgPath(doc.select("#problem_input").html());
     }
 
     public String getProblemOutput() {
-        return doc.select("#problem_output").html();
+        return convertRelativeImgPathToAbsoluteImgPath(doc.select("#problem_output").html());
     }
 
     public String getSampleInput() {
-        return doc.select("#sample-input-1").html();
+        return convertRelativeImgPathToAbsoluteImgPath(doc.select("#sample-input-1").html());
     }
 
     public String getSampleOutput() {
-        return doc.select("#sample-output-1").html();
+        return convertRelativeImgPathToAbsoluteImgPath(doc.select("#sample-output-1").html());
     }
 
     public int getSubmissionCount() {
@@ -99,5 +100,23 @@ public class BaekjoonPageCrawler {
         if (matcher.find())
             return Integer.parseInt(matcher.group());
         return 0;
+    }
+
+    private String convertRelativeImgPathToAbsoluteImgPath(String html){
+        final String tag = "img";
+        final String attr = "src";
+        final String baseUrl = "https://www.acmicpc.net";
+
+        Document document = Jsoup.parse(html, "https://www.acmicpc.net");
+        Elements elements = document.getElementsByTag(tag);
+
+        for(var element :elements){
+            String path = element.getElementsByTag(tag).attr(attr);
+            if(!path.startsWith("/"))
+                continue;
+            element.getElementsByTag(tag).attr(attr, baseUrl + path);
+        }
+
+        return document.html();
     }
 }
