@@ -92,15 +92,15 @@ public class QuizService {
 
         for (Quiz q : list) {
             int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
+            if (submissionList.contains(q))
+                continue;
             if (diff < minDiff) {
                 log.info("[mmr]quizMmr = {}, memberMmr = {}, diff = {}",
                         q.getMmr(),
                         member.getMmr().get(q.getTagGroup()),
                         diff);
-
                 minDiff = diff;
-                if (!submissionList.contains(q))
-                    target = q;
+                target = q;
             }
         }
         return target;
