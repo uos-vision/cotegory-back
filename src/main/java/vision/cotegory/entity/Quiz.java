@@ -69,7 +69,7 @@ public class Quiz {
 
     public Double getCorrectRate() {
         if (getSubmitCount().equals(0L))
-            return 0.0;
+            return null;
         return (double) getCorrectCount() / (double) getSubmitCount();
     }
 
@@ -84,7 +84,7 @@ public class Quiz {
         Long submitCount = getSubmitCount();
         for (var tag : tagGroup.getTags()) {
             if (submitCount.equals(0L)) {
-                ret.put(tag, 0.0);
+                ret.put(tag, null);
                 continue;
             }
             double rate = (double) tagCount.getOrDefault(tag, 0L) / (double) submitCount;
