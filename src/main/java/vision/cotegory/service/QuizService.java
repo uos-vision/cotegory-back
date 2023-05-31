@@ -6,16 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Quiz;
+import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.problem.Problem;
 import vision.cotegory.entity.problem.ProblemMeta;
+import vision.cotegory.entity.tag.TagGroup;
 import vision.cotegory.repository.ProblemRepository;
 import vision.cotegory.repository.QuizRepository;
+import vision.cotegory.repository.SubmissionRepository;
+import vision.cotegory.repository.TagGroupRepository;
 import vision.cotegory.service.dto.CreateProblemMetaDto;
 import vision.cotegory.service.dto.CreateQuizDto;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,10 @@ public class QuizService {
     private final ProblemRepository problemRepository;
     private final TagGroupService tagGroupService;
     private final ProblemMetaService problemMetaService;
+
+    private final TagGroupRepository tagGroupRepository;
+
+    private final SubmissionRepository submissionRepository;
 
     public void createQuiz(CreateQuizDto createQuizDto) {
         if (isNotAssignableTagGroup(createQuizDto))
@@ -72,10 +79,16 @@ public class QuizService {
     }
 
     public Quiz recommendQuiz(Member member) {
+
         int minDiff = 2000;
-        Quiz target = null;
-        List<Quiz> list = quizRepository.findAllByActivatedIsTrue();
+        List<TagGroup> tagGroupList = tagGroupRepository.findAllFetchQuizzes();
+        List<Quiz> list = tagGroupList.get((int) (Math.random() * tagGroupList.size())).getQuizzes();
+        Set<Quiz> submissionList = submissionRepository.findAllByMember(member)
+                .stream()
+                .map(Submission::getQuiz)
+                .collect(Collectors.toSet());
         Collections.shuffle(list);
+        Quiz target = list.get(0);
 
         for (Quiz q : list) {
             int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
@@ -86,7 +99,8 @@ public class QuizService {
                         diff);
 
                 minDiff = diff;
-                target = q;
+                if (!submissionList.contains(q))
+                    target = q;
             }
         }
         return target;
