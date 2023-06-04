@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import vision.cotegory.controller.request.CreateSkipRequest;
 import vision.cotegory.controller.request.CreateSubmissionRequest;
 import vision.cotegory.controller.request.DateSubmissionRequest;
 import vision.cotegory.controller.request.SubmissionPageInfoRequest;
@@ -23,6 +24,7 @@ import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.QuizService;
 import vision.cotegory.service.SubmissionService;
+import vision.cotegory.service.dto.CreateSkippedSubmissionDto;
 import vision.cotegory.service.dto.CreateSubmissionDto;
 
 import javax.validation.Valid;
@@ -52,6 +54,17 @@ public class SubmissionRestController {
 
         Submission submission = submissionService.createSubmission(createSubmissionDto);
         return ResponseEntity.ok(new CreateSubmissionResponse(submission));
+    }
+
+    @Operation(description = "Quiz에 대한 답을 제출합니다")
+    @PostMapping("/skip")
+    public void createSkippedSubmission(@RequestHeader(value = "Authorization") Member member, @RequestBody @Valid CreateSkipRequest createSkipRequest) {
+        CreateSkippedSubmissionDto createSkippedSubmissionDto = CreateSkippedSubmissionDto
+                .builder()
+                .member(member)
+                .quiz(quizService.findQuiz(createSkipRequest.getQuizId()).orElseThrow(NotExistEntityException::new))
+                .build();
+        submissionService.createSkippedSubmission(createSkippedSubmissionDto);
     }
 
     @Operation(description = "yyyy-MM-dd'T'HH:mm:ss 형식을 요구로 합니다.")

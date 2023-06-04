@@ -31,4 +31,6 @@ public class Submission {
     private LocalDateTime submitTime;
 
     private Integer playTime;
+
+    private boolean isSkipped;
 }

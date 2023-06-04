@@ -13,6 +13,7 @@ import vision.cotegory.entity.Submission;
 import vision.cotegory.entity.tag.Tag;
 import vision.cotegory.exception.exception.NotProperTagGroupAssignException;
 import vision.cotegory.repository.SubmissionRepository;
+import vision.cotegory.service.dto.CreateSkippedSubmissionDto;
 import vision.cotegory.service.dto.CreateSubmissionDto;
 import vision.cotegory.utils.ElOUtils;
 
@@ -26,6 +27,18 @@ import java.util.List;
 public class SubmissionService {
     private final SubmissionRepository submissionRepository;
     private final ElOUtils elOUtils;
+
+    public Submission createSkippedSubmission(CreateSkippedSubmissionDto createSkippedSubmissionDto) {
+        Member member = createSkippedSubmissionDto.getMember();
+        Quiz quiz = createSkippedSubmissionDto.getQuiz();
+        Submission submission = Submission.builder()
+                .member(member)
+                .quiz(quiz)
+                .isSkipped(true)
+                .build();
+
+        return submissionRepository.save(submission);
+    }
 
     public Submission createSubmission(CreateSubmissionDto createSubmissionDto) {
         Member member = createSubmissionDto.getMember();
@@ -41,6 +54,7 @@ public class SubmissionService {
                 .selectTag(selectTag)
                 .submitTime(createSubmissionDto.getSubmitTime())
                 .playTime(createSubmissionDto.getPlayTime())
+                .isSkipped(false)
                 .build();
 
         member.addSubmit(submission);
