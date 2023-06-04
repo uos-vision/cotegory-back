@@ -10,11 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import vision.cotegory.controller.request.ChangeBaekjoonHandleRequest;
 import vision.cotegory.controller.request.ChangeNicknameRequest;
 import vision.cotegory.controller.response.MemberInformationResponse;
+import vision.cotegory.controller.response.RankResponse;
 import vision.cotegory.entity.Member;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
-import vision.cotegory.exception.exception.NotExistEntityException;
-import vision.cotegory.repository.MemberRepository;
-import vision.cotegory.utils.JWTUtils;
 import vision.cotegory.service.MemberService;
 
 @RestController
@@ -29,6 +27,15 @@ public class MemberRestController {
     @GetMapping("/information")
     public ResponseEntity<MemberInformationResponse> currentMemberInformation(@RequestHeader(value = "Authorization") Member member) {
         return ResponseEntity.ok(new MemberInformationResponse(member));
+    }
+
+    @Operation(description = "member의 rank를 반환합니다.")
+    @GetMapping("/rank")
+    public ResponseEntity<RankResponse> memberRank(@RequestHeader(value = "Authorization") Member member) {
+        RankResponse rankResponse = new RankResponse();
+        rankResponse.setMemberId(member.getId());
+        rankResponse.setRank(memberService.rank(member));
+        return ResponseEntity.ok(rankResponse);
     }
 
     @Operation(description = "profile='prod'에서만 정상적 호출이 가능합니다.")

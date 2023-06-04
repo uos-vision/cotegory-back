@@ -8,14 +8,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Role;
+import vision.cotegory.entity.tag.TagGroup;
 import vision.cotegory.exception.exception.DuplicatedEntityException;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
 import vision.cotegory.repository.MemberRepository;
 import vision.cotegory.service.dto.RegisterDto;
 import vision.cotegory.utils.S3Utils;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,5 +91,34 @@ public class MemberService {
     public void deleteImage(Member member) {
         s3Utils.delete(member.getImgUrl());
         member.setImgUrl(null);
+    }
+
+    public Map<TagGroup, Integer> rank(Member member) {
+
+        List<Member> memberList = memberRepository.findAll();
+        Map<TagGroup, List<Integer>> allMemberMmr = new HashMap<>();
+        Map<TagGroup, Integer> rankResult = new HashMap<>();
+        List<TagGroup> allTagGroup = tagGroupService.getTagGroupConsts();
+        allTagGroup.forEach(tagGroup -> allMemberMmr.put(tagGroup, new ArrayList<>()));
+        memberList.forEach(m -> m.getMmr().forEach((key, value) -> allMemberMmr.get(key).add(value)));
+        allTagGroup.forEach(
+                tagGroup ->
+                        rankResult.put(tagGroup,
+                                Collections.binarySearch(allMemberMmr
+                                                .get(tagGroup)
+                                                .stream()
+                                                .sorted()
+                                                .collect(Collectors.toList()),
+                                        member.getMmr().get(tagGroup)))
+        );
+
+        for (Map.Entry<TagGroup,Integer> entry : rankResult.entrySet()) {
+            if (entry.getValue() < 0)
+                entry.setValue(memberList.size() - entry.getValue() * -1 + 1);
+            else
+                entry.setValue(memberList.size() - entry.getValue());
+        }
+
+        return rankResult;
     }
 }
