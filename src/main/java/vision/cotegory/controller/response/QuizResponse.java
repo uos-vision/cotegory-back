@@ -27,8 +27,6 @@ public class QuizResponse {
     private Integer timeLimit;
     private Integer memoryLimit;
 
-    private Double correctRate;
-
     public QuizResponse(Quiz quiz) {
         this.quizId = quiz.getId();
         this.answerTag = quiz.getAnswerTag();
@@ -47,6 +45,5 @@ public class QuizResponse {
         this.sampleOutput = quiz.getProblem().getSampleOutput();
         this.timeLimit = quiz.getProblem().getTimeLimit();
         this.memoryLimit = quiz.getProblem().getMemoryLimit();
-        this.correctRate = quiz.getCorrectRate();
     }
 }
