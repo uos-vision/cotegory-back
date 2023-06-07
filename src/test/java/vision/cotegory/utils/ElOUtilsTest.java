@@ -39,7 +39,7 @@ class ElOUtilsTest {
                 .build();
 
         Map<TagGroup, Integer> map = new HashMap<>();
-        map.put(tagGroup, 300);
+        map.put(tagGroup, 1200);
 
         Member member = Member.builder()
                 .mmr(map)
@@ -53,18 +53,20 @@ class ElOUtilsTest {
                 .answerTag(Tag.DP)
                 .problem(problem)
                 .build();
+
         Submission submission = Submission
                 .builder()
                         .quiz(quiz)
                 .selectTag(Tag.DP)
                                 .build();
 
-        elo.updateCorrectRate(0.2);
         log.info("init : {}, {}", member.getMmr().get(tagGroup), quiz.getMmr());
-        Pair<Integer, Integer> pair1 = elo.updateElo(member, submission);
-        log.info("return : {}, {}", pair1.getFirst(), pair1.getSecond());
-        elo.updateCorrectRate(0.2);
-        Pair<Integer, Integer> pair2 = elo.updateElo(member, submission);
-        log.info("return : {}, {}", pair2.getFirst(), pair2.getSecond());
+        Pair<Integer, Integer> pair1;
+        for (int i = 0; i < 10; i++) {
+            pair1 = elo.updateElo(member, submission);
+            member.getMmr().put(tagGroup, pair1.getFirst());
+            quiz.setMmr(pair1.getSecond());
+            log.info("return : {}, {}", pair1.getFirst(), pair1.getSecond());
+        }
     }
 }

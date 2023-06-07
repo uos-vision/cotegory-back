@@ -36,7 +36,7 @@ public class ElOUtils {
         actualValue = correct ? 1 : 0;
 
         kFactor = correct ? weight * (1 - correctRate) : weight * correctRate;
-        predictedValue = 1 / (Math.pow(10, (memberMmr - problemMmr) / (double) diffMmr) + 1);
+        predictedValue = 1 / (Math.pow(10, (problemMmr - memberMmr) / (double) diffMmr) + 1);
 
         memberMmr = (int) Math.round((memberMmr + kFactor * (actualValue - predictedValue)));
         problemMmr = (int) Math.round((problemMmr + kFactor * (Math.abs(actualValue - 1) - Math.abs(predictedValue - 1))));
