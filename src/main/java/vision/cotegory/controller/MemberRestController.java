@@ -13,6 +13,7 @@ import vision.cotegory.controller.response.MemberInformationResponse;
 import vision.cotegory.controller.response.RankResponse;
 import vision.cotegory.entity.Member;
 import vision.cotegory.exception.exception.NotExistBaekjoonHandleException;
+import vision.cotegory.repository.MemberRepository;
 import vision.cotegory.service.MemberService;
 
 @RestController
@@ -22,6 +23,7 @@ import vision.cotegory.service.MemberService;
 public class MemberRestController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Operation(description = "correctRate에서 한번도 시도하지 않는 Tag는 null을 반환합니다")
     @GetMapping("/information")
@@ -35,6 +37,7 @@ public class MemberRestController {
         RankResponse rankResponse = new RankResponse();
         rankResponse.setMemberId(member.getId());
         rankResponse.setRank(memberService.rank(member));
+        rankResponse.setMemberNum(memberRepository.countByActivatedIsTrue());
         return ResponseEntity.ok(rankResponse);
     }
 
