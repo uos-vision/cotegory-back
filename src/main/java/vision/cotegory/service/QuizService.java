@@ -91,6 +91,7 @@ public class QuizService {
         Quiz target = list.get(0);
 
         for (Quiz q : list) {
+            log.info("[quizMmr] q mmr = {}", q.getMmr());
             if (submissionList.contains(q))
                 continue;
             int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
