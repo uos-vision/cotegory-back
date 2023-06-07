@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
-    List<Submission> findAllByMemberAndIsSkippedIsTrue(Member member);
+    List<Submission> findAllByMemberAndIsSkippedIsFalse(Member member);
 
-    Page<Submission> findAllByMemberAndIsSkippedIsTrue(Member member, Pageable pageable);
+    Page<Submission> findAllByMemberAndIsSkippedIsFalse(Member member, Pageable pageable);
 
-    Page<Submission> findAllByMemberAndIsSkippedIsTrueAndSubmitTimeBetween(Member member, LocalDateTime fromTime, LocalDateTime toTime, Pageable pageable);
+    Page<Submission> findAllByMemberAndIsSkippedIsFalseAndSubmitTimeBetween(Member member, LocalDateTime fromTime, LocalDateTime toTime, Pageable pageable);
 }

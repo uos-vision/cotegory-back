@@ -70,15 +70,15 @@ public class SubmissionService {
     }
 
     public Page<Submission> findAllByTime(Member member, LocalDateTime fromTime, LocalDateTime toTime, Pageable pageable) {
-        return submissionRepository.findAllByMemberAndIsSkippedIsTrueAndSubmitTimeBetween(member, fromTime, toTime, pageable);
+        return submissionRepository.findAllByMemberAndIsSkippedIsFalseAndSubmitTimeBetween(member, fromTime, toTime, pageable);
     }
 
     public Page<Submission> findAllByPageable(Member member, Pageable pageable) {
-        return submissionRepository.findAllByMemberAndIsSkippedIsTrue(member, pageable);
+        return submissionRepository.findAllByMemberAndIsSkippedIsFalse(member, pageable);
     }
 
     public List<Submission> findAll(Member member) {
-        return submissionRepository.findAllByMemberAndIsSkippedIsTrue(member);
+        return submissionRepository.findAllByMemberAndIsSkippedIsFalse(member);
     }
 
 }

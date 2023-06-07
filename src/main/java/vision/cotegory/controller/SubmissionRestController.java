@@ -77,7 +77,7 @@ public class SubmissionRestController {
     public Page<SubmissionResponse> pageSubmission(
             @RequestHeader(value = "Authorization") Member member,
             @ParameterObject @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        return submissionRepository.findAllByMemberAndIsSkippedIsTrue(member, pageable)
+        return submissionRepository.findAllByMemberAndIsSkippedIsFalse(member, pageable)
                 .map(SubmissionResponse::new);
     }
 }
