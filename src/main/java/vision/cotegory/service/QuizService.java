@@ -94,10 +94,11 @@ public class QuizService {
             if (submissionList.contains(q))
                 continue;
             int diff = Math.abs(q.getMmr() - member.getMmr().get(q.getTagGroup()));
-                log.info("[mmr]quizMmr = {}, memberMmr = {}, diff = {}",
+                log.info("[mmr]quizMmr = {}, memberMmr = {}, diff = {}, minDiff = {}",
                         q.getMmr(),
                         member.getMmr().get(q.getTagGroup()),
-                        diff);
+                        diff,
+                        minDiff);
             if (diff < minDiff) {
                 minDiff = diff;
                 target = q;
