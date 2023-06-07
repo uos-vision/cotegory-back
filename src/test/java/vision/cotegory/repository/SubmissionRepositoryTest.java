@@ -20,7 +20,7 @@ class SubmissionRepositoryTest {
     @Test
     void test(){
         Member member = memberRepository.findByLoginIdAndActivatedIsTrue("member").get();
-        List<Submission> submissions = submissionRepository.findAllByMemberAndIsSkippedIsFalse(member);
+        List<Submission> submissions = submissionRepository.findAllByMember(member);
         System.out.println(submissions.size());
     }
 }

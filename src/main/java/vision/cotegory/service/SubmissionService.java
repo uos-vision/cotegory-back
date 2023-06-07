@@ -78,7 +78,7 @@ public class SubmissionService {
     }
 
     public List<Submission> findAll(Member member) {
-        return submissionRepository.findAllByMemberAndIsSkippedIsFalse(member);
+        return submissionRepository.findAllByMember(member);
     }
 
 }
