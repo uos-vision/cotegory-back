@@ -83,7 +83,7 @@ public class QuizService {
         int minDiff = 2000;
         List<TagGroup> tagGroupList = tagGroupRepository.findAllFetchQuizzes();
         List<Quiz> list = tagGroupList.get((int) (Math.random() * tagGroupList.size())).getQuizzes();
-        Set<Quiz> submissionList = submissionRepository.findAllByMember(member)
+        Set<Quiz> submissionList = submissionRepository.findAllByMemberAndIsSkippedIsTrue(member)
                 .stream()
                 .map(Submission::getQuiz)
                 .collect(Collectors.toSet());

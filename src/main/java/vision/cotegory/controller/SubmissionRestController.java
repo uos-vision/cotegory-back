@@ -13,13 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import vision.cotegory.controller.request.CreateSkipRequest;
 import vision.cotegory.controller.request.CreateSubmissionRequest;
 import vision.cotegory.controller.request.DateSubmissionRequest;
-import vision.cotegory.controller.request.SubmissionPageInfoRequest;
 import vision.cotegory.controller.response.CreateSubmissionResponse;
-import vision.cotegory.controller.response.SubmissionPageInfoResponse;
 import vision.cotegory.controller.response.SubmissionResponse;
 import vision.cotegory.entity.Member;
 import vision.cotegory.entity.Submission;
-import vision.cotegory.exception.exception.BusinessException;
 import vision.cotegory.exception.exception.NotExistEntityException;
 import vision.cotegory.repository.SubmissionRepository;
 import vision.cotegory.service.QuizService;
@@ -29,8 +26,6 @@ import vision.cotegory.service.dto.CreateSubmissionDto;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -82,7 +77,7 @@ public class SubmissionRestController {
     public Page<SubmissionResponse> pageSubmission(
             @RequestHeader(value = "Authorization") Member member,
             @ParameterObject @PageableDefault(sort = "submitTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        return submissionRepository.findAllByMember(member, pageable)
+        return submissionRepository.findAllByMemberAndIsSkippedIsTrue(member, pageable)
                 .map(SubmissionResponse::new);
     }
 }
