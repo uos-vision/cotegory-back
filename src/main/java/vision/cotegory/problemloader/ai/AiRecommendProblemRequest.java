@@ -11,5 +11,5 @@ public class AiRecommendProblemRequest {
     @Builder.Default
     private Integer cnt = 1;
     @Builder.Default
-    private String model = "EASE";
+    private String model = "AUTO_ENCODER";
 }

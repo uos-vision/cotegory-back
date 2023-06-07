@@ -66,7 +66,6 @@ public class RecommendService {
                 .handle(member.getBaekjoonHandle())
                 .tag(tag)
                 .cnt(1)
-                .model("EASE")
                 .build();
 
         List<Integer> list = aiWebClient.getRecommendProblemNumbers(aiRecommendProblemRequest);
